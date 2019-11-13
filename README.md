@@ -1,2 +1,2 @@
-# CheckPointAnsibleCollection
-CheckPointAnsibleCollection
+# CheckPointAnsibleMgmtCollection
+CheckPointAnsibleMgmtCollection
