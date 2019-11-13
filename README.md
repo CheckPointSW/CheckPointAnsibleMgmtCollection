@@ -2,7 +2,7 @@
 This Ansible collection provides control over a Check Point management server using
 Check Point's web-services APIs.
 
-The Ansible Check Point moduules reference can be found here:
+The Ansible Check Point modules reference can be found here:
 https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
 Note - look only at the `cp_mgmt_*` modules, cause the `checkpoint_*` will be depricated.
 
