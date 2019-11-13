@@ -3,7 +3,7 @@ This Ansible collection provides control over a Check Point management server us
 Check Point's web-services APIs.
 
 The Ansible Check Point modules reference can be found here:
-https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
+https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point 
 Note - look only at the `cp_mgmt_*` modules, cause the `checkpoint_*` will be depricated.
 
 Installation instructions
@@ -30,7 +30,7 @@ ansible_user=%YOUR_USER%
 ansible_password=%YOUR_PASSWORD%
 ansible_network_os=check_point.mgmt.checkpoint
 ```
-Note - If you want to run against Ansible version 2.9 instead of the collection, just replace `ansible_network_os=check_point.mgmt.checkpoint` with `ansible_network_os=checkpoint`
+Note - If you want to run against Ansible version 2.9 instead of the collection, just replace `ansible_network_os=check_point.mgmt.checkpoint` with `ansible_network_os=checkpoint` 
 2. Run a playbook:
 ```sh
 ansible-playbook your_ansible_playbook.yml
