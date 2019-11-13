@@ -1,0 +1,2 @@
+# CheckPointAnsibleCollection
+CheckPointAnsibleCollection
