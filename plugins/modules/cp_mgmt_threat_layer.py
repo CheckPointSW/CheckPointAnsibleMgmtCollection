@@ -73,7 +73,7 @@ options:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
     type: bool
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
 EXAMPLES = """

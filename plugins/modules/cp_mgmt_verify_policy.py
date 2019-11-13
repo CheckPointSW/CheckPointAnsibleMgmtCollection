@@ -39,7 +39,7 @@ options:
     description:
       - Policy package identified by the name or UID.
     type: str
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_commands
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """

@@ -74,7 +74,7 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_facts
+extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """

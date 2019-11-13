@@ -39,7 +39,7 @@ options:
     description:
       - Session unique identifier. Specify it to discard a different session than the one you currently use.
     type: str
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_commands
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """

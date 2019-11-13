@@ -77,7 +77,7 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_commands
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """

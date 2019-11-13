@@ -137,7 +137,7 @@ options:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
     type: bool
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_facts
+extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """

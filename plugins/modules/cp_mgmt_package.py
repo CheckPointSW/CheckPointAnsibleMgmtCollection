@@ -150,7 +150,7 @@ options:
         description:
           - Collection of Threat layer objects to be set identified by the name or UID. Replaces existing Threat layers.
         type: list
-extends_documentation_fragment: check_point.mgmt.plugins.doc_fragments.checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
 EXAMPLES = """
