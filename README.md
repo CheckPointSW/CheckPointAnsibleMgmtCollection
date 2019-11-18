@@ -22,12 +22,12 @@ Usage
 1. Edit the `hosts` so that it will contain a section similar to this one:
 ```
 [check_point]
-%YOUR_IP%
+%CHECK_POINT_MANAGEMENT_SERVER_IP%
 [checkpoint:vars]
 ansible_httpapi_use_ssl=True
 ansible_httpapi_validate_certs=False
-ansible_user=%YOUR_USER%
-ansible_password=%YOUR_PASSWORD%
+ansible_user=%CHECK_POINT_MANAGEMENT_SERVER_USER%
+ansible_password=%CHECK_POINT_MANAGEMENT_SERVER_PASSWORD%
 ansible_network_os=check_point.mgmt.checkpoint
 ```
 Note - If you want to run against Ansible version 2.9 instead of the collection, just replace `ansible_network_os=check_point.mgmt.checkpoint` with `ansible_network_os=checkpoint`
@@ -45,7 +45,7 @@ Example playbook:
 ```
 ---
 - name: playbook name
-  hosts: checkpoint
+  hosts: check_point
   connection: httpapi
   tasks:
     - name: task to have network
