@@ -23,7 +23,7 @@ Usage
 ```
 [check_point]
 %CHECK_POINT_MANAGEMENT_SERVER_IP%
-[checkpoint:vars]
+[check_point:vars]
 ansible_httpapi_use_ssl=True
 ansible_httpapi_validate_certs=False
 ansible_user=%CHECK_POINT_MANAGEMENT_SERVER_USER%
