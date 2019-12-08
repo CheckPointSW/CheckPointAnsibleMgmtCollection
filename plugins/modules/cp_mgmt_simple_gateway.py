@@ -405,7 +405,7 @@ options:
     description:
       - URL Filtering blade enabled.
     type: bool
-  version:
+  gateway_version:
     description:
       - Gateway platform version.
     type: str
@@ -599,7 +599,7 @@ def main():
         threat_emulation=dict(type='bool'),
         threat_extraction=dict(type='bool'),
         url_filtering=dict(type='bool'),
-        version=dict(type='str'),
+        gateway_version=dict(type='str'),
         vpn=dict(type='bool'),
         vpn_settings=dict(type='dict', options=dict(
             maximum_concurrent_ike_negotiations=dict(type='int'),
