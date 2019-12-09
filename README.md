@@ -82,92 +82,92 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
 
 Modules
 -------
-* cp_mgmt_access_layer – Manages access-layer objects on Check Point over Web Services API
-* cp_mgmt_access_layer_facts – Get access-layer objects facts on Check Point over Web Services API
-* cp_mgmt_access_role – Manages access-role objects on Check Point over Web Services API
-* cp_mgmt_access_role_facts – Get access-role objects facts on Check Point over Web Services API
-* cp_mgmt_access_rule – Manages access-rule objects on Check Point over Web Services API
-* cp_mgmt_access_rule_facts – Get access-rule objects facts on Check Point over Web Services API
-* cp_mgmt_address_range – Manages address-range objects on Check Point over Web Services API
-* cp_mgmt_address_range_facts – Get address-range objects facts on Check Point over Web Services API
-* cp_mgmt_administrator – Manages administrator objects on Check Point over Web Services API
-* cp_mgmt_administrator_facts – Get administrator objects facts on Check Point over Web Services API
-* cp_mgmt_application_site – Manages application-site objects on Check Point over Web Services API
-* cp_mgmt_application_site_category – Manages application-site-category objects on Check Point over Web Services API
-* cp_mgmt_application_site_category_facts – Get application-site-category objects facts on Check Point over Web Services API
-* cp_mgmt_application_site_facts – Get application-site objects facts on Check Point over Web Services API
-* cp_mgmt_application_site_group – Manages application-site-group objects on Check Point over Web Services API
-* cp_mgmt_application_site_group_facts – Get application-site-group objects facts on Check Point over Web Services API
-* cp_mgmt_assign_global_assignment – assign global assignment on Check Point over Web Services API
-* cp_mgmt_discard – All changes done by user are discarded and removed from database
-* cp_mgmt_dns_domain – Manages dns-domain objects on Check Point over Web Services API
-* cp_mgmt_dns_domain_facts – Get dns-domain objects facts on Check Point over Web Services API
-* cp_mgmt_dynamic_object – Manages dynamic-object objects on Check Point over Web Services API
-* cp_mgmt_dynamic_object_facts – Get dynamic-object objects facts on Check Point over Web Services API
-* cp_mgmt_exception_group – Manages exception-group objects on Check Point over Web Services API
-* cp_mgmt_exception_group_facts – Get exception-group objects facts on Check Point over Web Services API
-* cp_mgmt_global_assignment – Manages global-assignment objects on Check Point over Web Services API
-* cp_mgmt_global_assignment_facts – Get global-assignment objects facts on Check Point over Web Services API
-* cp_mgmt_group – Manages group objects on Check Point over Web Services API
-* cp_mgmt_group_facts – Get group objects facts on Check Point over Web Services API
-* cp_mgmt_group_with_exclusion – Manages group-with-exclusion objects on Check Point over Web Services API
-* cp_mgmt_group_with_exclusion_facts – Get group-with-exclusion objects facts on Check Point over Web Services API
-* cp_mgmt_host – Manages host objects on Check Point over Web Services API
-* cp_mgmt_host_facts – Get host objects facts on Check Point over Web Services API
-* cp_mgmt_install_policy – install policy on Check Point over Web Services API
-* cp_mgmt_mds_facts – Get Multi-Domain Server (mds) objects facts on Check Point over Web Services API
-* cp_mgmt_multicast_address_range – Manages multicast-address-range objects on Check Point over Web Services API
-* cp_mgmt_multicast_address_range_facts – Get multicast-address-range objects facts on Check Point over Web Services API
-* cp_mgmt_network – Manages network objects on Check Point over Web Services API
-* cp_mgmt_network_facts – Get network objects facts on Check Point over Web Services API
-* cp_mgmt_package – Manages package objects on Check Point over Web Services API
-* cp_mgmt_package_facts – Get package objects facts on Check Point over Web Services API
-* cp_mgmt_publish – All the changes done by this user will be seen by all users only after publish is called
-* cp_mgmt_put_file – put file on Check Point over Web Services API
-* cp_mgmt_run_ips_update – Runs IPS database update. If "package-path" is not provided server will try to get the latest package from the User Center
-* cp_mgmt_run_script – Executes the script on a given list of targets
-* cp_mgmt_security_zone – Manages security-zone objects on Check Point over Web Services API
-* cp_mgmt_security_zone_facts – Get security-zone objects facts on Check Point over Web Services API
-* cp_mgmt_service_dce_rpc – Manages service-dce-rpc objects on Check Point over Web Services API
-* cp_mgmt_service_dce_rpc_facts – Get service-dce-rpc objects facts on Check Point over Web Services API
-* cp_mgmt_service_group – Manages service-group objects on Check Point over Web Services API
-* cp_mgmt_service_group_facts – Get service-group objects facts on Check Point over Web Services API
-* cp_mgmt_service_icmp – Manages service-icmp objects on Check Point over Web Services API
-* cp_mgmt_service_icmp6 – Manages service-icmp6 objects on Check Point over Web Services API
-* cp_mgmt_service_icmp6_facts – Get service-icmp6 objects facts on Check Point over Web Services API
-* cp_mgmt_service_icmp_facts – Get service-icmp objects facts on Check Point over Web Services API
-* cp_mgmt_service_other – Manages service-other objects on Check Point over Web Services API
-* cp_mgmt_service_other_facts – Get service-other objects facts on Check Point over Web Services API
-* cp_mgmt_service_rpc – Manages service-rpc objects on Check Point over Web Services API
-* cp_mgmt_service_rpc_facts – Get service-rpc objects facts on Check Point over Web Services API
-* cp_mgmt_service_sctp – Manages service-sctp objects on Check Point over Web Services API
-* cp_mgmt_service_sctp_facts – Get service-sctp objects facts on Check Point over Web Services API
-* cp_mgmt_service_tcp – Manages service-tcp objects on Check Point over Web Services API
-* cp_mgmt_service_tcp_facts – Get service-tcp objects facts on Check Point over Web Services API
-* cp_mgmt_service_udp – Manages service-udp objects on Check Point over Web Services API
-* cp_mgmt_service_udp_facts – Get service-udp objects facts on Check Point over Web Services API
-* cp_mgmt_session_facts – Get session objects facts on Check Point over Web Services API
-* cp_mgmt_simple_gateway – Manages simple-gateway objects on Check Point over Web Services API
-* cp_mgmt_simple_gateway_facts – Get simple-gateway objects facts on Check Point over Web Services API
-* cp_mgmt_tag – Manages tag objects on Check Point over Web Services API
-* cp_mgmt_tag_facts – Get tag objects facts on Check Point over Web Services API
-* cp_mgmt_threat_exception – Manages threat-exception objects on Check Point over Web Services API
-* cp_mgmt_threat_exception_facts – Get threat-exception objects facts on Check Point over Web Services API
-* cp_mgmt_threat_indicator – Manages threat-indicator objects on Check Point over Web Services API
-* cp_mgmt_threat_indicator_facts – Get threat-indicator objects facts on Check Point over Web Services API
-* cp_mgmt_threat_layer – Manages threat-layer objects on Check Point over Web Services API
-* cp_mgmt_threat_layer_facts – Get threat-layer objects facts on Check Point over Web Services API
-* cp_mgmt_threat_profile – Manages threat-profile objects on Check Point over Web Services API
-* cp_mgmt_threat_profile_facts – Get threat-profile objects facts on Check Point over Web Services API
-* cp_mgmt_threat_protection_override – Edit existing object using object name or uid
-* cp_mgmt_threat_rule – Manages threat-rule objects on Check Point over Web Services API
-* cp_mgmt_threat_rule_facts – Get threat-rule objects facts on Check Point over Web Services API
-* cp_mgmt_time – Manages time objects on Check Point over Web Services API
-* cp_mgmt_time_facts – Get time objects facts on Check Point over Web Services API
-* cp_mgmt_verify_policy – Verifies the policy of the selected package
-* cp_mgmt_vpn_community_meshed – Manages vpn-community-meshed objects on Check Point over Web Services API
-* cp_mgmt_vpn_community_meshed_facts – Get vpn-community-meshed objects facts on Check Point over Web Services API
-* cp_mgmt_vpn_community_star – Manages vpn-community-star objects on Check Point over Web Services API
-* cp_mgmt_vpn_community_star_facts – Get vpn-community-star objects facts on Check Point over Web Services API
-* cp_mgmt_wildcard – Manages wildcard objects on Check Point over Web Services API
-* cp_mgmt_wildcard_facts – Get wildcard objects facts on Check Point over Web Services API
+* `cp_mgmt_access_layer` – Manages access-layer objects on Check Point over Web Services API
+* `cp_mgmt_access_layer_facts` – Get access-layer objects facts on Check Point over Web Services API
+* `cp_mgmt_access_role` – Manages access-role objects on Check Point over Web Services API
+* `cp_mgmt_access_role_facts` – Get access-role objects facts on Check Point over Web Services API
+* `cp_mgmt_access_rule` – Manages access-rule objects on Check Point over Web Services API
+* `cp_mgmt_access_rule_facts` – Get access-rule objects facts on Check Point over Web Services API
+* `cp_mgmt_address_range` – Manages address-range objects on Check Point over Web Services API
+* `cp_mgmt_address_range_facts` – Get address-range objects facts on Check Point over Web Services API
+* `cp_mgmt_administrator` – Manages administrator objects on Check Point over Web Services API
+* `cp_mgmt_administrator_facts` – Get administrator objects facts on Check Point over Web Services API
+* `cp_mgmt_application_site` – Manages application-site objects on Check Point over Web Services API
+* `cp_mgmt_application_site_category` – Manages application-site-category objects on Check Point over Web Services API
+* `cp_mgmt_application_site_category_facts` – Get application-site-category objects facts on Check Point over Web Services API
+* `cp_mgmt_application_site_facts` – Get application-site objects facts on Check Point over Web Services API
+* `cp_mgmt_application_site_group` – Manages application-site-group objects on Check Point over Web Services API
+* `cp_mgmt_application_site_group_facts` – Get application-site-group objects facts on Check Point over Web Services API
+* `cp_mgmt_assign_global_assignment` – assign global assignment on Check Point over Web Services API
+* `cp_mgmt_discard` – All changes done by user are discarded and removed from database
+* `cp_mgmt_dns_domain` – Manages dns-domain objects on Check Point over Web Services API
+* `cp_mgmt_dns_domain_facts` – Get dns-domain objects facts on Check Point over Web Services API
+* `cp_mgmt_dynamic_object` – Manages dynamic-object objects on Check Point over Web Services API
+* `cp_mgmt_dynamic_object_facts` – Get dynamic-object objects facts on Check Point over Web Services API
+* `cp_mgmt_exception_group` – Manages exception-group objects on Check Point over Web Services API
+* `cp_mgmt_exception_group_facts` – Get exception-group objects facts on Check Point over Web Services API
+* `cp_mgmt_global_assignment` – Manages global-assignment objects on Check Point over Web Services API
+* `cp_mgmt_global_assignment_facts` – Get global-assignment objects facts on Check Point over Web Services API
+* `cp_mgmt_group` – Manages group objects on Check Point over Web Services API
+* `cp_mgmt_group_facts` – Get group objects facts on Check Point over Web Services API
+* `cp_mgmt_group_with_exclusion` – Manages group-with-exclusion objects on Check Point over Web Services API
+* `cp_mgmt_group_with_exclusion_facts` – Get group-with-exclusion objects facts on Check Point over Web Services API
+* `cp_mgmt_host` – Manages host objects on Check Point over Web Services API
+* `cp_mgmt_host_facts` – Get host objects facts on Check Point over Web Services API
+* `cp_mgmt_install_policy` – install policy on Check Point over Web Services API
+* `cp_mgmt_mds_facts` – Get Multi-Domain Server (mds) objects facts on Check Point over Web Services API
+* `cp_mgmt_multicast_address_range` – Manages multicast-address-range objects on Check Point over Web Services API
+* `cp_mgmt_multicast_address_range_facts` – Get multicast-address-range objects facts on Check Point over Web Services API
+* `cp_mgmt_network` – Manages network objects on Check Point over Web Services API
+* `cp_mgmt_network_facts` – Get network objects facts on Check Point over Web Services API
+* `cp_mgmt_package` – Manages package objects on Check Point over Web Services API
+* `cp_mgmt_package_facts` – Get package objects facts on Check Point over Web Services API
+* `cp_mgmt_publish` – All the changes done by this user will be seen by all users only after publish is called
+* `cp_mgmt_put_file` – put file on Check Point over Web Services API
+* `cp_mgmt_run_ips_update` – Runs IPS database update. If "package-path" is not provided server will try to get the latest package from the User Center
+* `cp_mgmt_run_script` – Executes the script on a given list of targets
+* `cp_mgmt_security_zone` – Manages security-zone objects on Check Point over Web Services API
+* `cp_mgmt_security_zone_facts` – Get security-zone objects facts on Check Point over Web Services API
+* `cp_mgmt_service_dce_rpc` – Manages service-dce-rpc objects on Check Point over Web Services API
+* `cp_mgmt_service_dce_rpc_facts` – Get service-dce-rpc objects facts on Check Point over Web Services API
+* `cp_mgmt_service_group` – Manages service-group objects on Check Point over Web Services API
+* `cp_mgmt_service_group_facts` – Get service-group objects facts on Check Point over Web Services API
+* `cp_mgmt_service_icmp` – Manages service-icmp objects on Check Point over Web Services API
+* `cp_mgmt_service_icmp6` – Manages service-icmp6 objects on Check Point over Web Services API
+* `cp_mgmt_service_icmp6_facts` – Get service-icmp6 objects facts on Check Point over Web Services API
+* `cp_mgmt_service_icmp_facts` – Get service-icmp objects facts on Check Point over Web Services API
+* `cp_mgmt_service_other` – Manages service-other objects on Check Point over Web Services API
+* `cp_mgmt_service_other_facts` – Get service-other objects facts on Check Point over Web Services API
+* `cp_mgmt_service_rpc` – Manages service-rpc objects on Check Point over Web Services API
+* `cp_mgmt_service_rpc_facts` – Get service-rpc objects facts on Check Point over Web Services API
+* `cp_mgmt_service_sctp` – Manages service-sctp objects on Check Point over Web Services API
+* `cp_mgmt_service_sctp_facts` – Get service-sctp objects facts on Check Point over Web Services API
+* `cp_mgmt_service_tcp` – Manages service-tcp objects on Check Point over Web Services API
+* `cp_mgmt_service_tcp_facts` – Get service-tcp objects facts on Check Point over Web Services API
+* `cp_mgmt_service_udp` – Manages service-udp objects on Check Point over Web Services API
+* `cp_mgmt_service_udp_facts` – Get service-udp objects facts on Check Point over Web Services API
+* `cp_mgmt_session_facts` – Get session objects facts on Check Point over Web Services API
+* `cp_mgmt_simple_gateway` – Manages simple-gateway objects on Check Point over Web Services API
+* `cp_mgmt_simple_gateway_facts` – Get simple-gateway objects facts on Check Point over Web Services API
+* `cp_mgmt_tag` – Manages tag objects on Check Point over Web Services API
+* `cp_mgmt_tag_facts` – Get tag objects facts on Check Point over Web Services API
+* `cp_mgmt_threat_exception` – Manages threat-exception objects on Check Point over Web Services API
+* `cp_mgmt_threat_exception_facts` – Get threat-exception objects facts on Check Point over Web Services API
+* `cp_mgmt_threat_indicator` – Manages threat-indicator objects on Check Point over Web Services API
+* `cp_mgmt_threat_indicator_facts` – Get threat-indicator objects facts on Check Point over Web Services API
+* `cp_mgmt_threat_layer` – Manages threat-layer objects on Check Point over Web Services API
+* `cp_mgmt_threat_layer_facts` – Get threat-layer objects facts on Check Point over Web Services API
+* `cp_mgmt_threat_profile` – Manages threat-profile objects on Check Point over Web Services API
+* `cp_mgmt_threat_profile_facts` – Get threat-profile objects facts on Check Point over Web Services API
+* `cp_mgmt_threat_protection_override` – Edit existing object using object name or uid
+* `cp_mgmt_threat_rule` – Manages threat-rule objects on Check Point over Web Services API
+* `cp_mgmt_threat_rule_facts` – Get threat-rule objects facts on Check Point over Web Services API
+* `cp_mgmt_time` – Manages time objects on Check Point over Web Services API
+* `cp_mgmt_time_facts` – Get time objects facts on Check Point over Web Services API
+* `cp_mgmt_verify_policy` – Verifies the policy of the selected package
+* `cp_mgmt_vpn_community_meshed` – Manages vpn-community-meshed objects on Check Point over Web Services API
+* `cp_mgmt_vpn_community_meshed_facts` – Get vpn-community-meshed objects facts on Check Point over Web Services API
+* `cp_mgmt_vpn_community_star` – Manages vpn-community-star objects on Check Point over Web Services API
+* `cp_mgmt_vpn_community_star_facts` – Get vpn-community-star objects facts on Check Point over Web Services API
+* `cp_mgmt_wildcard` – Manages wildcard objects on Check Point over Web Services API
+* `cp_mgmt_wildcard_facts` – Get wildcard objects facts on Check Point over Web Services API
