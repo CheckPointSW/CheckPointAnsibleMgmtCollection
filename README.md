@@ -6,6 +6,8 @@ The Ansible Check Point modules reference can be found here:
 https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
 <br>Note - look only at the `cp_mgmt_*` modules, cause the `checkpoint_*` will be deprecated.
 
+This is the repository of the mgmt collection which can be found here - https://galaxy.ansible.com/check_point/mgmt
+
 Installation instructions
 -------------------------
 Run `ansible-galaxy collection install check_point.mgmt`
