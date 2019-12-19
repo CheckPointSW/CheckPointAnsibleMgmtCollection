@@ -416,7 +416,7 @@ def api_call_facts_for_rule(module, api_call_object, api_call_object_plural_vers
     if payload.get("layer") is None:
         api_call_object = api_call_object_plural_version
 
-    response = handle_call(connection, version, 'show-' + api_call_object, payload, module)
+    response = handle_call(connection, version, 'show-' + api_call_object, payload, module, False, False)
     result = {api_call_object: response}
     return result
 
