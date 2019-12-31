@@ -70,8 +70,8 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
   2. Ansible has a feature called "Check Mode" that enables you to test the
      changes without actually changing anything.
   3. The login and logout happens automatically.
-  4. If you want to login to a specific domain, in the playbook above in the `vars`secion change the domain name to 
-     `ansible_checkpoint_domain`
+  4. If you want to login to a specific domain, in the playbook above, in the `vars`secion, in 
+     `ansible_checkpoint_domain` key, change the value from `SMC User` to `YOUR_DOMAIN`
   5. There are two ways to publish changes:
     a. Set the `auto_publish_session` to `true` as displayed in the example playbook above.
        This option will publish only the task which this parameter belongs to.
