@@ -50,7 +50,7 @@ checkpoint_argument_spec_for_commands = dict(
     version=dict(type='str')
 )
 
-delete_params = ['name', 'uid', 'layer', 'exception-group-name', 'layer', 'rule-name']
+delete_params = ['name', 'uid', 'layer', 'exception-group-name', 'rule-name', 'package']
 
 
 # parse failure message with code and response
@@ -201,8 +201,9 @@ def api_command(module, command):
             if 'task-id' in response:
                 wait_for_task(module, version, connection, response['task-id'])
             elif 'tasks' in response:
-                for task_id in response['tasks']:
-                    wait_for_task(module, version, connection, task_id)
+                for task in response['tasks']:
+                    if 'task-id' in task:
+                        wait_for_task(module, version, connection, task['task-id'])
 
         result[command] = response
     else:
@@ -299,6 +300,33 @@ def get_number_from_position(payload, connection, version):
     return int(position)
 
 
+# build the show rulebase payload
+def build_rulebase_payload(api_call_object, payload, position_number):
+    rulebase_payload = {'name': payload['layer'], 'offset': position_number - 1, 'limit': 1}
+
+    if api_call_object == 'threat-exception':
+        rulebase_payload['rule-name'] = payload['rule-name']
+
+    return rulebase_payload
+
+
+def build_rulebase_command(api_call_object):
+    rulebase_command = 'show-' + api_call_object.split('-')[0] + '-rulebase'
+
+    if api_call_object == 'threat-exception':
+        rulebase_command = 'show-threat-rule-exception-rulebase'
+
+    return rulebase_command
+
+
+# extract rule from rulebase response
+def extract_rule_from_rulebase_response(response):
+    rule = response['rulebase'][0]
+    while 'rulebase' in rule:
+        rule = rule['rulebase'][0]
+    return rule
+
+
 # is the param position (if the user inserted it) equals between the object and the user input
 def is_equals_with_position_param(payload, connection, version, api_call_object):
     position_number = get_number_from_position(payload, connection, version)
@@ -307,24 +335,17 @@ def is_equals_with_position_param(payload, connection, version, api_call_object)
     if position_number is None:
         return True
 
-    payload_for_show_access_rulebase = {'name': payload['layer'], 'offset': position_number - 1, 'limit': 1}
-    rulebase_command = 'show-' + api_call_object.split('-')[0] + '-rulebase'
+    rulebase_payload = build_rulebase_payload(api_call_object, payload, position_number)
+    rulebase_command = build_rulebase_command(api_call_object)
 
-    # if it's threat-exception, we change a little the payload and the command
-    if api_call_object == 'threat-exception':
-        payload_for_show_access_rulebase['rule-name'] = payload['rule-name']
-        rulebase_command = 'show-threat-rule-exception-rulebase'
-
-    code, response = send_request(connection, version, rulebase_command, payload_for_show_access_rulebase)
+    code, response = send_request(connection, version, rulebase_command, rulebase_payload)
 
     # if true, it means there is no rule in the position that the user inserted, so I return false, and when we will try to set
     # the rule, the API server will get throw relevant error
     if response['total'] < position_number:
         return False
 
-    rule = response['rulebase'][0]
-    while 'rulebase' in rule:
-        rule = rule['rulebase'][0]
+    rule = extract_rule_from_rulebase_response(response)
 
     # if the names of the exist rule and the user input rule are equals, then it's means that their positions are equals so I
     # return True. and there is no way that there is another rule with this name cause otherwise the 'equals' command would fail
@@ -360,6 +381,7 @@ def is_equals_with_all_params(payload, connection, version, api_call_object, is_
         exist_action = response['action']['name']
         if exist_action != payload['action']:
             return False
+    # here the action is equals, so check the position param
     if not is_equals_with_position_param(payload, connection, version, api_call_object):
         return False
 
