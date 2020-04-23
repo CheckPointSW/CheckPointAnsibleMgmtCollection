@@ -96,7 +96,7 @@ checkpoint_hosts:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
-from ansible_collections.checkpoint.checkpoint.plugins.module_utils.network.checkpoint.checkpoint import (
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
     checkpoint_argument_spec,
     publish,
     install_policy,
