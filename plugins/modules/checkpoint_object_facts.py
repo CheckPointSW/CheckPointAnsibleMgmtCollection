@@ -40,11 +40,13 @@ options:
     description:
     - UID of the object. If UID is not provided, it will do a full search which can
       be filtered with the filter argument.
+    type: str
   object_filter:
     description:
     - Filter expression for search. It accepts AND/OR logical operators and performs
       a textual and IP address search. To search only by IP address, set ip_only argument
       to True. which can be filtered with the filter argument.
+    type: str
   ip_only:
     description:
     - Filter only by IP address.

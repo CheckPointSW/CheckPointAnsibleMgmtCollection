@@ -89,7 +89,7 @@ def get_session(module, connection):
 
 def main():
     argument_spec = dict(
-        uid=dict(type="str", default=None),
+        uid=dict(type="str", required=True),
         state=dict(
             type="str", default="published", choices=["published", "discarded"]
         ),
