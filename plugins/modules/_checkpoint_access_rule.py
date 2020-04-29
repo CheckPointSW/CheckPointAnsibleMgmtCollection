@@ -42,11 +42,11 @@ options:
   name:
     description:
     - Name of the access rule.
+    required: true
     type: str
   layer:
     description:
     - Layer to attach the access rule to.
-    required: true
     type: str
   position:
     description:

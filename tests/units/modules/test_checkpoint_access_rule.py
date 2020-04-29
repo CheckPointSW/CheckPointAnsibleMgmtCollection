@@ -16,7 +16,9 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
 
 import pytest
 from units.modules.utils import set_module_args, exit_json, fail_json, AnsibleFailJson, AnsibleExitJson
@@ -103,4 +105,3 @@ class TestCheckpointAccessRule(object):
             self.module.main()
         result = exc.value.args[0]
         return result
-

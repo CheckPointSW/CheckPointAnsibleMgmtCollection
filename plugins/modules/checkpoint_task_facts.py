@@ -75,7 +75,7 @@ def get_task(module, connection):
 
 
 def main():
-    argument_spec = dict(task_id=dict(type="str"))
+    argument_spec = dict(task_id=dict(type="str", required=True))
 
     module = AnsibleModule(argument_spec=argument_spec)
     connection = Connection(module._socket_path)
