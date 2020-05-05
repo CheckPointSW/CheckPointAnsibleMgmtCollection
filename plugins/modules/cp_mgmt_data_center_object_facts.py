@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_administrator_facts
-short_description: Get administrator objects facts on Checkpoint over Web Services API
+module: cp_mgmt_data_center_object_facts
+short_description: Get data-center-object objects facts on Checkpoint over Web Services API
 description:
-  - Get administrator objects facts on Checkpoint devices.
+  - Get data-center-object objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
@@ -74,19 +74,20 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
+  show_membership:
+    description:
+      - Indicates whether to calculate and show "groups" field for every object in reply.
+    type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-administrator
-  cp_mgmt_administrator_facts:
-    name: admin
+- name: show-data-center-object
+  cp_mgmt_data_center_object_facts:
+    name: VM1 mgmt name
 
-- name: show-administrators
-  cp_mgmt_administrator_facts:
-    details_level: standard
-    limit: 50
-    offset: 0
+- name: show-data-center-objects
+  cp_mgmt_data_center_object_facts:
 """
 
 RETURN = """
@@ -109,14 +110,15 @@ def main():
         order=dict(type='list', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
-        ))
+        )),
+        show_membership=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    api_call_object = "administrator"
-    api_call_object_plural_version = "administrators"
+    api_call_object = "data-center-object"
+    api_call_object_plural_version = "data-center-objects"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)

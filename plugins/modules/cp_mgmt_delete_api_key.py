@@ -27,30 +27,39 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_verify_policy
-short_description: Verifies the policy of the selected package.
+module: cp_mgmt_delete_api_key
+short_description: Delete the API key. For the key to be invalid publish is needed.
 description:
-  - Verifies the policy of the selected package.
+  - Delete the API key. For the key to be invalid publish is needed.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
-  policy_package:
+  api_key:
     description:
-      - Policy package identified by the name or UID.
+      - API key to be deleted.
+    type: str
+  admin_uid:
+    description:
+      - Administrator uid to generate API key for.
+    type: str
+  admin_name:
+    description:
+      - Administrator name to generate API key for.
     type: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: verify-policy
-  cp_mgmt_verify_policy:
-    policy_package: standard
+- name: delete-api-key
+  cp_mgmt_delete_api_key:
+    api_key: eea3be76f4a8eb740ee872bcedc692748ff256a2d21c9ffd2754facbde046d00
+    state: absent
 """
 
 RETURN = """
-cp_mgmt_verify_policy:
-  description: The checkpoint verify-policy output.
+cp_mgmt_delete_api_key:
+  description: The checkpoint delete-api-key output.
   returned: always.
   type: dict
 """
@@ -61,13 +70,15 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        policy_package=dict(type='str')
+        api_key=dict(type='str'),
+        admin_uid=dict(type='str'),
+        admin_name=dict(type='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "verify-policy"
+    command = "delete-api-key"
 
     result = api_command(module, command)
     module.exit_json(**result)

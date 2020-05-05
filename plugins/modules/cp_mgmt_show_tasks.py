@@ -27,41 +27,44 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_administrator_facts
-short_description: Get administrator objects facts on Checkpoint over Web Services API
+module: cp_mgmt_show_tasks
+short_description: Retrieve all tasks and show their progress and details.
 description:
-  - Get administrator objects facts on Checkpoint devices.
+  - Retrieve all tasks and show their progress and details.
   - All operations are performed over Web Services API.
-  - This module handles both operations, get a specific object and get several objects,
-    For getting a specific object use the parameter 'name'.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
-  name:
+  initiator:
     description:
-      - Object name.
-        This parameter is relevant only for getting a specific object.
+      - Initiator's name. If name isn't specified, tasks from all initiators will be shown.
     type: str
-  details_level:
+  status:
     description:
-      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
-        representation of the object.
+      - Status.
     type: str
-    choices: ['uid', 'standard', 'full']
+    choices: ['successful', 'failed', 'in-progress', 'all']
+  from_date:
+    description:
+      - The date from which tracking tasks is to be performed, by the task's last update date. ISO 8601. If timezone isn't specified in the input, the
+        Management server's timezone is used.
+    type: str
+  to_date:
+    description:
+      - The date until which tracking tasks is to be performed, by the task's last update date. ISO 8601. If timezone isn't specified in the input,
+        the Management server's timezone is used.
+    type: str
   limit:
     description:
       - The maximal number of returned results.
-        This parameter is relevant only for getting few objects.
     type: int
   offset:
     description:
       - Number of the results to initially skip.
-        This parameter is relevant only for getting few objects.
     type: int
   order:
     description:
-      - Sorts the results by search criteria. Automatically sorts the results by Name, in the ascending order.
-        This parameter is relevant only for getting few objects.
+      - Sorts results by the given field. By default the results are sorted in the descending order by the task's last update date.
     type: list
     suboptions:
       ASC:
@@ -74,52 +77,56 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
-extends_documentation_fragment: check_point.mgmt.checkpoint_facts
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: show-administrator
-  cp_mgmt_administrator_facts:
-    name: admin
-
-- name: show-administrators
-  cp_mgmt_administrator_facts:
-    details_level: standard
-    limit: 50
-    offset: 0
+- name: show-tasks
+  cp_mgmt_show_tasks:
+    from_date: '2018-05-23T08:00:00'
+    initiator: admin1
+    status: successful
 """
 
 RETURN = """
-ansible_facts:
-  description: The checkpoint object facts.
+cp_mgmt_show_tasks:
+  description: The checkpoint show-tasks output.
   returned: always.
   type: dict
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_facts, api_call_facts
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        initiator=dict(type='str'),
+        status=dict(type='str', choices=['successful', 'failed', 'in-progress', 'all']),
+        from_date=dict(type='str'),
+        to_date=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
         order=dict(type='list', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
-        ))
+        )),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
-    argument_spec.update(checkpoint_argument_spec_for_facts)
+    argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    api_call_object = "administrator"
-    api_call_object_plural_version = "administrators"
+    command = "show-tasks"
 
-    result = api_call_facts(module, api_call_object, api_call_object_plural_version)
-    module.exit_json(ansible_facts=result)
+    result = api_command(module, command)
+    module.exit_json(**result)
 
 
 if __name__ == '__main__':

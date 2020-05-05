@@ -27,30 +27,45 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_verify_policy
-short_description: Verifies the policy of the selected package.
+module: cp_mgmt_delete_data_center_object
+short_description: Delete existing object using object name or uid.
 description:
-  - Verifies the policy of the selected package.
+  - Delete existing object using object name or uid.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
-  policy_package:
+  name:
     description:
-      - Policy package identified by the name or UID.
+      - Object name.
     type: str
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
+  ignore_warnings:
+    description:
+      - Apply changes ignoring warnings.
+    type: bool
+  ignore_errors:
+    description:
+      - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
+    type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: verify-policy
-  cp_mgmt_verify_policy:
-    policy_package: standard
+- name: delete-data-center-object
+  cp_mgmt_delete_data_center_object:
+    name: VM1 mgmt name
+    state: absent
 """
 
 RETURN = """
-cp_mgmt_verify_policy:
-  description: The checkpoint verify-policy output.
+cp_mgmt_delete_data_center_object:
+  description: The checkpoint delete-data-center-object output.
   returned: always.
   type: dict
 """
@@ -61,13 +76,16 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        policy_package=dict(type='str')
+        name=dict(type='str'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        ignore_warnings=dict(type='bool'),
+        ignore_errors=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "verify-policy"
+    command = "delete-data-center-object"
 
     result = api_command(module, command)
     module.exit_json(**result)

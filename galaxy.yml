@@ -9,7 +9,7 @@ namespace: check_point
 name: mgmt
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 1.0.1
+version: 1.0.5
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -36,7 +36,7 @@ license_file: ''
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
-tags: []
+tags: [security]
 
 # Collections that this collection requires to be installed for it to be usable. The key of the dict is the
 # collection label 'namespace.name'. The value is a version range
@@ -51,7 +51,7 @@ repository: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 documentation: https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
 
 # The URL to the homepage of the collection/project
-homepage: https://sc1.checkpoint.com/documents/latest/APIs/index.html#introduction~v1.5%20
+homepage: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 
 # The URL to the collection issue tracker
-issues: http://example.com/issue/tracker
+issues: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues

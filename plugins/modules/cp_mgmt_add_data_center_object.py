@@ -27,69 +27,34 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_administrator
-short_description: Manages administrator objects on Checkpoint over Web Services API
+module: cp_mgmt_add_data_center_object
+short_description: Imports a Data Center Object from a Data Center Server.<br> Data Center Object represents an object in the cloud environment.
 description:
-  - Manages administrator objects on Checkpoint devices including creating, updating and removing objects.
+  - Imports a Data Center Object from a Data Center Server.<br> Data Center Object represents an object in the cloud environment, e.g. a virtual machine,
+    cluster, network and more.<br> Use the show-data-center-content command to see the Data Center Objects that can be imported from a Data Center Server.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
+  data_center_name:
+    description:
+      - Name of the Data Center Server the object is in.
+    type: str
+  data_center_uid:
+    description:
+      - Unique identifier of the Data Center Server the object is in.
+    type: str
+  uri:
+    description:
+      - URI of the object in the Data Center Server.
+    type: str
+  uid_in_data_center:
+    description:
+      - Unique identifier of the object in the Data Center Server.
+    type: str
   name:
     description:
-      - Object name.
-    type: str
-    required: True
-  authentication_method:
-    description:
-      - Authentication method.
-    type: str
-    choices: ['undefined', 'check point password', 'os password', 'securid', 'radius', 'tacacs', 'ad authentication', 'api key']
-  email:
-    description:
-      - Administrator email.
-    type: str
-  expiration_date:
-    description:
-      - Format, YYYY-MM-DD, YYYY-mm-ddThh,mm,ss.
-    type: str
-  multi_domain_profile:
-    description:
-      - Administrator multi-domain profile.
-    type: str
-  must_change_password:
-    description:
-      - True if administrator must change password on the next login.
-    type: bool
-  password:
-    description:
-      - Administrator password.
-    type: str
-  password_hash:
-    description:
-      - Administrator password hash.
-    type: str
-  permissions_profile:
-    description:
-      - Administrator permissions profile. Permissions profile should not be provided when multi-domain-profile is set to "Multi-Domain Super User" or
-        "Domain Super User".
-    type: list
-    suboptions:
-      profile:
-        description:
-          - Permission profile.
-        type: str
-  phone_number:
-    description:
-      - Administrator phone number.
-    type: str
-  radius_server:
-    description:
-      - RADIUS server object identified by the name or UID. Must be set when "authentication-method" was selected to be "RADIUS".
-    type: str
-  tacacs_server:
-    description:
-      - TACACS server object identified by the name or UID. Must be set when "authentication-method" was selected to be "TACACS".
+      - Override default name on data-center.
     type: str
   tags:
     description:
@@ -112,6 +77,10 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
+  groups:
+    description:
+      - Collection of group identifiers.
+    type: list
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -120,62 +89,36 @@ options:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
     type: bool
-extends_documentation_fragment: check_point.mgmt.checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: add-administrator
-  cp_mgmt_administrator:
-    authentication_method: INTERNAL_PASSWORD
-    email: admin@gmail.com
-    must_change_password: false
-    name: admin
-    password: secret
-    permissions_profile: read write all
-    phone_number: 1800-800-800
+- name: add-data-center-object
+  cp_mgmt_add_data_center_object:
+    data_center_name: vCenter 1
+    name: VM1 mgmt name
     state: present
-
-- name: set-administrator
-  cp_mgmt_administrator:
-    name: admin
-    password: bew secret
-    permissions_profile: read only profile
-    state: present
-
-- name: delete-administrator
-  cp_mgmt_administrator:
-    name: admin
-    state: absent
+    uri: /Datacenters/VMs/My VM1
 """
 
 RETURN = """
-cp_mgmt_administrator:
-  description: The checkpoint object created or updated.
-  returned: always, except when deleting the object.
+cp_mgmt_add_data_center_object:
+  description: The checkpoint add-data-center-object output.
+  returned: always.
   type: dict
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        authentication_method=dict(type='str', choices=['undefined', 'check point password',
-                                                        'os password', 'securid', 'radius', 'tacacs', 'ad authentication', 'api key']),
-        email=dict(type='str'),
-        expiration_date=dict(type='str'),
-        multi_domain_profile=dict(type='str'),
-        must_change_password=dict(type='bool'),
-        password=dict(type='str'),
-        password_hash=dict(type='str'),
-        permissions_profile=dict(type='list', options=dict(
-            profile=dict(type='str')
-        )),
-        phone_number=dict(type='str'),
-        radius_server=dict(type='str'),
-        tacacs_server=dict(type='str'),
+        data_center_name=dict(type='str'),
+        data_center_uid=dict(type='str'),
+        uri=dict(type='str'),
+        uid_in_data_center=dict(type='str'),
+        name=dict(type='str'),
         tags=dict(type='list'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -184,15 +127,17 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        groups=dict(type='list'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )
-    argument_spec.update(checkpoint_argument_spec_for_objects)
+    argument_spec.update(checkpoint_argument_spec_for_commands)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'administrator'
+    module = AnsibleModule(argument_spec=argument_spec)
 
-    result = api_call(module, api_call_object)
+    command = "add-data-center-object"
+
+    result = api_command(module, command)
     module.exit_json(**result)
 
 

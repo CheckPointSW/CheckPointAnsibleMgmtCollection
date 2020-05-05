@@ -27,30 +27,41 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_verify_policy
-short_description: Verifies the policy of the selected package.
+module: cp_mgmt_show_https_section
+short_description: Retrieve existing HTTPS Inspection section using section name or uid and layer name.
 description:
-  - Verifies the policy of the selected package.
+  - Retrieve existing HTTPS Inspection section using section name or uid and layer name.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
-  policy_package:
+  name:
     description:
-      - Policy package identified by the name or UID.
+      - Object name.
     type: str
+  layer:
+    description:
+      - Layer that holds the Object. Identified by the Name or UID.
+    type: str
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: verify-policy
-  cp_mgmt_verify_policy:
-    policy_package: standard
+- name: show-https-section
+  cp_mgmt_show_https_section:
+    layer: Default Layer
+    name: New Section 1
 """
 
 RETURN = """
-cp_mgmt_verify_policy:
-  description: The checkpoint verify-policy output.
+cp_mgmt_show_https_section:
+  description: The checkpoint show-https-section output.
   returned: always.
   type: dict
 """
@@ -61,13 +72,15 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        policy_package=dict(type='str')
+        name=dict(type='str'),
+        layer=dict(type='str'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "verify-policy"
+    command = "show-https-section"
 
     result = api_command(module, command)
     module.exit_json(**result)

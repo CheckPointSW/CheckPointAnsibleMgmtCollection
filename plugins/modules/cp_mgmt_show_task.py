@@ -27,30 +27,36 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_verify_policy
-short_description: Verifies the policy of the selected package.
+module: cp_mgmt_show_task
+short_description: Show task progress and details.
 description:
-  - Verifies the policy of the selected package.
+  - Show task progress and details.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
 options:
-  policy_package:
+  task_id:
     description:
-      - Policy package identified by the name or UID.
+      - Unique identifier of one or more tasks.
+    type: list
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
     type: str
+    choices: ['uid', 'standard', 'full']
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: verify-policy
-  cp_mgmt_verify_policy:
-    policy_package: standard
+- name: show-task
+  cp_mgmt_show_task:
+    task_id: 2eec70e5-78a8-4bdb-9a76-cfb5601d0bcb
 """
 
 RETURN = """
-cp_mgmt_verify_policy:
-  description: The checkpoint verify-policy output.
+cp_mgmt_show_task:
+  description: The checkpoint show-task output.
   returned: always.
   type: dict
 """
@@ -61,13 +67,14 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        policy_package=dict(type='str')
+        task_id=dict(type='list'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "verify-policy"
+    command = "show-task"
 
     result = api_command(module, command)
     module.exit_json(**result)

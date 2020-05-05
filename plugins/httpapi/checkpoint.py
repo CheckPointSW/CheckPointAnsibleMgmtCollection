@@ -21,6 +21,12 @@ options:
       - Specifies the domain of the Check Point device
     vars:
       - name: ansible_checkpoint_domain
+  api_key:
+    type: str
+    description:
+      - Login with api-key instead of user & password
+    vars:
+      - name: ansible_api_key
 """
 
 import json
@@ -33,21 +39,26 @@ from ansible.module_utils.connection import ConnectionError
 
 BASE_HEADERS = {
     'Content-Type': 'application/json',
+    'User-Agent': 'Ansible',
 }
 
 
 class HttpApi(HttpApiBase):
     def login(self, username, password):
-        if username and password:
-            cp_domain = self.get_option('domain')
-            if cp_domain:
-                payload = {'user': username, 'password': password, 'domain': cp_domain}
-            else:
-                payload = {'user': username, 'password': password}
-            url = '/web_api/login'
-            response, response_data = self.send_request(url, payload)
+        payload = {}
+        cp_domain = self.get_option('domain')
+        cp_api_key = self.get_option('api_key')
+        if cp_domain:
+            payload['domain'] = cp_domain
+        if username and password and not cp_api_key:
+            payload['user'] = username
+            payload['password'] = password
+        elif cp_api_key and not username and not password:
+            payload['api-key'] = cp_api_key
         else:
-            raise AnsibleConnectionFailure('Username and password are required for login')
+            raise AnsibleConnectionFailure('[Username and password] or api_key are required for login')
+        url = '/web_api/login'
+        response, response_data = self.send_request(url, payload)
 
         try:
             self.connection._auth = {'X-chkp-sid': response_data['sid']}
