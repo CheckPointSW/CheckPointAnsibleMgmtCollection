@@ -33,10 +33,6 @@ short_description: Manages access rules on Check Point over Web Services API
 description:
 - Manages access rules on Check Point devices including creating, updating, removing
   access rules objects, All operations are performed over Web Services API.
-# deprecated:
-#   removed_in: '2.13'
-#   alternative: cp_mgmt_access_rule
-#   why: Newer and updated modules released in Ansible 2.9
 author: Ansible by Red Hat (@rcarrillocruz)
 options:
   name:
