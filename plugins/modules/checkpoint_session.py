@@ -33,10 +33,6 @@ short_description: Manages session objects on Check Point over Web Services API
 description:
 - Manages session objects on Check Point devices performing actions like publish and
   discard. All operations are performed over Web Services API.
-deprecated:
-  removed_in: '2.13'
-  alternative: cp_mgmt_publish and cp_mgmt_discard
-  why: Newer and updated modules released in Ansible 2.9
 version_added: "2.7"
 author: Ansible by Red Hat (@rcarrillocruz)
 options:

@@ -29,35 +29,39 @@ ANSIBLE_METADATA = {
 }
 
 
-DOCUMENTATION = """module: checkpoint_access_layer_facts
-short_description: Get access layer facts on Check Point over Web Services API
+DOCUMENTATION = """module: checkpoint_access_rule_facts
+short_description: Get access rules objects facts on Check Point over Web Services
+  API
 description:
-- Get access layer facts on Check Point devices. All operations are performed over
-  Web Services API.
-deprecated:
-  removed_in: '2.13'
-  alternative: cp_mgmt_access_layer_facts
-  why: Newer and updated modules released in Ansible 2.9
+- Get access rules objects facts on Check Point devices. All operations are performed
+  over Web Services API.
 author: Ansible by Red Hat (@rcarrillocruz)
 options:
-  uid:
-    description:
-    - UID of access layer object.
-    type: str
   name:
     description:
-    - Name of the access layer object.
+    - Name of the access rule. If not provided, UID is required.
+    type: str
+  uid:
+    description:
+    - UID of the access rule. If not provided, name is required.
+    type: str
+  layer:
+    description:
+    - Layer the access rule is attached to.
+    required: true
     type: str
 """
 
 EXAMPLES = """
-- name: Get object facts
-  checkpoint_access_layer_facts:
+- name: Get access rule facts
+  checkpoint_access_rule_facts:
+    layer: Network
+    name: "Drop attacker"
 """
 
 RETURN = """
 ansible_facts:
-  description: The checkpoint access layer facts.
+  description: The checkpoint access rule object facts.
   returned: always.
   type: list
 """
@@ -67,45 +71,38 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
 
 
-def get_access_layer(module, connection):
-    uid = module.params["uid"]
+def get_access_rule(module, connection):
     name = module.params["name"]
-
-    payload = {}
+    uid = module.params["uid"]
+    layer = module.params["layer"]
 
     if uid:
-        payload = {"uid": uid}
-        code, result = connection.send_request(
-            "/web_api/show-access-layer", payload
-        )
+        payload = {"uid": uid, "layer": layer}
     elif name:
-        payload = {"name": name}
-        code, result = connection.send_request(
-            "/web_api/show-access-layer", payload
-        )
-    else:
-        code, result = connection.send_request(
-            "/web_api/show-access-layers", payload
-        )
+        payload = {"name": name, "layer": layer}
 
-    return code, result
+    code, response = connection.send_request(
+        "/web_api/show-access-rule", payload
+    )
+
+    return code, response
 
 
 def main():
     argument_spec = dict(
-        uid=dict(type="str", default=None), name=dict(type="str", default=None)
+        name=dict(type="str"),
+        uid=dict(type="str"),
+        layer=dict(type="str", required=True),
     )
 
     module = AnsibleModule(argument_spec=argument_spec)
     connection = Connection(module._socket_path)
-
-    code, response = get_access_layer(module, connection)
-
+    code, response = get_access_rule(module, connection)
     if code == 200:
-        module.exit_json(ansible_facts=dict(checkpoint_access_layers=response))
+        module.exit_json(ansible_facts=dict(checkpoint_access_rules=response))
     else:
         module.fail_json(
-            msg="Check Point device returned error {0} with message {1}".format(
+            msg="Checkpoint device returned error {0} with message {1}".format(
                 code, response
             )
         )

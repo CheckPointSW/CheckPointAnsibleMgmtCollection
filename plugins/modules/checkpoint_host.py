@@ -28,48 +28,22 @@ ANSIBLE_METADATA = {
 }
 
 
-DOCUMENTATION = """module: checkpoint_access_rule
-short_description: Manages access rules on Check Point over Web Services API
+DOCUMENTATION = """module: checkpoint_host
+short_description: Manages host objects on Check Point over Web Services API
 description:
-- Manages access rules on Check Point devices including creating, updating, removing
-  access rules objects, All operations are performed over Web Services API.
-deprecated:
-  removed_in: '2.13'
-  alternative: cp_mgmt_access_rule
-  why: Newer and updated modules released in Ansible 2.9
+- Manages host objects on Check Point devices including creating, updating, removing
+  access rules objects. All operations are performed over Web Services API.
 author: Ansible by Red Hat (@rcarrillocruz)
 options:
   name:
     description:
     - Name of the access rule.
+    type: str
     required: true
-    type: str
-  layer:
+  ip_address:
     description:
-    - Layer to attach the access rule to.
+    - IP address of the host object.
     type: str
-  position:
-    description:
-    - Position of the access rule.
-    type: str
-  source:
-    description:
-    - Source object of the access rule.
-    type: str
-  destination:
-    description:
-    - Destination object of the access rule.
-    type: str
-  action:
-    description:
-    - Action of the access rule (accept, drop, inform, etc).
-    type: str
-    default: drop
-  enabled:
-    description:
-    - Enabled or disabled flag.
-    type: bool
-    default: true
   state:
     description:
     - State of the access rule (present or absent). Defaults to present.
@@ -97,25 +71,21 @@ options:
 """
 
 EXAMPLES = """
-- name: Create access rule
-  checkpoint_access_rule:
-    layer: Network
-    name: "Drop attacker"
-    position: top
-    source: attacker
-    destination: Any
-    action: Drop
+- name: Create host object
+  checkpoint_host:
+    name: attacker
+    ip_address: 192.168.0.15
 
-- name: Delete access rule
-  checkpoint_access_rule:
-    layer: Network
-    name: "Drop attacker"
+- name: Delete host object
+  checkpoint_host:
+    name: attacker
+    state: absent
 """
 
 RETURN = """
-checkpoint_access_rules:
-  description: The checkpoint access rule object created or updated.
-  returned: always, except when deleting the access rule.
+checkpoint_hosts:
+  description: The checkpoint host object created or updated.
+  returned: always, except when deleting the host.
   type: list
 """
 
@@ -129,99 +99,52 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 )
 
 
-def get_access_rule(module, connection):
+def get_host(module, connection):
     name = module.params["name"]
-    layer = module.params["layer"]
 
-    payload = {"name": name, "layer": layer}
+    payload = {"name": name}
 
-    code, response = connection.send_request(
-        "/web_api/show-access-rule", payload
-    )
+    code, response = connection.send_request("/web_api/show-host", payload)
 
     return code, response
 
 
-def create_access_rule(module, connection):
+def create_host(module, connection):
     name = module.params["name"]
-    layer = module.params["layer"]
-    position = module.params["position"]
-    source = module.params["source"]
-    destination = module.params["destination"]
-    action = module.params["action"]
+    ip_address = module.params["ip_address"]
 
-    payload = {
-        "name": name,
-        "layer": layer,
-        "position": position,
-        "source": source,
-        "destination": destination,
-        "action": action,
-    }
+    payload = {"name": name, "ip-address": ip_address}
 
-    code, response = connection.send_request(
-        "/web_api/add-access-rule", payload
-    )
+    code, response = connection.send_request("/web_api/add-host", payload)
 
     return code, response
 
 
-def update_access_rule(module, connection):
+def update_host(module, connection):
     name = module.params["name"]
-    layer = module.params["layer"]
-    position = module.params["position"]
-    source = module.params["source"]
-    destination = module.params["destination"]
-    action = module.params["action"]
-    enabled = module.params["enabled"]
+    ip_address = module.params["ip_address"]
 
-    payload = {
-        "name": name,
-        "layer": layer,
-        "position": position,
-        "source": source,
-        "destination": destination,
-        "action": action,
-        "enabled": enabled,
-    }
+    payload = {"name": name, "ip-address": ip_address}
 
-    code, response = connection.send_request(
-        "/web_api/set-access-rule", payload
-    )
+    code, response = connection.send_request("/web_api/set-host", payload)
 
     return code, response
 
 
-def delete_access_rule(module, connection):
+def delete_host(module, connection):
     name = module.params["name"]
-    layer = module.params["layer"]
 
-    payload = {"name": name, "layer": layer}
+    payload = {"name": name}
 
-    code, response = connection.send_request(
-        "/web_api/delete-access-rule", payload
-    )
+    code, response = connection.send_request("/web_api/delete-host", payload)
 
     return code, response
 
 
-def needs_update(module, access_rule):
+def needs_update(module, host):
     res = False
 
-    if (
-        module.params["source"]
-        and module.params["source"] != access_rule["source"][0]["name"]
-    ):
-        res = True
-    if (
-        module.params["destination"]
-        and module.params["destination"]
-        != access_rule["destination"][0]["name"]
-    ):
-        res = True
-    if module.params["action"] != access_rule["action"]["name"]:
-        res = True
-    if module.params["enabled"] != access_rule["enabled"]:
+    if module.params["ip_address"] != host["ipv4-address"]:
         res = True
 
     return res
@@ -230,28 +153,20 @@ def needs_update(module, access_rule):
 def main():
     argument_spec = dict(
         name=dict(type="str", required=True),
-        layer=dict(type="str"),
-        position=dict(type="str"),
-        source=dict(type="str"),
-        destination=dict(type="str"),
-        action=dict(type="str", default="drop"),
-        enabled=dict(type="bool", default=True),
+        ip_address=dict(type="str"),
         state=dict(type="str", default="present"),
     )
     argument_spec.update(checkpoint_argument_spec)
 
-    required_if = [("state", "present", ("layer", "position"))]
-    module = AnsibleModule(
-        argument_spec=argument_spec, required_if=required_if
-    )
+    module = AnsibleModule(argument_spec=argument_spec)
     connection = Connection(module._socket_path)
-    code, response = get_access_rule(module, connection)
+    code, response = get_host(module, connection)
     result = {"changed": False}
 
     if module.params["state"] == "present":
         if code == 200:
             if needs_update(module, response):
-                code, response = update_access_rule(module, connection)
+                code, response = update_host(module, connection)
                 if code != 200:
                     module.fail_json(msg=response)
                 if module.params["auto_publish_session"]:
@@ -265,11 +180,11 @@ def main():
                         )
 
                 result["changed"] = True
-                result["checkpoint_access_rules"] = response
+                result["checkpoint_hosts"] = response
             else:
                 pass
         elif code == 404:
-            code, response = create_access_rule(module, connection)
+            code, response = create_host(module, connection)
             if code != 200:
                 module.fail_json(msg=response)
             if module.params["auto_publish_session"]:
@@ -283,10 +198,11 @@ def main():
                     )
 
             result["changed"] = True
-            result["checkpoint_access_rules"] = response
+            result["checkpoint_hosts"] = response
     else:
         if code == 200:
-            code, response = delete_access_rule(module, connection)
+            # Handle deletion
+            code, response = delete_host(module, connection)
             if code != 200:
                 module.fail_json(msg=response)
             if module.params["auto_publish_session"]:
@@ -300,7 +216,7 @@ def main():
                     )
 
             result["changed"] = True
-            result["checkpoint_access_rules"] = response
+            result["checkpoint_hosts"] = response
         elif code == 404:
             pass
 
