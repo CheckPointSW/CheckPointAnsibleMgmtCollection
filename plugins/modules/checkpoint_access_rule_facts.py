@@ -35,10 +35,10 @@ short_description: Get access rules objects facts on Check Point over Web Servic
 description:
 - Get access rules objects facts on Check Point devices. All operations are performed
   over Web Services API.
-deprecated:
-  removed_in: '2.13'
-  alternative: cp_mgmt_access_rule_facts
-  why: Newer and updated modules released in Ansible 2.9
+# deprecated:
+#   removed_in: '2.13'
+#   alternative: cp_mgmt_access_rule_facts
+#   why: Newer and updated modules released in Ansible 2.9
 author: Ansible by Red Hat (@rcarrillocruz)
 options:
   name:

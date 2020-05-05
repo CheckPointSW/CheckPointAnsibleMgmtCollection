@@ -1,6 +1,0 @@
-plugins/modules/_checkpoint_access_layer_facts.py validate-modules:deprecation-mismatch
-plugins/modules/_checkpoint_access_rule.py validate-modules:deprecation-mismatch
-plugins/modules/_checkpoint_access_rule_facts.py validate-modules:deprecation-mismatch
-plugins/modules/_checkpoint_host.py validate-modules:deprecation-mismatch
-plugins/modules/_checkpoint_host_facts.py validate-modules:deprecation-mismatch
-plugins/modules/_checkpoint_session.py validate-modules:deprecation-mismatch
