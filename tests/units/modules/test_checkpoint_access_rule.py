@@ -41,18 +41,18 @@ class TestCheckpointAccessRule(object):
 
     @pytest.fixture
     def connection_mock(self, mocker):
-        connection_class_mock = mocker.patch('ansible.modules.network.check_point._checkpoint_access_rule.Connection')
+        connection_class_mock = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.Connection')
         return connection_class_mock.return_value
 
     @pytest.fixture
     def get_access_rule_200(self, mocker):
-        mock_function = mocker.patch('ansible.modules.network.check_point._checkpoint_access_rule.get_access_rule')
+        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule')
         mock_function.return_value = (200, OBJECT)
         return mock_function.return_value
 
     @pytest.fixture
     def get_access_rule_404(self, mocker):
-        mock_function = mocker.patch('ansible.modules.network.check_point._checkpoint_access_rule.get_access_rule')
+        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule')
         mock_function.return_value = (404, 'Object not found')
         return mock_function.return_value
 

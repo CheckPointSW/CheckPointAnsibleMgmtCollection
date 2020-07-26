@@ -70,8 +70,8 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
   2. Ansible has a feature called "Check Mode" that enables you to test the
      changes without actually changing anything.
   3. The login and logout happens automatically.
-  4. If you want to login to a specific domain, in the playbook above, in the `vars`secion, in 
-     `ansible_checkpoint_domain` key, change the value from `SMC User` to `YOUR_DOMAIN`
+  4. If you want to login to a specific domain, in the playbook above in the `vars`secion change the domain name to 
+     `ansible_checkpoint_domain`
   5. There are two ways to publish changes:
     a. Set the `auto_publish_session` to `true` as displayed in the example playbook above.
        This option will publish only the task which this parameter belongs to.
@@ -81,6 +81,8 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
   7. If you still want to use Ansible version 2.9 instead of this collection (not recommended):
     a. In the `hosts` file replace `ansible_network_os=check_point.mgmt.checkpoint` with `ansible_network_os=checkpoint`
     b. In the task in the playbook replace the module `check_point.mgmt.cp_mgmt_*` with the module `cp_mgmt_*`
+  8. Starting from version 1.0.6, when running a command which returns a task-id, and the user chooses to wait for that task to finish
+     (the default is to wait), then the output of the command will be the output of the show-task command (instead of the task-id).
 
 Modules
 -------

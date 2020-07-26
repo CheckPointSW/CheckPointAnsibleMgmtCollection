@@ -41,18 +41,18 @@ class TestCheckpointHost(object):
 
     @pytest.fixture
     def connection_mock(self, mocker):
-        connection_class_mock = mocker.patch('ansible.modules.network.check_point._checkpoint_host.Connection')
+        connection_class_mock = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_host.Connection')
         return connection_class_mock.return_value
 
     @pytest.fixture
     def get_host_200(self, mocker):
-        mock_function = mocker.patch('ansible.modules.network.check_point._checkpoint_host.get_host')
+        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_host.get_host')
         mock_function.return_value = (200, OBJECT)
         return mock_function.return_value
 
     @pytest.fixture
     def get_host_404(self, mocker):
-        mock_function = mocker.patch('ansible.modules.network.check_point._checkpoint_host.get_host')
+        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_host.get_host')
         mock_function.return_value = (404, 'Object not found')
         return mock_function.return_value
 

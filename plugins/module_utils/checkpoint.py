@@ -99,7 +99,7 @@ def get_payload_from_parameters(params):
 
 # wait for task
 def wait_for_task(module, version, connection, task_id):
-    task_id_payload = {'task-id': task_id}
+    task_id_payload = {'task-id': task_id, 'details-level': 'full'}
     task_complete = False
     current_iteration = 0
     max_num_iterations = 300
@@ -138,6 +138,8 @@ def wait_for_task(module, version, connection, task_id):
             time.sleep(2)  # Wait for two seconds
     if not task_complete:
         module.fail_json(msg="ERROR: Timeout. Task-id: {0}.".format(task_id_payload['task-id']))
+    else:
+        return response
 
 
 # if failed occurred, in some cases we want to discard changes before exiting. We also notify the user about the `discard`
@@ -199,7 +201,7 @@ def api_command(module, command):
     if code == 200:
         if module.params['wait_for_task']:
             if 'task-id' in response:
-                wait_for_task(module, version, connection, response['task-id'])
+                response = wait_for_task(module, version, connection, response['task-id'])
             elif 'tasks' in response:
                 for task in response['tasks']:
                     if 'task-id' in task:
@@ -428,6 +430,21 @@ def api_call_for_rule(module, api_call_object):
     return result
 
 
+# check if call is in plural form
+def call_is_plural(api_call_object, payload):
+    is_plural = False
+    if 'access' in api_call_object and payload.get("layer") is None:
+        is_plural = True
+    elif 'threat' in api_call_object and payload.get("layer") is None:
+        is_plural = True
+    elif 'nat' in api_call_object \
+            and payload.get("name") is None \
+            and payload.get("uid") is None \
+            and payload.get("rule-number") is None:
+        is_plural = True
+    return is_plural
+
+
 # handle api call facts for rule
 def api_call_facts_for_rule(module, api_call_object, api_call_object_plural_version):
     payload = get_payload_from_parameters(module.params)
@@ -435,7 +452,7 @@ def api_call_facts_for_rule(module, api_call_object, api_call_object_plural_vers
     version = get_version(module)
 
     # if there is no layer, the API command will be in plural version (e.g. show-hosts instead of show-host)
-    if payload.get("layer") is None:
+    if call_is_plural(api_call_object, payload):
         api_call_object = api_call_object_plural_version
 
     response = handle_call(connection, version, 'show-' + api_call_object, payload, module, False, False)
