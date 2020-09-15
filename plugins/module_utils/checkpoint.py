@@ -37,6 +37,7 @@ from ansible.module_utils.connection import Connection
 checkpoint_argument_spec_for_objects = dict(
     auto_publish_session=dict(type='bool'),
     wait_for_task=dict(type='bool', default=True),
+    wait_for_task_timeout=dict(type='int', default=30),
     state=dict(type='str', choices=['present', 'absent'], default='present'),
     version=dict(type='str')
 )
@@ -47,6 +48,7 @@ checkpoint_argument_spec_for_facts = dict(
 
 checkpoint_argument_spec_for_commands = dict(
     wait_for_task=dict(type='bool', default=True),
+    wait_for_task_timeout=dict(type='int', default=30),
     version=dict(type='str')
 )
 
@@ -70,6 +72,7 @@ def is_checkpoint_param(parameter):
     if parameter == 'auto_publish_session' or \
             parameter == 'state' or \
             parameter == 'wait_for_task' or \
+            parameter == 'wait_for_task_timeout' or \
             parameter == 'version':
         return False
     return True
@@ -101,8 +104,11 @@ def get_payload_from_parameters(params):
 def wait_for_task(module, version, connection, task_id):
     task_id_payload = {'task-id': task_id, 'details-level': 'full'}
     task_complete = False
+    minutes_until_timeout = 30
+    if module.params['wait_for_task_timeout'] is not None and module.params['wait_for_task_timeout'] >= 0:
+        minutes_until_timeout = module.params['wait_for_task_timeout']
+    max_num_iterations = minutes_until_timeout * 30
     current_iteration = 0
-    max_num_iterations = 300
 
     # As long as there is a task in progress
     while not task_complete and current_iteration < max_num_iterations:

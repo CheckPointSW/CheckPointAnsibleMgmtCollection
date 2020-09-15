@@ -17,6 +17,11 @@ options:
       - Wait for the task to end. Such as publish task.
     type: bool
     default: True
+  wait_for_task_timeout:
+    description:
+      - How many minutes to wait until throwing a timeout error.
+    type: int
+    default: 30
   version:
     description:
       - Version of checkpoint. If not given one, the latest version taken.
