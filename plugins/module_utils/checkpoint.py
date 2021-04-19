@@ -213,6 +213,7 @@ def api_command(module, command):
                     if 'task-id' in task:
                         task_id = task['task-id']
                         response[task_id] = wait_for_task(module, version, connection, task['task-id'])
+                del response['tasks']
 
         result[command] = response
     else:
