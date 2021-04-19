@@ -211,7 +211,9 @@ def api_command(module, command):
             elif 'tasks' in response:
                 for task in response['tasks']:
                     if 'task-id' in task:
-                        wait_for_task(module, version, connection, task['task-id'])
+                        task_id = task['task-id']
+                        response[task_id] = wait_for_task(module, version, connection, task['task-id'])
+                del response['tasks']
 
         result[command] = response
     else:
