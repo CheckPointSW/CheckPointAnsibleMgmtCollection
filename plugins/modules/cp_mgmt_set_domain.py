@@ -1,0 +1,179 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Ansible module to manage CheckPoint Firewall (c) 2019
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+from __future__ import (absolute_import, division, print_function)
+
+__metaclass__ = type
+
+ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
+
+DOCUMENTATION = """
+---
+module: cp_mgmt_set_domain
+short_description: Manages domain objects on Checkpoint over Web Services API
+description:
+  - Manages domain objects on Checkpoint devices including creating, updating and removing objects.
+  - All operations are performed over Web Services API.
+version_added: "2.9"
+author: "Or Soffer (@chkp-orso)"
+options:
+  name:
+    description:
+      - Object name.
+    type: str
+    required: True
+  servers:
+    description:
+      - Domain servers. When this field is provided, 'set-domain' command is executed asynchronously.
+    type: dict
+    suboptions:
+      add:
+        description:
+          - Adds to collection of values
+        type: list
+        suboptions:
+          name:
+            description:
+              - Object name. Must be unique in the domain.
+            type: str
+          ip_address:
+            description:
+              - IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.
+            type: str
+          ipv4_address:
+            description:
+              - IPv4 address.
+            type: str
+          ipv6_address:
+            description:
+              - IPv6 address.
+            type: str
+          multi_domain_server:
+            description:
+              - Multi Domain server name or UID.
+            type: str
+          skip_start_domain_server:
+            description:
+              - Set this value to be true to prevent starting the new created domain.
+            type: bool
+          type:
+            description:
+              - Domain server type.
+            type: str
+            choices: ['management server', 'log server', 'smc']
+        remove:
+            description:
+              - Remove from collection of values
+            type: list
+            suboptions:
+              name:
+                description:
+                  - Object name. Must be unique in the domain.
+                type: str
+  color:
+    description:
+      - Color of the object. Should be one of existing colors.
+    type: str
+    choices: ['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green',
+             'pink', 'turquoise', 'dark blue', 'firebrick', 'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon',
+             'coral', 'sea green', 'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna', 'yellow']
+  comments:
+    description:
+      - Comments string.
+    type: str
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
+  ignore_warnings:
+    description:
+      - Apply changes ignoring warnings.
+    type: bool
+  ignore_errors:
+    description:
+      - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
+    type: bool
+  tags:
+    description:
+      - Collection of tag identifiers. Note, The list of tags can not be modified in a single command together with the domain servers. To modify
+        tags, please use the separate 'set-domain' command, without providing the list of domain servers.
+    type: list
+extends_documentation_fragment: checkpoint_objects
+"""
+
+EXAMPLES = """
+- name: set-domain
+  cp_mgmt_set_domain:
+    comments: This is domain1 comment
+    name: domain1
+    state: present
+"""
+
+RETURN = """
+cp_mgmt_domain:
+  description: The checkpoint object created or updated.
+  returned: always, except when deleting the object.
+  type: dict
+"""
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
+
+
+def main():
+    argument_spec = dict(
+        name=dict(type='str', required=True),
+        servers=dict(type='dict', options=dict(
+            add=dict(type='list', options=dict(
+                name=dict(type='str'),
+                ip_address=dict(type='str'),
+                ipv4_address=dict(type='str'),
+                ipv6_address=dict(type='str'),
+                multi_domain_server=dict(type='str'),
+                skip_start_domain_server=dict(type='bool'),
+                type=dict(type='str', choices=['management server', 'log server', 'smc'])
+            )),
+            remove=dict(type='list')
+        )),
+        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
+                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
+                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
+                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
+                                        'yellow']),
+        comments=dict(type='str'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        ignore_warnings=dict(type='bool'),
+        ignore_errors=dict(type='bool'),
+        tags=dict(type='list')
+    )
+    argument_spec.update(checkpoint_argument_spec_for_commands)
+
+    module = AnsibleModule(argument_spec=argument_spec)
+    api_call_object = 'set-domain'
+
+    result = api_command(module, api_call_object)
+    module.exit_json(**result)
+
+
+if __name__ == '__main__':
+    main()
