@@ -3,7 +3,7 @@ This Ansible collection provides control over a Check Point Management server us
 Check Point's web-services APIs.
 
 The Ansible Check Point modules reference can be found here:
-https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
+https://docs.ansible.com/ansible/latest/collections/check_point/mgmt/index.html#plugins-in-check-point-mgmt
 <br>Note - look only at the `cp_mgmt_*` modules, cause the `checkpoint_*` will be deprecated.
 
 This is the repository of the mgmt collection which can be found here - https://galaxy.ansible.com/check_point/mgmt
@@ -119,6 +119,8 @@ Modules
 * `cp_mgmt_host` – Manages host objects on Check Point over Web Services API
 * `cp_mgmt_host_facts` – Get host objects facts on Check Point over Web Services API
 * `cp_mgmt_install_policy` – install policy on Check Point over Web Services API
+* `cp_mgmt_install_database` – install database on Check Point over Web Services API
+* `cp_mgmt_mds` – Multi-Domain Server (mds) objects on Check Point over Web Services API
 * `cp_mgmt_mds_facts` – Get Multi-Domain Server (mds) objects facts on Check Point over Web Services API
 * `cp_mgmt_multicast_address_range` – Manages multicast-address-range objects on Check Point over Web Services API
 * `cp_mgmt_multicast_address_range_facts` – Get multicast-address-range objects facts on Check Point over Web Services API
@@ -175,3 +177,11 @@ Modules
 * `cp_mgmt_vpn_community_star_facts` – Get vpn-community-star objects facts on Check Point over Web Services API
 * `cp_mgmt_wildcard` – Manages wildcard objects on Check Point over Web Services API
 * `cp_mgmt_wildcard_facts` – Get wildcard objects facts on Check Point over Web Services API
+* `cp_mgmt_add_domain` – Add new domain on Check Point over Web Services API
+* `cp_mgmt_set_domain` – Edit existing domain on Check Point over Web Services API
+* `cp_mgmt_delete_domain` – Delete existing domain on Check Point over Web Services API
+* `cp_mgmt_domain_facts` – Get domain objects on Check Point over Web Services API
+* `cp_mgmt_trusted_client` – Trusted client objects on Check Point over Web Services API
+* `cp_mgmt_trusted_client_facts` – Get trusted client objects facts on Check Point over Web Services API
+* `cp_mgmt_identity_tag` – Identity tag objects on Check Point over Web Services API
+* `cp_mgmt_identity_tag_facts` – Get identity tag objects facts on Check Point over Web Services API

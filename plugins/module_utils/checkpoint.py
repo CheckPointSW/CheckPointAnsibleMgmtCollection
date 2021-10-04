@@ -131,8 +131,13 @@ def wait_for_task(module, version, connection, task_id):
         completed_tasks = 0
         for task in response['tasks']:
             if task['status'] == 'failed':
-                module.fail_json(msg='Task {0} with task id {1} failed. Look at the logs for more details'
-                                 .format(task['task-name'], task['task-id']))
+                if 'comments' in task and task['comments']:
+                    module.fail_json(msg='Task {0} with task id {1} failed. Message: {2} - Look at the logs for more '
+                                         'details '
+                                     .format(task['task-name'], task['task-id'], task['comments']))
+                else:
+                    module.fail_json(msg='Task {0} with task id {1} failed. Look at the logs for more details'
+                                     .format(task['task-name'], task['task-id']))
             if task['status'] == 'in progress':
                 break
             completed_tasks += 1
