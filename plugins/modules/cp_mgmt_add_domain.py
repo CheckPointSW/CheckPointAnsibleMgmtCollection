@@ -43,41 +43,41 @@ options:
   servers:
     description:
       - Domain servers. When this field is provided, 'set-domain' command is executed asynchronously.
-    type: dict
+    type: list
     suboptions:
+      name:
         description:
-          - Adds to collection of values
-        type: list
-        suboptions:
-          name:
-            description:
-              - Object name. Must be unique in the domain.
-            type: str
-          ip_address:
-            description:
-              - IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.
-            type: str
-          ipv4_address:
-            description:
-              - IPv4 address.
-            type: str
-          ipv6_address:
-            description:
-              - IPv6 address.
-            type: str
-          multi_domain_server:
-            description:
-              - Multi Domain server name or UID.
-            type: str
-          skip_start_domain_server:
-            description:
-              - Set this value to be true to prevent starting the new created domain.
-            type: bool
-          type:
-            description:
-              - Domain server type.
-            type: str
-            choices: ['management server', 'log server', 'smc']
+          - Object name. Must be unique in the domain.
+        type: str
+      ip_address:
+        description:
+          - IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.
+        type: str
+      ipv4_address:
+        description:
+          - IPv4 address.
+        type: str
+      ipv6_address:
+        description:
+          - IPv6 address.
+        type: str
+      multi_domain_server:
+        description:
+          - Multi Domain server name or UID.
+        type: str
+      active:
+        description:
+          - Activate domain server. Only one domain server is allowed to be active
+        type: bool
+      skip_start_domain_server:
+        description:
+          - Set this value to be true to prevent starting the new created domain.
+        type: bool
+      type:
+        description:
+          - Domain server type.
+        type: str
+        choices: ['management server', 'log server', 'smc']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -108,7 +108,7 @@ options:
       - Collection of tag identifiers. Note, The list of tags can not be modified in a single command together with the domain servers. To modify
         tags, please use the separate 'set-domain' command, without providing the list of domain servers.
     type: list
-extends_documentation_fragment: checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
@@ -119,7 +119,6 @@ EXAMPLES = """
       ip_address: 192.0.2.1
       multi_domain_server: MDM_Server
       name: domain1_ManagementServer_1
-    state: present
 """
 
 RETURN = """
@@ -160,9 +159,9 @@ def main():
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
-    api_call_object = 'add-domain'
+    command = 'add-domain'
 
-    result = api_command(module, api_call_object)
+    result = api_command(module, command)
     module.exit_json(**result)
 
 
