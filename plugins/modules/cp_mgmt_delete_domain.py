@@ -54,14 +54,13 @@ options:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
     type: bool
-extends_documentation_fragment: checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
 - name: delete-domain
   cp_mgmt_delete_domain:
     name: domain1
-    state: absent
 """
 
 RETURN = """
@@ -85,9 +84,9 @@ def main():
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
-    api_call_object = 'delete-domain'
+    command = 'delete-domain'
 
-    result = api_command(module, api_call_object)
+    result = api_command(module, command)
     module.exit_json(**result)
 
 

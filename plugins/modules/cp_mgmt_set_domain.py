@@ -79,15 +79,15 @@ options:
               - Domain server type.
             type: str
             choices: ['management server', 'log server', 'smc']
-        remove:
+      remove:
+        description:
+          - Remove from collection of values
+        type: list
+        suboptions:
+          name:
             description:
-              - Remove from collection of values
-            type: list
-            suboptions:
-              name:
-                description:
-                  - Object name. Must be unique in the domain.
-                type: str
+               - Object name. Must be unique in the domain.
+            type: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -118,7 +118,7 @@ options:
       - Collection of tag identifiers. Note, The list of tags can not be modified in a single command together with the domain servers. To modify
         tags, please use the separate 'set-domain' command, without providing the list of domain servers.
     type: list
-extends_documentation_fragment: checkpoint_objects
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
@@ -169,9 +169,9 @@ def main():
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
-    api_call_object = 'set-domain'
+    command = 'set-domain'
 
-    result = api_command(module, api_call_object)
+    result = api_command(module, command)
     module.exit_json(**result)
 
 

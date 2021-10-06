@@ -39,7 +39,7 @@ options:
     description:
       - Check Point host(s) with one or more Management Software Blades enabled. The targets can be identified by their name or unique identifier.
     type: list
-extends_documentation_fragment: checkpoint_commands
+extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
