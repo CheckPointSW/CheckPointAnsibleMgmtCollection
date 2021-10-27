@@ -28,9 +28,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_delete_domain
-short_description: Manages domain objects on Checkpoint over Web Services API
+short_description: Delete existing object using object name or uid.
 description:
-  - Manages domain objects on Checkpoint devices including creating, updating and removing objects.
+  - Delete existing object using object name or uid.
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
@@ -65,8 +65,8 @@ EXAMPLES = """
 
 RETURN = """
 cp_mgmt_domain:
-  description: The checkpoint object created or updated.
-  returned: always, except when deleting the object.
+  description: The checkpoint delete-domain output.
+  returned: always.
   type: dict
 """
 

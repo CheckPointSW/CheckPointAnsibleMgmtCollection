@@ -28,9 +28,9 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_add_domain
-short_description: Manages domain objects on Checkpoint over Web Services API
+short_description: Create new object
 description:
-  - Manages domain objects on Checkpoint devices including creating, updating and removing objects.
+  - Create new object
   - All operations are performed over Web Services API.
 version_added: "2.9"
 author: "Or Soffer (@chkp-orso)"
@@ -103,11 +103,6 @@ options:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
     type: bool
-  tags:
-    description:
-      - Collection of tag identifiers. Note, The list of tags can not be modified in a single command together with the domain servers. To modify
-        tags, please use the separate 'set-domain' command, without providing the list of domain servers.
-    type: list
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
@@ -123,8 +118,8 @@ EXAMPLES = """
 
 RETURN = """
 cp_mgmt_domain:
-  description: The checkpoint object created or updated.
-  returned: always, except when deleting the object.
+  description: The checkpoint add-domain output.
+  returned: always.
   type: dict
 """
 
@@ -154,7 +149,6 @@ def main():
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool'),
-        tags=dict(type='list')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
