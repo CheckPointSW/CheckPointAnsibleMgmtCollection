@@ -34,6 +34,12 @@ import time
 
 from ansible.module_utils.connection import Connection
 
+checkpoint_argument_spec_for_action_module = dict(
+    auto_publish_session=dict(type='bool'),
+    wait_for_task_timeout=dict(type='int', default=30),
+    version=dict(type='str')
+)
+
 checkpoint_argument_spec_for_objects = dict(
     auto_publish_session=dict(type='bool'),
     wait_for_task=dict(type='bool', default=True),
@@ -504,3 +510,21 @@ def install_policy(connection, policy_package, targets):
                'targets': targets}
 
     connection.send_request('/web_api/install-policy', payload)
+
+
+def prepare_rule_params_for_execute_module(rule, module_args, position):
+    rule['layer'] = module_args['layer']
+    if 'details_level' in module_args.keys():
+        rule['details_level'] = module_args['details_level']
+    if 'state' not in rule.keys() or ('state' in rule.keys() and rule['state'] != 'absent'):
+        rule['position'] = position
+        position = position + 1
+
+    return rule, position
+
+
+def check_if_to_publish_for_action(result, module_args):
+    to_publish = ('auto_publish_session' in module_args.keys() and module_args['auto_publish_session']) and \
+                 ('changed' in result.keys() and result['changed'] is True) and ('failed' not in result.keys() or
+                                                                                 result['failed'] is False)
+    return to_publish
