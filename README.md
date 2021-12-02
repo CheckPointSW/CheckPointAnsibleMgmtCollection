@@ -91,6 +91,7 @@ Modules
 * `cp_mgmt_access_role` – Manages access-role objects on Check Point over Web Services API
 * `cp_mgmt_access_role_facts` – Get access-role objects facts on Check Point over Web Services API
 * `cp_mgmt_access_rule` – Manages access-rule objects on Check Point over Web Services API
+* `cp_mgmt_access_rules` – Manages a list of access rules objects on Check Point over Web Services API
 * `cp_mgmt_access_rule_facts` – Get access-rule objects facts on Check Point over Web Services API
 * `cp_mgmt_address_range` – Manages address-range objects on Check Point over Web Services API
 * `cp_mgmt_address_range_facts` – Get address-range objects facts on Check Point over Web Services API
