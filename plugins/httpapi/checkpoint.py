@@ -62,10 +62,12 @@ class HttpApi(HttpApiBase):
 
         try:
             self.connection._auth = {'X-chkp-sid': response_data['sid']}
-            self.connection._session_uid = response_data['uid']
         except KeyError:
             raise ConnectionError(
                 'Server returned response without token info during connection authentication: %s' % response)
+        # Case of read-only
+        if 'uid' in response_data.keys():
+            self.connection._session_uid = response_data['uid']
 
     def logout(self):
         url = '/web_api/logout'
