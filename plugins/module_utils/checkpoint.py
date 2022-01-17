@@ -137,10 +137,19 @@ def wait_for_task(module, version, connection, task_id):
         completed_tasks = 0
         for task in response['tasks']:
             if task['status'] == 'failed':
-                if 'comments' in task and task['comments']:
+                status_description, comments = get_status_description_and_comments(task)
+                if comments and status_description:
+                    module.fail_json(
+                        msg='Task {0} with task id {1} failed. Message: {2} with description: {3} - '
+                            'Look at the logs for more details '
+                            .format(task['task-name'], task['task-id'], comments, status_description))
+                elif comments:
+                    module.fail_json(msg='Task {0} with task id {1} failed. Message: {2} - Look at the logs for more details '
+                                         .format(task['task-name'], task['task-id'], comments))
+                elif status_description:
                     module.fail_json(msg='Task {0} with task id {1} failed. Message: {2} - Look at the logs for more '
                                          'details '
-                                     .format(task['task-name'], task['task-id'], task['comments']))
+                                     .format(task['task-name'], task['task-id'], status_description))
                 else:
                     module.fail_json(msg='Task {0} with task id {1} failed. Look at the logs for more details'
                                      .format(task['task-name'], task['task-id']))
@@ -159,13 +168,32 @@ def wait_for_task(module, version, connection, task_id):
         return response
 
 
+# Getting a status description and comments of task failure details
+def get_status_description_and_comments(task):
+    status_description = None
+    comments = None
+    if 'comments' in task and task['comments']:
+        comments = task['comments']
+    if 'task-details' in task and task['task-details']:
+        task_details = task['task-details'][0]
+        if 'statusDescription' in task_details:
+            status_description = task_details['statusDescription']
+    return status_description, comments
+
+
 # if failed occurred, in some cases we want to discard changes before exiting. We also notify the user about the `discard`
 def discard_and_fail(module, code, response, connection, version):
     discard_code, discard_response = send_request(connection, version, 'discard')
     if discard_code != 200:
-        module.fail_json(msg=parse_fail_message(code, response) + ' Failed to discard session {0}'
-                                                                  ' with error {1} with message {2}'.format(connection.get_session_uid(),
-                                                                                                            discard_code, discard_response))
+        try:
+            module.fail_json(msg=parse_fail_message(code, response) + ' Failed to discard session {0}'
+                                                                      ' with error {1} with message {2}'.format(connection.get_session_uid(),
+                                                                                                                discard_code, discard_response))
+        except Exception:
+            # Read-only mode without UID
+            module.fail_json(msg=parse_fail_message(code, response) + ' Failed to discard session'
+                                                                      ' with error {0} with message {1}'.format(discard_code, discard_response))
+
     module.fail_json(msg=parse_fail_message(code, response) + ' Unpublished changes were discarded')
 
 
@@ -401,7 +429,9 @@ def is_equals_with_all_params(payload, connection, version, api_call_object, is_
         code, response = send_request(connection, version, 'show-' + api_call_object, payload_for_show)
         exist_action = response['action']['name']
         if exist_action != payload['action']:
-            return False
+            if payload['action'] != 'Apply Layer' or exist_action != 'Inner Layer':
+                return False
+
     # here the action is equals, so check the position param
     if not is_equals_with_position_param(payload, connection, version, api_call_object):
         return False
