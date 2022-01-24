@@ -43,6 +43,20 @@ options:
     description:
       - Position in the rulebase.
     type: str
+  position_by_rule:
+    description:
+      - Position in the rulebase.
+      - Use of this field may not be idempotent.
+    type: dict
+    suboptions:
+      below:
+        description:
+          - Add rule below specific rule identified by uid or name (limited to 500 rules).
+        type: str
+      above:
+        description:
+          - Add rule above specific rule identified by uid or name (limited to 500 rules).
+        type: str
   name:
     description:
       - Object name.
@@ -285,6 +299,10 @@ def main():
     argument_spec = dict(
         layer=dict(type='str'),
         position=dict(type='str'),
+        position_by_rule=dict(type='dict', options=dict(
+            below=dict(type='str'),
+            above=dict(type='str')
+        )),
         name=dict(type='str', required=True),
         action=dict(type='str'),
         action_settings=dict(type='dict', options=dict(

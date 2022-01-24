@@ -32,10 +32,13 @@ class ActionModule(ActionBase):
         # check_fields_for_rule_action_module(module_args)
         rules_list = self._task.args['rules']
         position = 1
+        below_rule_name = None
 
         for rule in rules_list:
-            rule, position = prepare_rule_params_for_execute_module(rule=rule, module_args=module_args,
-                                                                    position=position)
+            rule, position, below_rule_name = prepare_rule_params_for_execute_module(rule=rule, module_args=module_args,
+                                                                                     position=position,
+                                                                                     below_rule_name=below_rule_name)
+
             result['rule: ' + rule['name']] = self._execute_module(module_name='check_point.mgmt.cp_mgmt_access_rule',
                                                                    module_args=rule,
                                                                    task_vars=task_vars, tmp=tmp, wrap_async=False)
