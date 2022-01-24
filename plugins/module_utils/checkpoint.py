@@ -103,6 +103,17 @@ def get_payload_from_parameters(params):
                     parameter = "version"
 
                 payload[parameter.replace("_", "-")] = parameter_value
+
+            # action module "access_rules" - convert position_by_rule to position
+            if parameter == "position_by_rule":
+                if 'below' in params['position_by_rule'].keys() and params['position_by_rule']['below']:
+                    position = {'position': {'below': params['position_by_rule']['below']}}
+                    payload.update(position)
+                elif 'above' in params['position_by_rule'].keys() and params['position_by_rule']['above']:
+                    position = {'position': {'above': params['position_by_rule']['above']}}
+                    payload.update(position)
+                del payload['position-by-rule']
+
     return payload
 
 
@@ -323,7 +334,30 @@ def api_call(module, api_call_object):
 # get the position in integer format
 def get_number_from_position(payload, connection, version):
     if 'position' in payload:
-        position = payload['position']
+        if type(payload['position']) is not dict:
+            position = payload['position']
+        else:
+            position = None
+            payload_for_show_access_rulebase = {'name': payload['layer']}
+            code, response = send_request(connection, version, 'show-access-rulebase', payload_for_show_access_rulebase)
+            rulebase = response['rulebase']
+            for rules in rulebase:
+                if 'rulebase' in rules:
+                    rules = rules['rulebase']
+                    for rule in rules:
+                        if 'below' in payload['position'].keys() and rule['name'] == payload['position']['below']:
+                            position = int(rule['rule-number']) + 1
+                            return position
+                        elif 'above' in payload['position'].keys() and rule['name'] == payload['position']['above']:
+                            position = max(int(rule['rule-number']) - 1, 1)
+                            return position
+                elif 'below' in payload['position'].keys() and rules['name'] == payload['position']['below']:
+                    position = int(rules['rule-number']) + 1
+                    return position
+                elif 'above' in payload['position'].keys() and rules['name'] == payload['position']['above']:
+                    position = max(int(rules['rule-number']) - 1, 1)
+                    return position
+            return position
     else:
         return None
 
@@ -428,8 +462,9 @@ def is_equals_with_all_params(payload, connection, version, api_call_object, is_
         payload_for_show = extract_payload_with_some_params(payload, ['name', 'uid', 'layer'])
         code, response = send_request(connection, version, 'show-' + api_call_object, payload_for_show)
         exist_action = response['action']['name']
-        if exist_action != payload['action']:
-            if payload['action'] != 'Apply Layer' or exist_action != 'Inner Layer':
+        if exist_action.lower() != payload['action'].lower():
+            if payload['action'].lower() != 'Apply Layer'.lower() or\
+                    exist_action.lower() != 'Inner Layer'.lower():
                 return False
 
     # here the action is equals, so check the position param
@@ -542,15 +577,20 @@ def install_policy(connection, policy_package, targets):
     connection.send_request('/web_api/install-policy', payload)
 
 
-def prepare_rule_params_for_execute_module(rule, module_args, position):
+def prepare_rule_params_for_execute_module(rule, module_args, position, below_rule_name):
     rule['layer'] = module_args['layer']
     if 'details_level' in module_args.keys():
         rule['details_level'] = module_args['details_level']
     if 'state' not in rule.keys() or ('state' in rule.keys() and rule['state'] != 'absent'):
-        rule['position'] = position
+        if below_rule_name:
+            position_by_rule = {'position_by_rule': {'below': below_rule_name}}
+            rule.update(position_by_rule)
+        else:
+            rule['position'] = position
         position = position + 1
+        below_rule_name = rule['name']
 
-    return rule, position
+    return rule, position, below_rule_name
 
 
 def check_if_to_publish_for_action(result, module_args):
