@@ -322,8 +322,12 @@ def api_call(module, api_call_object):
         if equals_code == 200:
             # else objects are equals and there is no need for set request
             if not equals_response['equals']:
+                if 'lsm-cluster' == api_call_object:
+                    build_lsm_cluster_payload(payload, 'set')
                 handle_call_and_set_result(connection, version, 'set-' + api_call_object, payload, module, result)
         elif equals_code == 404:
+            if 'lsm-cluster' == api_call_object:
+                build_lsm_cluster_payload(payload, 'add')
             handle_call_and_set_result(connection, version, 'add-' + api_call_object, payload, module, result)
     elif module.params['state'] == 'absent':
         handle_delete(equals_code, payload, delete_params, connection, version, api_call_object, module, result)
@@ -391,6 +395,17 @@ def build_rulebase_payload(api_call_object, payload, position_number):
         rulebase_payload['rule-name'] = payload['rule-name']
 
     return rulebase_payload
+
+
+def build_lsm_cluster_payload(payload, operator):
+    fields = ['security-profile', 'name-prefix', 'name-suffix', 'main-ip-address']
+    if operator == 'add':
+        del payload['name']
+    else:
+        for field in fields:
+            if field in payload.keys():
+                del payload[field]
+    return payload
 
 
 def build_rulebase_command(api_call_object):
