@@ -169,7 +169,7 @@ def wait_for_task(module, version, connection, task_id):
             completed_tasks += 1
 
         # Are we done? check if all tasks are completed
-        if completed_tasks == len(response["tasks"]):
+        if completed_tasks == len(response["tasks"]) and completed_tasks != 0:
             task_complete = True
         else:
             time.sleep(2)  # Wait for two seconds
@@ -239,7 +239,16 @@ def handle_call(connection, version, call, payload, module, to_publish, to_disca
             discard_and_fail(module, code, response, connection, version)
         else:
             module.fail_json(msg=parse_fail_message(code, response))
-
+    else:
+        if module.params['wait_for_task']:
+            if 'task-id' in response:
+                response = wait_for_task(module, version, connection, response['task-id'])
+            elif 'tasks' in response:
+                for task in response['tasks']:
+                    if 'task-id' in task:
+                        task_id = task['task-id']
+                        response[task_id] = wait_for_task(module, version, connection, task['task-id'])
+                del response['tasks']
     if to_publish:
         handle_publish(module, connection, version)
     return response
