@@ -53,7 +53,8 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 EXAMPLES = """
 - name: delete-api-key
   cp_mgmt_delete_api_key:
-    api_key: eea3be76f4a8eb740ee872bcedc692748ff256a2d21c9ffd2754facbde046d0
+    #sgignore next_line
+    api_key: eea3be76f4a8eb740ee872bcedc692748ff256a2d21c9ffd2754facbde046d00
     state: absent
 """
 
