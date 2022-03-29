@@ -240,7 +240,7 @@ def handle_call(connection, version, call, payload, module, to_publish, to_disca
         else:
             module.fail_json(msg=parse_fail_message(code, response))
     else:
-        if module.params['wait_for_task']:
+        if 'wait_for_task' in module.params and module.params['wait_for_task']:
             if 'task-id' in response:
                 response = wait_for_task(module, version, connection, response['task-id'])
             elif 'tasks' in response:
