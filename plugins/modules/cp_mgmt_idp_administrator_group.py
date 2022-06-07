@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server
-short_description: Manages smtp-server objects on Checkpoint over Web Services API
+module: cp_mgmt_idp_administrator_group
+short_description: Manages idp-administrator-group objects on Checkpoint over Web Services API
 description:
-  - Manages smtp-server objects on Checkpoint devices including creating, updating and removing objects.
+  - Manages idp-administrator-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
@@ -40,31 +40,29 @@ options:
       - Object name.
     type: str
     required: True
-  port:
+  group_id:
     description:
-      - The SMTP port to use.
-    type: int
-  server:
-    description:
-      - The SMTP server address.
+      - Group ID or Name should be set base on the source attribute of 'groups' in the Saml Assertion.
     type: str
-  password:
+  multi_domain_profile:
     description:
-      - A password for the SMTP server.
+      - Administrator multi-domain profile.
     type: str
-  username:
+  permissions_profile:
     description:
-      - A username for the SMTP server.
-    type: str
-  authentication:
-    description:
-      - Does the mail server requires authentication.
-    type: bool
-  encryption:
-    description:
-      - Encryption type.
-    type: str
-    choices: ['none', 'ssl', 'tls']
+      - Administrator permissions profile. Permissions profile should not be provided when multi-domain-profile is set to "Multi-Domain Super User" or
+        "Domain Super User".
+    type: list
+    elements: dict
+    suboptions:
+      domain:
+        description:
+          - N/A
+        type: str
+      profile:
+        description:
+          - Permission profile.
+        type: str
   tags:
     description:
       - Collection of tag identifiers.
@@ -87,12 +85,6 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
-  domains_to_process:
-    description:
-      - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
-        with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
-    type: list
-    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -105,29 +97,27 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
 EXAMPLES = """
-- name: add-smtp-server
-  cp_mgmt_smtp_server:
-    encryption: none
-    name: SMTP1
-    port: '25'
-    server: smtp.example.com
+- name: add-idp-administrator-group
+  cp_mgmt_idp_administrator_group:
+    group_id: it-team
+    multi_domain_profile: domain super user
+    name: my super group
     state: present
 
-- name: set-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
-    port: '25'
-    server: smtp.example.com
+- name: set-idp-administrator-group
+  cp_mgmt_idp_administrator_group:
+    group_id: global-domain-checkpoint
+    name: my global group
     state: present
 
-- name: delete-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
+- name: delete-idp-administrator-group
+  cp_mgmt_idp_administrator_group:
+    name: my super group
     state: absent
 """
 
 RETURN = """
-cp_mgmt_smtp_server:
+cp_mgmt_idp_administrator_group:
   description: The checkpoint object created or updated.
   returned: always, except when deleting the object.
   type: dict
@@ -140,12 +130,12 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        port=dict(type='int'),
-        server=dict(type='str'),
-        password=dict(type='str', no_log=True),
-        username=dict(type='str'),
-        authentication=dict(type='bool'),
-        encryption=dict(type='str', choices=['none', 'ssl', 'tls']),
+        group_id=dict(type='str'),
+        multi_domain_profile=dict(type='str'),
+        permissions_profile=dict(type='list', elements='dict', options=dict(
+            domain=dict(type='str'),
+            profile=dict(type='str')
+        )),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -154,14 +144,13 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'smtp-server'
+    api_call_object = 'idp-administrator-group'
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)

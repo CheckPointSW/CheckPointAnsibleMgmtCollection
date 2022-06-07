@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server_facts
-short_description: Get smtp-server objects facts on Checkpoint over Web Services API
+module: cp_mgmt_idp_administrator_group_facts
+short_description: Get idp-administrator-group objects facts on Checkpoint over Web Services API
 description:
-  - Get smtp-server objects facts on Checkpoint devices.
+  - Get idp-administrator-group objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
@@ -91,15 +91,12 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-smtp-server
-  cp_mgmt_smtp_server_facts:
-    name: SMTP
+- name: show-idp-administrator-group
+  cp_mgmt_idp_administrator_group_facts:
+    name: my global group
 
-- name: show-smtp-servers
-  cp_mgmt_smtp_server_facts:
-    details_level: standard
-    limit: 50
-    offset: 0
+- name: show-idp-administrator-groups
+  cp_mgmt_idp_administrator_group_facts:
 """
 
 RETURN = """
@@ -130,8 +127,8 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "smtp-server"
-    api_call_object_plural_version = "smtp-servers"
+    api_call_object = "idp-administrator-group"
+    api_call_object_plural_version = "idp-administrator-groups"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)

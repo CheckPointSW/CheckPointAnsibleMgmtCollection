@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server
-short_description: Manages smtp-server objects on Checkpoint over Web Services API
+module: cp_mgmt_repository_script
+short_description: Manages repository-script objects on Checkpoint over Web Services API
 description:
-  - Manages smtp-server objects on Checkpoint devices including creating, updating and removing objects.
+  - Manages repository-script objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
@@ -40,31 +40,14 @@ options:
       - Object name.
     type: str
     required: True
-  port:
+  script_body:
     description:
-      - The SMTP port to use.
-    type: int
-  server:
-    description:
-      - The SMTP server address.
+      - The entire content of the script.
     type: str
-  password:
+  script_body_base64:
     description:
-      - A password for the SMTP server.
+      - The entire content of the script encoded in Base64.
     type: str
-  username:
-    description:
-      - A username for the SMTP server.
-    type: str
-  authentication:
-    description:
-      - Does the mail server requires authentication.
-    type: bool
-  encryption:
-    description:
-      - Encryption type.
-    type: str
-    choices: ['none', 'ssl', 'tls']
   tags:
     description:
       - Collection of tag identifiers.
@@ -81,18 +64,6 @@ options:
     description:
       - Comments string.
     type: str
-  details_level:
-    description:
-      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
-        representation of the object.
-    type: str
-    choices: ['uid', 'standard', 'full']
-  domains_to_process:
-    description:
-      - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
-        with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
-    type: list
-    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -101,33 +72,37 @@ options:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
     type: bool
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
 extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
 EXAMPLES = """
-- name: add-smtp-server
-  cp_mgmt_smtp_server:
-    encryption: none
-    name: SMTP1
-    port: '25'
-    server: smtp.example.com
+- name: add-repository-script
+  cp_mgmt_repository_script:
+    name: New Script 1
+    script_body: ls -l /
     state: present
 
-- name: set-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
-    port: '25'
-    server: smtp.example.com
+- name: set-repository-script
+  cp_mgmt_repository_script:
+    color: green
+    name: New Script 1
+    script_body: cpstat os -f all
     state: present
 
-- name: delete-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
+- name: delete-repository-script
+  cp_mgmt_repository_script:
+    name: New Script 1
     state: absent
 """
 
 RETURN = """
-cp_mgmt_smtp_server:
+cp_mgmt_repository_script:
   description: The checkpoint object created or updated.
   returned: always, except when deleting the object.
   type: dict
@@ -140,12 +115,8 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        port=dict(type='int'),
-        server=dict(type='str'),
-        password=dict(type='str', no_log=True),
-        username=dict(type='str'),
-        authentication=dict(type='bool'),
-        encryption=dict(type='str', choices=['none', 'ssl', 'tls']),
+        script_body=dict(type='str'),
+        script_body_base64=dict(type='str'),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -153,15 +124,14 @@ def main():
                                         'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
                                         'yellow']),
         comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        ignore_errors=dict(type='bool'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'smtp-server'
+    api_call_object = 'repository-script'
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)

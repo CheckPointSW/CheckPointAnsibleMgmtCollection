@@ -27,30 +27,31 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_disconnect_cloud_services
+short_description: Disconnect the Management Server from Check Point's Infinity Portal.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Disconnect the Management Server from Check Point's Infinity Portal.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
-  uid:
+  force:
     description:
-      - Session unique identifier.
-    type: str
+      - Disconnect the Management Server from Check Point Infinity Portal, and reset the connection locally, regardless of the result in the Infinity
+        Portal. This flag can be used if the disconnect-cloud-services command failed. Since with this flag this command affects only the local configuration,
+        make sure to disconnect the Management Server in the Infinity Portal as well.
+    type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: disconnect-cloud-services
+  cp_mgmt_disconnect_cloud_services:
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_disconnect_cloud_services:
+  description: The checkpoint disconnect-cloud-services output.
   returned: always.
   type: dict
 """
@@ -61,13 +62,13 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
+        force=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "disconnect-cloud-services"
 
     result = api_command(module, command)
     module.exit_json(**result)

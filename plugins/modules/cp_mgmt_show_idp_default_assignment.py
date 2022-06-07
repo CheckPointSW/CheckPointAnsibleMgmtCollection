@@ -27,30 +27,31 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_show_idp_default_assignment
+short_description: Retrieve default Identity Provider assignment that used for Management server administrator access.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Retrieve default Identity Provider assignment that used for Management server administrator access.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
-  uid:
+  details_level:
     description:
-      - Session unique identifier.
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
     type: str
+    choices: ['uid', 'standard', 'full']
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: show-idp-default-assignment
+  cp_mgmt_show_idp_default_assignment:
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_show_idp_default_assignment:
+  description: The checkpoint show-idp-default-assignment output.
   returned: always.
   type: dict
 """
@@ -61,13 +62,13 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
+        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "show-idp-default-assignment"
 
     result = api_command(module, command)
     module.exit_json(**result)

@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server_facts
-short_description: Get smtp-server objects facts on Checkpoint over Web Services API
+module: cp_mgmt_domain_permissions_profile_facts
+short_description: Get domain-permissions-profile objects facts on Checkpoint over Web Services API
 description:
-  - Get smtp-server objects facts on Checkpoint devices.
+  - Get domain-permissions-profile objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
@@ -91,12 +91,12 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-smtp-server
-  cp_mgmt_smtp_server_facts:
-    name: SMTP
+- name: show-domain-permissions-profile
+  cp_mgmt_domain_permissions_profile_facts:
+    name: profile
 
-- name: show-smtp-servers
-  cp_mgmt_smtp_server_facts:
+- name: show-domain-permissions-profiles
+  cp_mgmt_domain_permissions_profile_facts:
     details_level: standard
     limit: 50
     offset: 0
@@ -130,8 +130,8 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "smtp-server"
-    api_call_object_plural_version = "smtp-servers"
+    api_call_object = "domain-permissions-profile"
+    api_call_object_plural_version = "domain-permissions-profiles"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)

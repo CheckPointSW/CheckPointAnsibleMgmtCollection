@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server
-short_description: Manages smtp-server objects on Checkpoint over Web Services API
+module: cp_mgmt_md_permissions_profile
+short_description: Manages md-permissions-profile objects on Checkpoint over Web Services API
 description:
-  - Manages smtp-server objects on Checkpoint devices including creating, updating and removing objects.
+  - Manages md-permissions-profile objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
@@ -40,31 +40,66 @@ options:
       - Object name.
     type: str
     required: True
-  port:
+  permission_level:
     description:
-      - The SMTP port to use.
-    type: int
-  server:
-    description:
-      - The SMTP server address.
+      - The level of the Multi Domain Permissions Profile.<br>The level cannot be changed after creation.
     type: str
-  password:
+    choices: ['super user', 'manager', 'domain level only']
+  mds_provisioning:
     description:
-      - A password for the SMTP server.
-    type: str
-  username:
-    description:
-      - A username for the SMTP server.
-    type: str
-  authentication:
-    description:
-      - Does the mail server requires authentication.
+      - Create and manage Multi-Domain Servers and Multi-Domain Log Servers.<br>Only a "Super User" permission-level profile can select this option.
     type: bool
-  encryption:
+  manage_admins:
     description:
-      - Encryption type.
+      - Create and manage Multi-Domain Security Management administrators with the same or lower permission level. For example, a Domain manager
+        cannot create Superusers or global managers.<br>Only a 'Manager' permission-level profile can edit this permission.
+    type: bool
+  manage_sessions:
+    description:
+      - Connect/disconnect Domain sessions, publish changes, and delete other administrator sessions.<br>Only a 'Manager' permission-level profile can
+        edit this permission.
+    type: bool
+  management_api_login:
+    description:
+      - Permission to log in to the Security Management Server and run API commands using these tools, mgmt_cli (Linux and Windows binaries), Gaia CLI
+        (clish) and Web Services (REST). Useful if you want to prevent administrators from running automatic scripts on the Management.<br>Note, This
+        permission is not required to run commands from within the API terminal in SmartConsole.
+    type: bool
+  cme_operations:
+    description:
+      - Permission to read / edit the Cloud Management Extension (CME) configuration.
     type: str
-    choices: ['none', 'ssl', 'tls']
+    choices: ['read', 'write', 'disabled']
+  global_vpn_management:
+    description:
+      - Lets the administrator select Enable global use for a Security Gateway shown in the MDS Gateways & Servers view.<br>Only a 'Manager'
+        permission-level profile can edit this permission.
+    type: bool
+  manage_global_assignments:
+    description:
+      - Controls the ability to create, edit and delete global assignment and not the ability to reassign, which is set according to the specific
+        Domain's permission profile.
+    type: bool
+  enable_default_profile_for_global_domains:
+    description:
+      - Enable the option to specify a default profile for all global domains.
+    type: bool
+  default_profile_global_domains:
+    description:
+      - Name or UID of the required default profile for all global domains.
+    type: str
+  view_global_objects_in_domain:
+    description:
+      - Lets an administrator with no global objects permissions view the global objects in the domain. This option is required for valid domain management.
+    type: bool
+  enable_default_profile_for_local_domains:
+    description:
+      - Enable the option to specify a default profile for all local domains.
+    type: bool
+  default_profile_local_domains:
+    description:
+      - Name or UID of the required default profile for all local domains.
+    type: str
   tags:
     description:
       - Collection of tag identifiers.
@@ -105,29 +140,26 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
 EXAMPLES = """
-- name: add-smtp-server
-  cp_mgmt_smtp_server:
-    encryption: none
-    name: SMTP1
-    port: '25'
-    server: smtp.example.com
+- name: add-md-permissions-profile
+  cp_mgmt_md_permissions_profile:
+    name: manager profile
     state: present
 
-- name: set-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
-    port: '25'
-    server: smtp.example.com
+- name: set-md-permissions-profile
+  cp_mgmt_md_permissions_profile:
+    default_profile_global_domains: read write all
+    name: manager profile
+    permission_level: domain level only
     state: present
 
-- name: delete-smtp-server
-  cp_mgmt_smtp_server:
-    name: SMTP
+- name: delete-md-permissions-profile
+  cp_mgmt_md_permissions_profile:
+    name: profile
     state: absent
 """
 
 RETURN = """
-cp_mgmt_smtp_server:
+cp_mgmt_md_permissions_profile:
   description: The checkpoint object created or updated.
   returned: always, except when deleting the object.
   type: dict
@@ -140,12 +172,19 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        port=dict(type='int'),
-        server=dict(type='str'),
-        password=dict(type='str', no_log=True),
-        username=dict(type='str'),
-        authentication=dict(type='bool'),
-        encryption=dict(type='str', choices=['none', 'ssl', 'tls']),
+        permission_level=dict(type='str', choices=['super user', 'manager', 'domain level only']),
+        mds_provisioning=dict(type='bool'),
+        manage_admins=dict(type='bool'),
+        manage_sessions=dict(type='bool'),
+        management_api_login=dict(type='bool'),
+        cme_operations=dict(type='str', choices=['read', 'write', 'disabled']),
+        global_vpn_management=dict(type='bool'),
+        manage_global_assignments=dict(type='bool'),
+        enable_default_profile_for_global_domains=dict(type='bool'),
+        default_profile_global_domains=dict(type='str'),
+        view_global_objects_in_domain=dict(type='bool'),
+        enable_default_profile_for_local_domains=dict(type='bool'),
+        default_profile_local_domains=dict(type='str'),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -161,7 +200,7 @@ def main():
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'smtp-server'
+    api_call_object = 'md-permissions-profile'
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)

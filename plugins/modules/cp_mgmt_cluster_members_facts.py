@@ -27,27 +27,22 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server_facts
-short_description: Get smtp-server objects facts on Checkpoint over Web Services API
+module: cp_mgmt_cluster_members_facts
+short_description: Retrieve all existing cluster members in domain.
 description:
-  - Get smtp-server objects facts on Checkpoint devices.
+  - Retrieve all existing cluster members in domain.
   - All operations are performed over Web Services API.
-  - This module handles both operations, get a specific object and get several objects,
-    For getting a specific object use the parameter 'name'.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
-  name:
+  uid:
     description:
-      - Object name.
-        This parameter is relevant only for getting a specific object.
+      - Cluster member unique identifier.
     type: str
-  details_level:
+  limit_interfaces:
     description:
-      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
-        representation of the object.
-    type: str
-    choices: ['uid', 'standard', 'full']
+      - Limit number of cluster member interfaces to show.
+    type: int
   filter:
     description:
       - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
@@ -81,6 +76,16 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
+  show_membership:
+    description:
+      - Indicates whether to calculate and show "groups" field for every object in reply.
+    type: bool
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
   domains_to_process:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
@@ -91,15 +96,14 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-smtp-server
-  cp_mgmt_smtp_server_facts:
-    name: SMTP
+- name: show-cluster-member
+  cp_mgmt_cluster_members_facts:
+    uid: 871a47b9-0000-4444-555-593c2111111
 
-- name: show-smtp-servers
-  cp_mgmt_smtp_server_facts:
+- name: show-cluster-members
+  cp_mgmt_cluster_members_facts:
     details_level: standard
-    limit: 50
-    offset: 0
+    limit: 5
 """
 
 RETURN = """
@@ -115,8 +119,8 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        name=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        uid=dict(type='str'),
+        limit_interfaces=dict(type='int'),
         filter=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
@@ -124,17 +128,19 @@ def main():
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
         )),
+        show_membership=dict(type='bool'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         domains_to_process=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "smtp-server"
-    api_call_object_plural_version = "smtp-servers"
+    api_call_object = "cluster-member"
+    api_call_object_plural_version = "cluster-members"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
-    module.exit_json(ansible_facts=result)
+    module.exit_json(**result)
 
 
 if __name__ == '__main__':

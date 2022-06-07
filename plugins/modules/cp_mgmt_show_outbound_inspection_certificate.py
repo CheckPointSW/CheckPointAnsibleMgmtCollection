@@ -27,30 +27,25 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_show_outbound_inspection_certificate
+short_description: Show outbound inspection certificate.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Show outbound inspection certificate.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
-options:
-  uid:
-    description:
-      - Session unique identifier.
-    type: str
+options: {}
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: show-outbound-inspection-certificate
+  cp_mgmt_show_outbound_inspection_certificate:
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_show_outbound_inspection_certificate:
+  description: The checkpoint show-outbound-inspection-certificate output.
   returned: always.
   type: dict
 """
@@ -61,13 +56,12 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "show-outbound-inspection-certificate"
 
     result = api_command(module, command)
     module.exit_json(**result)

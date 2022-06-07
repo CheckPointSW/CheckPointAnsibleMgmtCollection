@@ -27,15 +27,15 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server_facts
-short_description: Get smtp-server objects facts on Checkpoint over Web Services API
+module: cp_mgmt_lsm_gateway_profile_facts
+short_description: Get lsm-gateway-profile objects facts on Checkpoint over Web Services API
 description:
-  - Get smtp-server objects facts on Checkpoint devices.
+  - Get lsm-gateway-profile objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
 version_added: "3.0.0"
-author: "Eden Brillant (@chkp-edenbr)"
+author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:
     description:
@@ -81,6 +81,10 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
+  show_membership:
+    description:
+      - Indicates whether to calculate and show "groups" field for every object in reply.
+    type: bool
   domains_to_process:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
@@ -91,12 +95,12 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-smtp-server
-  cp_mgmt_smtp_server_facts:
-    name: SMTP
+- name: show-lsm-gateway-profile
+  cp_mgmt_lsm_gateway_profile_facts:
+    name: gateway_profile
 
-- name: show-smtp-servers
-  cp_mgmt_smtp_server_facts:
+- name: show-lsm-gateway-profiles
+  cp_mgmt_lsm_gateway_profile_facts:
     details_level: standard
     limit: 50
     offset: 0
@@ -124,14 +128,15 @@ def main():
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
         )),
+        show_membership=dict(type='bool'),
         domains_to_process=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "smtp-server"
-    api_call_object_plural_version = "smtp-servers"
+    api_call_object = "lsm-gateway-profile"
+    api_call_object_plural_version = "lsm-gateway-profiles"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)

@@ -32,8 +32,8 @@ short_description: Manages simple-cluster objects on Checkpoint over Web Service
 description:
   - Manages simple-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
-author: "Shiran Golzar (@chkp-shirango)"
+version_added: "3.0.0"
+author: "Eden Brillant (@chkp-edenbr)"
 options:
   name:
     description:
@@ -114,6 +114,7 @@ options:
     description:
       - N/A
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -223,6 +224,7 @@ options:
         description:
           - Collection of tag identifiers.
         type: list
+        elements: str
       topology:
         description:
           - N/A
@@ -280,6 +282,7 @@ options:
     description:
       - Cluster members list. Only new cluster member can be added. Adding existing gateway is not supported.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -289,6 +292,7 @@ options:
         description:
           - Cluster Member network interfaces.
         type: list
+        elements: dict
         suboptions:
           name:
             description:
@@ -384,6 +388,7 @@ options:
             description:
               - Collection of tag identifiers.
             type: list
+            elements: str
           topology:
             description:
               - N/A
@@ -454,6 +459,7 @@ options:
         description:
           - Collection of tag identifiers.
         type: list
+        elements: str
       color:
         description:
           - Color of the object. Should be one of existing colors.
@@ -498,10 +504,11 @@ options:
             description:
               - List of URL aliases that are redirected to the main portal URL.
             type: list
+            elements: str
           ip_address:
             description:
               - Optional, IP address for the web portal to use, if your DNS server fails to resolve the main portal URL.
-        Note, If your DNS server resolves the main portal URL, this IP address is ignored.
+                Note, If your DNS server resolves the main portal URL, this IP address is ignored.
             type: str
           main_url:
             description:
@@ -514,8 +521,7 @@ options:
         suboptions:
           base64_certificate:
             description:
-              - The certificate file encoded in Base64 with padding. 
-        This file must be in the *.p12 format.
+              - The certificate file encoded in Base64 with padding. This file must be in the *.p12 format.
             type: str
           base64_password:
             description:
@@ -552,18 +558,22 @@ options:
     description:
       - Server(s) to send alerts to.
     type: list
+    elements: str
   send_logs_to_backup_server:
     description:
       - Backup server(s) to send logs to.
     type: list
+    elements: str
   send_logs_to_server:
     description:
       - Server(s) to send logs to.
     type: list
+    elements: str
   tags:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   threat_emulation:
     description:
       - Threat Emulation blade enabled.
@@ -600,10 +610,11 @@ options:
             description:
               - List of URL aliases that are redirected to the main portal URL.
             type: list
+            elements: str
           ip_address:
             description:
               - Optional, IP address for the web portal to use, if your DNS server fails to resolve the main portal URL.
-        Note, If your DNS server resolves the main portal URL, this IP address is ignored.
+                Note, If your DNS server resolves the main portal URL, this IP address is ignored.
             type: str
           main_url:
             description:
@@ -616,8 +627,7 @@ options:
         suboptions:
           base64_certificate:
             description:
-              - The certificate file encoded in Base64 with padding. 
-        This file must be in the *.p12 format.
+              - The certificate file encoded in Base64 with padding. This file must be in the *.p12 format.
             type: str
           base64_password:
             description:
@@ -672,6 +682,7 @@ options:
             description:
               - Collection of VPN Authentication clients identified by the name or UID.
             type: list
+            elements: str
       link_selection:
         description:
           - Link Selection.
@@ -702,25 +713,22 @@ options:
         type: int
       office_mode:
         description:
-          - Office Mode.
-    Notation Wide Impact - Office Mode apply IPSec VPN Software Blade clients and to the Mobile Access Software Blade clients.
+          - Office Mode. Notation Wide Impact - Office Mode apply IPSec VPN Software Blade clients and to the Mobile Access Software Blade clients.
         type: dict
         suboptions:
           mode:
             description:
-              - Office Mode Permissions.
-        When selected to be "off", all the other definitions are irrelevant.
+              - Office Mode Permissions.When selected to be "off", all the other definitions are irrelevant.
             type: str
             choices: ['off', 'specific-group', 'all-users']
           group:
             description:
-              - Group. Identified by name or UID.
-        Must be set when "office-mode-permissions" was selected to be "group".
+              - Group. Identified by name or UID. Must be set when "office-mode-permissions" was selected to be "group".
             type: str
           allocate_ip_address_from:
             description:
               - Allocate IP address Method.
-        Allocate IP address by sequentially trying the given methods until success.
+                Allocate IP address by sequentially trying the given methods until success.
             type: dict
             suboptions:
               radius_server:
@@ -734,28 +742,28 @@ options:
               allocate_method:
                 description:
                   - Using either Manual (IP Pool) or Automatic (DHCP).
-            Must be set when "use-allocate-method" is true.
+                    Must be set when "use-allocate-method" is true.
                 type: str
                 choices: ['manual', 'automatic']
               manual_network:
                 description:
                   - Manual Network. Identified by name or UID.
-            Must be set when "allocate-method" was selected to be "manual".
+                    Must be set when "allocate-method" was selected to be "manual".
                 type: str
               dhcp_server:
                 description:
                   - DHCP Server. Identified by name or UID.
-            Must be set when "allocate-method" was selected to be "automatic".
+                    Must be set when "allocate-method" was selected to be "automatic".
                 type: str
               virtual_ip_address:
                 description:
                   - Virtual IPV4 address for DHCP server replies.
-            Must be set when "allocate-method" was selected to be "automatic".
+                    Must be set when "allocate-method" was selected to be "automatic".
                 type: str
               dhcp_mac_address:
                 description:
                   - Calculated MAC address for DHCP allocation.
-            Must be set when "allocate-method" was selected to be "automatic".
+                    Must be set when "allocate-method" was selected to be "automatic".
                 type: str
                 choices: ['per-machine', 'per-user']
               optional_parameters:
@@ -770,7 +778,7 @@ options:
                   primary_dns_server:
                     description:
                       - Primary DNS Server. Identified by name or UID.
-                Must be set when "use-primary-dns-server" is true and can not be set when "use-primary-dns-server" is false.
+                        Must be set when "use-primary-dns-server" is true and can not be set when "use-primary-dns-server" is false.
                     type: str
                   use_first_backup_dns_server:
                     description:
@@ -779,7 +787,7 @@ options:
                   first_backup_dns_server:
                     description:
                       - First Backup DNS Server. Identified by name or UID.
-                Must be set when "use-first-backup-dns-server" is true and can not be set when "use-first-backup-dns-server" is false.
+                        Must be set when "use-first-backup-dns-server" is true and can not be set when "use-first-backup-dns-server" is false.
                     type: str
                   use_second_backup_dns_server:
                     description:
@@ -788,7 +796,7 @@ options:
                   second_backup_dns_server:
                     description:
                       - Second Backup DNS Server. Identified by name or UID.
-                Must be set when "use-second-backup-dns-server" is true and can not be set when "use-second-backup-dns-server" is false.
+                        Must be set when "use-second-backup-dns-server" is true and can not be set when "use-second-backup-dns-server" is false.
                     type: str
                   dns_suffixes:
                     description:
@@ -801,7 +809,7 @@ options:
                   primary_wins_server:
                     description:
                       - Primary WINS Server. Identified by name or UID.
-                Must be set when "use-primary-wins-server" is true and can not be set when "use-primary-wins-server" is false.
+                        Must be set when "use-primary-wins-server" is true and can not be set when "use-primary-wins-server" is false.
                     type: str
                   use_first_backup_wins_server:
                     description:
@@ -810,7 +818,7 @@ options:
                   first_backup_wins_server:
                     description:
                       - First Backup WINS Server. Identified by name or UID.
-                Must be set when "use-first-backup-wins-server" is true and can not be set when "use-first-backup-wins-server" is false.
+                        Must be set when "use-first-backup-wins-server" is true and can not be set when "use-first-backup-wins-server" is false.
                     type: str
                   use_second_backup_wins_server:
                     description:
@@ -819,7 +827,7 @@ options:
                   second_backup_wins_server:
                     description:
                       - Second Backup WINS Server. Identified by name or UID.
-                Must be set when "use-second-backup-wins-server" is true and can not be set when "use-second-backup-wins-server" is false.
+                        Must be set when "use-second-backup-wins-server" is true and can not be set when "use-second-backup-wins-server" is false.
                     type: str
                   ip_lease_duration:
                     description:
@@ -835,9 +843,8 @@ options:
             type: bool
           anti_spoofing_additional_addresses:
             description:
-              - Additional IP Addresses for Anti-Spoofing.
-        Identified by name or UID.
-        Must be set when "perform-anti-spoofings" is true.
+              - Additional IP Addresses for Anti-Spoofing. Identified by name or UID.
+                Must be set when "perform-anti-spoofings" is true.
             type: str
       remote_access:
         description:
@@ -851,14 +858,14 @@ options:
           l2tp_auth_method:
             description:
               - L2TP Authentication Method.
-        Must be set when "support-l2tp" is true.
+                Must be set when "support-l2tp" is true.
             type: str
             choices: ['certificate', 'md5']
           l2tp_certificate:
             description:
               - L2TP Certificate.
-        Must be set when "l2tp-auth-method" was selected to be "certificate".
-        Insert "defaultCert" when you want to use the default certificate.
+                Must be set when "l2tp-auth-method" was selected to be "certificate".
+                Insert "defaultCert" when you want to use the default certificate.
             type: str
           allow_vpn_clients_to_route_traffic:
             description:
@@ -871,7 +878,7 @@ options:
           nat_traversal_service:
             description:
               - Allocated NAT traversal UDP service. Identified by name or UID.
-        Must be set when "support-nat-traversal-mechanism" is true.
+                Must be set when "support-nat-traversal-mechanism" is true.
             type: str
           support_visitor_mode:
             description:
@@ -880,13 +887,13 @@ options:
           visitor_mode_service:
             description:
               - TCP Service for Visitor Mode. Identified by name or UID.
-        Must be set when "support-visitor-mode" is true.
+                Must be set when "support-visitor-mode" is true.
             type: str
           visitor_mode_interface:
             description:
               - Interface for Visitor Mode.
-        Must be set when "support-visitor-mode" is true.
-        Insert IPV4 Address of existing interface or "All IPs" when you want all interfaces.
+                Must be set when "support-visitor-mode" is true.
+                Insert IPV4 Address of existing interface or "All IPs" when you want all interfaces.
             type: str
       vpn_domain:
         description:
@@ -922,6 +929,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -1039,7 +1047,7 @@ def main():
             memory_pool_size=dict(type='int')
         )),
         hardware=dict(type='str'),
-        interfaces=dict(type='list', options=dict(
+        interfaces=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             interface_type=dict(type='str', choices=['cluster', 'sync', 'cluster + sync', 'private']),
             ip_address=dict(type='str'),
@@ -1066,12 +1074,11 @@ def main():
                 auto_calculated=dict(type='bool'),
                 specific_zone=dict(type='str')
             )),
-            tags=dict(type='list'),
+            tags=dict(type='list', elements='str'),
             topology=dict(type='str', choices=['automatic', 'external', 'internal']),
             topology_settings=dict(type='dict', options=dict(
                 interface_leads_to_dmz=dict(type='bool'),
-                ip_address_behind_this_interface=dict(type='str',
-                                                                           choices=['not defined', 'network defined by the interface ip and net mask',
+                ip_address_behind_this_interface=dict(type='str', choices=['not defined', 'network defined by the interface ip and net mask',
                                                                            'network defined by routing', 'specific']),
                 specific_network=dict(type='str')
             )),
@@ -1086,9 +1093,9 @@ def main():
             ignore_errors=dict(type='bool')
         )),
         ips=dict(type='bool'),
-        members=dict(type='list', options=dict(
+        members=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
-            interfaces=dict(type='list', options=dict(
+            interfaces=dict(type='list', elements='dict', options=dict(
                 name=dict(type='str'),
                 anti_spoofing=dict(type='bool'),
                 anti_spoofing_settings=dict(type='dict', options=dict(
@@ -1112,12 +1119,11 @@ def main():
                     auto_calculated=dict(type='bool'),
                     specific_zone=dict(type='str')
                 )),
-                tags=dict(type='list'),
+                tags=dict(type='list', elements='str'),
                 topology=dict(type='str', choices=['automatic', 'external', 'internal']),
                 topology_settings=dict(type='dict', options=dict(
                     interface_leads_to_dmz=dict(type='bool'),
-                    ip_address_behind_this_interface=dict(type='str',
-                                                                               choices=['not defined', 'network defined by the interface ip and net mask',
+                    ip_address_behind_this_interface=dict(type='str', choices=['not defined', 'network defined by the interface ip and net mask',
                                                                                'network defined by routing', 'specific']),
                     specific_network=dict(type='str')
                 )),
@@ -1134,8 +1140,8 @@ def main():
             ip_address=dict(type='str'),
             ipv4_address=dict(type='str'),
             ipv6_address=dict(type='str'),
-            one_time_password=dict(type='str'),
-            tags=dict(type='list'),
+            one_time_password=dict(type='str', no_log=True),
+            tags=dict(type='list', elements='str'),
             color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan',
                                             'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick',
                                             'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral',
@@ -1149,13 +1155,13 @@ def main():
         os_name=dict(type='str'),
         platform_portal_settings=dict(type='dict', options=dict(
             portal_web_settings=dict(type='dict', options=dict(
-                aliases=dict(type='list'),
+                aliases=dict(type='list', elements='str'),
                 ip_address=dict(type='str'),
                 main_url=dict(type='str')
             )),
             certificate_settings=dict(type='dict', options=dict(
                 base64_certificate=dict(type='str'),
-                base64_password=dict(type='str')
+                base64_password=dict(type='str', no_log=True)
             )),
             accessibility=dict(type='dict', options=dict(
                 allow_access_from=dict(type='str', choices=['rule_base', 'internal_interfaces', 'all_interfaces']),
@@ -1166,10 +1172,10 @@ def main():
                 ))
             ))
         )),
-        send_alerts_to_server=dict(type='list'),
-        send_logs_to_backup_server=dict(type='list'),
-        send_logs_to_server=dict(type='list'),
-        tags=dict(type='list'),
+        send_alerts_to_server=dict(type='list', elements='str'),
+        send_logs_to_backup_server=dict(type='list', elements='str'),
+        send_logs_to_server=dict(type='list', elements='str'),
+        tags=dict(type='list', elements='str'),
         threat_emulation=dict(type='bool'),
         threat_extraction=dict(type='bool'),
         threat_prevention_mode=dict(type='str', choices=['autonomous', 'custom']),
@@ -1177,13 +1183,13 @@ def main():
         usercheck_portal_settings=dict(type='dict', options=dict(
             enabled=dict(type='bool'),
             portal_web_settings=dict(type='dict', options=dict(
-                aliases=dict(type='list'),
+                aliases=dict(type='list', elements='str'),
                 ip_address=dict(type='str'),
                 main_url=dict(type='str')
             )),
             certificate_settings=dict(type='dict', options=dict(
                 base64_certificate=dict(type='str'),
-                base64_password=dict(type='str')
+                base64_password=dict(type='str', no_log=True)
             )),
             accessibility=dict(type='dict', options=dict(
                 allow_access_from=dict(type='str', choices=['rule_base', 'internal_interfaces', 'all_interfaces']),
@@ -1198,7 +1204,7 @@ def main():
         vpn=dict(type='bool'),
         vpn_settings=dict(type='dict', options=dict(
             authentication=dict(type='dict', options=dict(
-                authentication_clients=dict(type='list')
+                authentication_clients=dict(type='list', elements='str')
             )),
             link_selection=dict(type='dict', options=dict(
                 ip_selection=dict(type='str', choices=['use-main-address',
@@ -1264,7 +1270,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )

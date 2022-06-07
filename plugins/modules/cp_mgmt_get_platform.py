@@ -27,30 +27,34 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_get_platform
+short_description: Get actual platform (Hardware, Version, OS) from gateway, cluster or Check Point host.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Get actual platform (Hardware, Version, OS) from gateway, cluster or Check Point host.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
-  uid:
+  name:
     description:
-      - Session unique identifier.
+      - Gateway, cluster or Check Point host name.
     type: str
+  auto_publish_session:
+    description:
+    - Publish the current session if changes have been performed after task completes.
+    type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: get-platform
+  cp_mgmt_get_platform:
+    name: gw1
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_get_platform:
+  description: The checkpoint get-platform output.
   returned: always.
   type: dict
 """
@@ -61,13 +65,14 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
+        name=dict(type='str'),
+        auto_publish_session=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "get-platform"
 
     result = api_command(module, command)
     module.exit_json(**result)

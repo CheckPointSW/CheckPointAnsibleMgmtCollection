@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_approve_session
+short_description: Workflow feature - Approve and Publish the session.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Workflow feature - Approve and Publish the session.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
@@ -43,14 +43,14 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
+- name: approve-session
+  cp_mgmt_approve_session:
     uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_approve_session:
+  description: The checkpoint approve-session output.
   returned: always.
   type: dict
 """
@@ -67,7 +67,7 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "approve-session"
 
     result = api_command(module, command)
     module.exit_json(**result)

@@ -27,30 +27,49 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_set_idp_default_assignment
+short_description: Set default Identity Provider assignment to be use for Management server administrator access.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Set default Identity Provider assignment to be use for Management server administrator access.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
-  uid:
+  identity_provider:
     description:
-      - Session unique identifier.
+      - Represents the Identity Provider to be used for Login by this assignment identified by the name or UID, to cancel existing assignment should
+        set to 'none'.
     type: str
+  details_level:
+    description:
+      - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
+        representation of the object.
+    type: str
+    choices: ['uid', 'standard', 'full']
+  ignore_warnings:
+    description:
+      - Apply changes ignoring warnings.
+    type: bool
+  ignore_errors:
+    description:
+      - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
+    type: bool
+  auto_publish_session:
+    description:
+    - Publish the current session if changes have been performed after task completes.
+    type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: set-idp-default-assignment
+  cp_mgmt_set_idp_default_assignment:
+    identity_provider: azure
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_set_idp_default_assignment:
+  description: The checkpoint set-idp-default-assignment output.
   returned: always.
   type: dict
 """
@@ -61,13 +80,17 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
+        identity_provider=dict(type='str'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
+        ignore_warnings=dict(type='bool'),
+        ignore_errors=dict(type='bool'),
+        auto_publish_session=dict(type='bool')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "set-idp-default-assignment"
 
     result = api_command(module, command)
     module.exit_json(**result)

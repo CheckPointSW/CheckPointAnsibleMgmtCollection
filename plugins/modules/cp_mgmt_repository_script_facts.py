@@ -27,10 +27,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_smtp_server_facts
-short_description: Get smtp-server objects facts on Checkpoint over Web Services API
+module: cp_mgmt_repository_script_facts
+short_description: Get repository-script objects facts on Checkpoint over Web Services API
 description:
-  - Get smtp-server objects facts on Checkpoint devices.
+  - Get repository-script objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
@@ -48,12 +48,6 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
-  filter:
-    description:
-      - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
-        logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
-        name, comment, tags etc.
-    type: str
   limit:
     description:
       - The maximal number of returned results.
@@ -81,22 +75,16 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
-  domains_to_process:
-    description:
-      - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
-        with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
-    type: list
-    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-smtp-server
-  cp_mgmt_smtp_server_facts:
-    name: SMTP
+- name: show-repository-script
+  cp_mgmt_repository_script_facts:
+    name: New Script 1
 
-- name: show-smtp-servers
-  cp_mgmt_smtp_server_facts:
+- name: show-repository-scripts
+  cp_mgmt_repository_script_facts:
     details_level: standard
     limit: 50
     offset: 0
@@ -117,21 +105,19 @@ def main():
     argument_spec = dict(
         name=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        filter=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
         order=dict(type='list', elements='dict', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
-        )),
-        domains_to_process=dict(type='list', elements='str')
+        ))
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "smtp-server"
-    api_call_object_plural_version = "smtp-servers"
+    api_call_object = "repository-script"
+    api_call_object_plural_version = "repository-scripts"
 
     result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)

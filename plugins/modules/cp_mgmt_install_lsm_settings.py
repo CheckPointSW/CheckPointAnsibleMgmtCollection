@@ -27,30 +27,33 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_submit_session
-short_description: Workflow feature - Submit the session for approval.
+module: cp_mgmt_install_lsm_settings
+short_description: Executes the lsm-install-settings on a given list of targets. Install the provisioning settings that defined on the object on the targets
+                   devices.
 description:
-  - Workflow feature - Submit the session for approval.
+  - Executes the lsm-install-settings on a given list of targets. Install the provisioning settings that defined on the object on the targets devices.
   - All operations are performed over Web Services API.
 version_added: "3.0.0"
-author: "Eden Brillant (@chkp-edenbr)"
+author: "Shiran Golzar (@chkp-shirango)"
 options:
-  uid:
+  targets:
     description:
-      - Session unique identifier.
-    type: str
+      - On what targets to execute this command. Targets may be identified by their name, or object unique identifier.
+    type: list
+    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
 EXAMPLES = """
-- name: submit-session
-  cp_mgmt_submit_session:
-    uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+- name: install-lsm-settings
+  cp_mgmt_install_lsm_settings:
+    targets:
+    - lsm_gateway
 """
 
 RETURN = """
-cp_mgmt_submit_session:
-  description: The checkpoint submit-session output.
+cp_mgmt_install_lsm_settings:
+  description: The checkpoint install-lsm-settings output.
   returned: always.
   type: dict
 """
@@ -61,13 +64,13 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
+        targets=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
     module = AnsibleModule(argument_spec=argument_spec)
 
-    command = "submit-session"
+    command = "install-lsm-settings"
 
     result = api_command(module, command)
     module.exit_json(**result)

@@ -28,16 +28,17 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_test_sic_status
-short_description: Test SIC Status reflects the state of the gateway after it has received the certificate issued by the ICA. If the SIC status is Unknown
-then there is no connection between the gateway and the Security Management Server. If the SIC status is No Communication, an error message will appear. It
-may contain specific instructions on how to fix the situation.
+short_description: Test SIC Status reflects the state of the gateway after it has received the certificate issued by the
+                   ICA. If the SIC status is Unknown then there is no connection between the gateway and the Security
+                   Management Server. If the SIC status is No Communication, an error message will appear. It may
+                   contain specific instructions on how to fix the situation.
 description:
   - Test SIC Status reflects the state of the gateway after it has received the certificate issued by the ICA. If the SIC status is Unknown then there is
     no connection between the gateway and the Security Management Server. If the SIC status is No Communication, an error message will appear. It may contain
     specific instructions on how to fix the situation.
   - All operations are performed over Web Services API.
-version_added: "2.9"
-author: "Or Soffer (@chkp-orso)"
+version_added: "3.0.0"
+author: "Eden Brillant (@chkp-edenbr)"
 options:
   name:
     description:
