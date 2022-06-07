@@ -32,7 +32,7 @@ short_description: Runs IPS database update. If "package-path" is not provided s
 description:
   - Runs IPS database update. If "package-path" is not provided server will try to get the latest package from the User Center.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   package_path:

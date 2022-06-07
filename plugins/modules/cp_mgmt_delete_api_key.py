@@ -32,7 +32,7 @@ short_description: Delete the API key. For the key to be invalid publish is need
 description:
   - Delete the API key. For the key to be invalid publish is needed.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   api_key:
@@ -71,7 +71,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        api_key=dict(type='str'),
+        api_key=dict(type='str', no_log=True),
         admin_uid=dict(type='str'),
         admin_name=dict(type='str')
     )

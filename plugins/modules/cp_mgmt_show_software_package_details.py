@@ -32,7 +32,7 @@ short_description: Gets the software package information from the cloud.
 description:
   - Gets the software package information from the cloud.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:

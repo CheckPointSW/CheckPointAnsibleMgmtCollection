@@ -32,17 +32,19 @@ short_description: assign global assignment on Check Point over Web Services API
 description:
   - assign global assignment on Check Point over Web Services API
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   dependent_domains:
     description:
       - N/A
     type: list
+    elements: str
   global_domains:
     description:
       - N/A
     type: list
+    elements: str
   details_level:
     description:
       - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
@@ -72,8 +74,8 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        dependent_domains=dict(type='list'),
-        global_domains=dict(type='list'),
+        dependent_domains=dict(type='list', elements='str'),
+        global_domains=dict(type='list', elements='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)

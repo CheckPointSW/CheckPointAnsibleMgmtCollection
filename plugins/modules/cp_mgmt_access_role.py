@@ -32,7 +32,7 @@ short_description: Manages access-role objects on Check Point over Web Services 
 description:
   - Manages access-role objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -44,6 +44,7 @@ options:
     description:
       - Machines that can access the system.
     type: list
+    elements: dict
     suboptions:
       source:
         description:
@@ -53,6 +54,7 @@ options:
         description:
           - Name or UID of an object selected from source.
         type: list
+        elements: str
       base_dn:
         description:
           - When source is "Active Directory" use "base-dn" to refine the query in AD database.
@@ -61,6 +63,7 @@ options:
     description:
       - Collection of Network objects identified by the name or UID that can access the system.
     type: list
+    elements: str
   remote_access_clients:
     description:
       - Remote access clients identified by name or UID.
@@ -69,10 +72,12 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   users:
     description:
       - Users that can access the system.
     type: list
+    elements: dict
     suboptions:
       source:
         description:
@@ -82,6 +87,7 @@ options:
         description:
           - Name or UID of an object selected from source.
         type: list
+        elements: str
       base_dn:
         description:
           - When source is "Active Directory" use "base-dn" to refine the query in AD database.
@@ -151,17 +157,17 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        machines=dict(type='list', options=dict(
+        machines=dict(type='list', elements='dict', options=dict(
             source=dict(type='str'),
-            selection=dict(type='list'),
+            selection=dict(type='list', elements='str'),
             base_dn=dict(type='str')
         )),
-        networks=dict(type='list'),
+        networks=dict(type='list', elements='str'),
         remote_access_clients=dict(type='str'),
-        tags=dict(type='list'),
-        users=dict(type='list', options=dict(
+        tags=dict(type='list', elements='str'),
+        users=dict(type='list', elements='dict', options=dict(
             source=dict(type='str'),
-            selection=dict(type='list'),
+            selection=dict(type='list', elements='str'),
             base_dn=dict(type='str')
         )),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',

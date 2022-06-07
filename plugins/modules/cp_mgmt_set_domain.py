@@ -32,7 +32,7 @@ short_description: Edit existing object using object name or uid.
 description:
   - Edit existing object using object name or uid.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -49,6 +49,7 @@ options:
         description:
           - Adds to collection of values
         type: list
+        elements: dict
         suboptions:
           name:
             description:
@@ -83,6 +84,7 @@ options:
         description:
           - Remove from collection of values
         type: list
+        elements: str
         suboptions:
           name:
             description:
@@ -118,6 +120,7 @@ options:
       - Collection of tag identifiers. Note, The list of tags can not be modified in a single command together with the domain servers. To modify
         tags, please use the separate 'set-domain' command, without providing the list of domain servers.
     type: list
+    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
@@ -143,7 +146,7 @@ def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
         servers=dict(type='dict', options=dict(
-            add=dict(type='list', options=dict(
+            add=dict(type='list', elements='dict', options=dict(
                 name=dict(type='str'),
                 ip_address=dict(type='str'),
                 ipv4_address=dict(type='str'),
@@ -152,7 +155,7 @@ def main():
                 skip_start_domain_server=dict(type='bool'),
                 type=dict(type='str', choices=['management server', 'log server', 'smc'])
             )),
-            remove=dict(type='list')
+            remove=dict(type='list', elements='str')
         )),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -163,7 +166,7 @@ def main():
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool'),
-        tags=dict(type='list')
+        tags=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 

@@ -33,7 +33,7 @@ description:
   - Imports a Data Center Object from a Data Center Server.<br> Data Center Object represents an object in the cloud environment, e.g. a virtual machine,
     cluster, network and more.<br> Use the show-data-center-content command to see the Data Center Objects that can be imported from a Data Center Server.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   data_center_name:
@@ -60,6 +60,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -81,6 +82,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -119,7 +121,7 @@ def main():
         uri=dict(type='str'),
         uid_in_data_center=dict(type='str'),
         name=dict(type='str'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
@@ -127,7 +129,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )

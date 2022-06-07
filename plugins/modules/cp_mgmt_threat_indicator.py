@@ -32,7 +32,7 @@ short_description: Manages threat-indicator objects on Check Point over Web Serv
 description:
   - Manages threat-indicator objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -44,6 +44,7 @@ options:
     description:
       - The indicator's observables.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -135,6 +136,7 @@ options:
     description:
       - Profiles in which to override the indicator's default action.
     type: list
+    elements: dict
     suboptions:
       action:
         description:
@@ -149,6 +151,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -221,7 +224,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        observables=dict(type='list', options=dict(
+        observables=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             md5=dict(type='str'),
             url=dict(type='str'),
@@ -243,11 +246,11 @@ def main():
         )),
         observables_raw_data=dict(type='str'),
         action=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-        profile_overrides=dict(type='list', options=dict(
+        profile_overrides=dict(type='list', elements='dict', options=dict(
             action=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
             profile=dict(type='str')
         )),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

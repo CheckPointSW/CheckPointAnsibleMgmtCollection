@@ -32,7 +32,7 @@ short_description: Manages threat-exception objects on Check Point over Web Serv
 description:
   - Manages threat-exception objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -68,6 +68,7 @@ options:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   destination_negate:
     description:
       - True if negate is set for destination.
@@ -80,10 +81,12 @@ options:
     description:
       - Which Gateways identified by the name or UID to install the policy on.
     type: list
+    elements: str
   protected_scope:
     description:
       - Collection of objects defining Protected Scope identified by the name or UID.
     type: list
+    elements: str
   protected_scope_negate:
     description:
       - True if negate is set for Protected Scope.
@@ -92,10 +95,12 @@ options:
     description:
       - Name of the protection or site.
     type: list
+    elements: str
   service:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   service_negate:
     description:
       - True if negate is set for Service.
@@ -104,6 +109,7 @@ options:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   source_negate:
     description:
       - True if negate is set for source.
@@ -179,16 +185,16 @@ def main():
         layer=dict(type='str'),
         rule_name=dict(type='str'),
         action=dict(type='str'),
-        destination=dict(type='list'),
+        destination=dict(type='list', elements='str'),
         destination_negate=dict(type='bool'),
         enabled=dict(type='bool'),
-        install_on=dict(type='list'),
-        protected_scope=dict(type='list'),
+        install_on=dict(type='list', elements='str'),
+        protected_scope=dict(type='list', elements='str'),
         protected_scope_negate=dict(type='bool'),
-        protection_or_site=dict(type='list'),
-        service=dict(type='list'),
+        protection_or_site=dict(type='list', elements='str'),
+        service=dict(type='list', elements='str'),
         service_negate=dict(type='bool'),
-        source=dict(type='list'),
+        source=dict(type='list', elements='str'),
         source_negate=dict(type='bool'),
         track=dict(type='str'),
         comments=dict(type='str'),

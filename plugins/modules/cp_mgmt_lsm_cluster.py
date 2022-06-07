@@ -32,7 +32,7 @@ short_description: Manages lsm-cluster objects on Checkpoint over Web Services A
 description:
   - Manages lsm-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   main_ip_address:
@@ -51,10 +51,12 @@ options:
     description:
       - LSM profile.
     type: str
+    required: True
   interfaces:
     description:
       - Interfaces.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -72,6 +74,7 @@ options:
     description:
       - Members.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -110,6 +113,7 @@ options:
         description:
           - Collection of tag identifiers.
         type: list
+        elements: str
       color:
         description:
           - Color of the object. Should be one of existing colors.
@@ -226,12 +230,12 @@ def main():
         name_prefix=dict(type='str'),
         name_suffix=dict(type='str'),
         security_profile=dict(type='str', required=True),
-        interfaces=dict(type='list', options=dict(
+        interfaces=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             ip_address_override=dict(type='str'),
             member_network_override=dict(type='str')
         )),
-        members=dict(type='list', options=dict(
+        members=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             provisioning_settings=dict(type='dict', options=dict(
                 provisioning_profile=dict(type='str')
@@ -239,9 +243,9 @@ def main():
             provisioning_state=dict(type='str', choices=['off', 'manual', 'using-profile']),
             sic=dict(type='dict', options=dict(
                 ip_address=dict(type='str'),
-                one_time_password=dict(type='str')
+                one_time_password=dict(type='str', no_log=True)
             )),
-            tags=dict(type='list'),
+            tags=dict(type='list', elements='str'),
             color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan',
                                             'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick',
                                             'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral',

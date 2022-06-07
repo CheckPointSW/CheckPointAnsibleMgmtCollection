@@ -32,7 +32,7 @@ short_description: Manages administrator objects on Checkpoint over Web Services
 description:
   - Manages administrator objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -74,6 +74,7 @@ options:
       - Administrator permissions profile. Permissions profile should not be provided when multi-domain-profile is set to "Multi-Domain Super User" or
         "Domain Super User".
     type: list
+    elements: dict
     suboptions:
       profile:
         description:
@@ -95,6 +96,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -168,15 +170,15 @@ def main():
         expiration_date=dict(type='str'),
         multi_domain_profile=dict(type='str'),
         must_change_password=dict(type='bool'),
-        password=dict(type='str'),
-        password_hash=dict(type='str'),
-        permissions_profile=dict(type='list', options=dict(
+        password=dict(type='str', no_log=True),
+        password_hash=dict(type='str', no_log=True),
+        permissions_profile=dict(type='list', elements='dict', options=dict(
             profile=dict(type='str')
         )),
         phone_number=dict(type='str'),
         radius_server=dict(type='str'),
         tacacs_server=dict(type='str'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

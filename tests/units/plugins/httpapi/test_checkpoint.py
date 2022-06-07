@@ -27,11 +27,11 @@ class FakeCheckpointHttpApiPlugin(HttpApi):
             'domain': None
         }
 
-    def get_option(self, var):
-        return self.hostvars[var]
+    def get_option(self, option):
+        return self.hostvars[option]
 
-    def set_option(self, var, val):
-        self.hostvars[var] = val
+    def set_option(self, option, value):
+        self.hostvars[option] = value
 
 
 class TestCheckpointHttpApi(unittest.TestCase):

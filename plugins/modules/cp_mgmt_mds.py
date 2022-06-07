@@ -32,7 +32,7 @@ short_description: Manages mds objects on Checkpoint over Web Services API
 description:
   - Manages mds objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -101,6 +101,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -175,7 +176,7 @@ def main():
         hardware=dict(type='str'),
         os=dict(type='str'),
         version=dict(type='str'),
-        one_time_password=dict(type='str'),
+        one_time_password=dict(type='str', no_log=True),
         server_type=dict(type='str', choices=['multi-domain server', 'multi-domain log server']),
         ip_pool_first=dict(type='str'),
         ipv4_pool_first=dict(type='str'),
@@ -183,7 +184,7 @@ def main():
         ip_pool_last=dict(type='str'),
         ipv4_pool_last=dict(type='str'),
         ipv6_pool_last=dict(type='str'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

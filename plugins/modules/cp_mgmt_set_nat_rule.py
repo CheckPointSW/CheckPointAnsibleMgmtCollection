@@ -32,7 +32,7 @@ short_description: Edit existing object using object name or uid.
 description:
   - Edit existing object using object name or uid.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   rule_number:
@@ -51,6 +51,7 @@ options:
     description:
       - Which Gateways identified by the name or UID to install the policy on.
     type: list
+    elements: str
   method:
     description:
       - Nat method.
@@ -132,7 +133,7 @@ def main():
         rule_number=dict(type='str'),
         package=dict(type='str'),
         enabled=dict(type='bool'),
-        install_on=dict(type='list'),
+        install_on=dict(type='list', elements='str'),
         method=dict(type='str', choices=['static', 'hide', 'nat64', 'nat46']),
         new_position=dict(type='str'),
         original_destination=dict(type='str'),

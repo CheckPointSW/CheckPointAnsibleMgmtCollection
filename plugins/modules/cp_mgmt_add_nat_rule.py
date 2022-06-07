@@ -32,7 +32,7 @@ short_description: Create new object.
 description:
   - Create new object.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   package:
@@ -51,6 +51,7 @@ options:
     description:
       - Which Gateways identified by the name or UID to install the policy on.
     type: list
+    elements: str
   method:
     description:
       - Nat method.
@@ -131,7 +132,7 @@ def main():
         package=dict(type='str'),
         position=dict(type='str'),
         enabled=dict(type='bool'),
-        install_on=dict(type='list'),
+        install_on=dict(type='list', elements='str'),
         method=dict(type='str', choices=['static', 'hide', 'nat64', 'nat46']),
         original_destination=dict(type='str'),
         original_service=dict(type='str'),

@@ -32,7 +32,7 @@ short_description: Manages time objects on Check Point over Web Services API
 description:
   - Manages time objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -69,6 +69,7 @@ options:
     description:
       - Hours recurrence. Note, Each gateway may interpret this time differently according to its time zone.
     type: list
+    elements: dict
     suboptions:
       enabled:
         description:
@@ -115,6 +116,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   recurrence:
     description:
       - Days recurrence.
@@ -124,6 +126,7 @@ options:
         description:
           - Valid on specific days. Multiple options, support range of days in months. Example,["1","3","9-20"].
         type: list
+        elements: str
       month:
         description:
           - Valid on month. Example, "1", "2","12","Any".
@@ -136,6 +139,7 @@ options:
         description:
           - Valid on weekdays. Example, "Sun", "Mon"..."Sat".
         type: list
+        elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -157,6 +161,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -236,7 +241,7 @@ def main():
             time=dict(type='str')
         )),
         end_never=dict(type='bool'),
-        hours_ranges=dict(type='list', options=dict(
+        hours_ranges=dict(type='list', elements='dict', options=dict(
             enabled=dict(type='bool'),
             index=dict(type='int'),
             to=dict(type='str')
@@ -248,12 +253,12 @@ def main():
             time=dict(type='str')
         )),
         start_now=dict(type='bool'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         recurrence=dict(type='dict', options=dict(
-            days=dict(type='list'),
+            days=dict(type='list', elements='str'),
             month=dict(type='str'),
             pattern=dict(type='str'),
-            weekdays=dict(type='list')
+            weekdays=dict(type='list', elements='str')
         )),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -262,7 +267,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )

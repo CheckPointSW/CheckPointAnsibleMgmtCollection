@@ -32,7 +32,7 @@ short_description: Manages vpn-community-star objects on Check Point over Web Se
 description:
   - Manages vpn-community-star objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -44,6 +44,7 @@ options:
     description:
       - Collection of Gateway objects representing center gateways identified by the name or UID.
     type: list
+    elements: str
   encryption_method:
     description:
       - The encryption method to be used.
@@ -97,10 +98,12 @@ options:
     description:
       - Collection of Gateway objects representing satellite gateways identified by the name or UID.
     type: list
+    elements: str
   shared_secrets:
     description:
       - Shared secrets for external gateways.
     type: list
+    elements: dict
     suboptions:
       external_gateway:
         description:
@@ -114,6 +117,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   use_shared_secret:
     description:
       - Indicates whether the shared secret should be used for all external gateways.
@@ -196,7 +200,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        center_gateways=dict(type='list'),
+        center_gateways=dict(type='list', elements='str'),
         encryption_method=dict(type='str', choices=['prefer ikev2 but support ikev1', 'ikev2 only', 'ikev1 for ipv4 and ikev2 for ipv6 only']),
         encryption_suite=dict(type='str', choices=['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']),
         ike_phase_1=dict(type='dict', options=dict(
@@ -210,12 +214,12 @@ def main():
                                                            'aes-256', 'des', 'aes-128', '3des', 'des-40cp', 'aes-gcm-128', 'none'])
         )),
         mesh_center_gateways=dict(type='bool'),
-        satellite_gateways=dict(type='list'),
-        shared_secrets=dict(type='list', options=dict(
+        satellite_gateways=dict(type='list', elements='str'),
+        shared_secrets=dict(type='list', elements='dict', no_log=True, options=dict(
             external_gateway=dict(type='str'),
-            shared_secret=dict(type='str')
+            shared_secret=dict(type='str', no_log=True)
         )),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         use_shared_secret=dict(type='bool'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',

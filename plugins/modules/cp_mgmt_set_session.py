@@ -32,7 +32,7 @@ short_description: Edit user's current session.
 description:
   - Edit user's current session.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   description:
@@ -47,6 +47,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -97,7 +98,7 @@ def main():
     argument_spec = dict(
         description=dict(type='str'),
         new_name=dict(type='str'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

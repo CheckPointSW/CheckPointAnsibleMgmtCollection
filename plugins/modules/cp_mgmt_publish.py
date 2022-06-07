@@ -32,7 +32,7 @@ short_description: All the changes done by this user will be seen by all users o
 description:
   - All the changes done by this user will be seen by all users only after publish is called.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   uid:

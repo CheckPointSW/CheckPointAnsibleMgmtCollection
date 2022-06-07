@@ -32,7 +32,7 @@ short_description: Manages package objects on Check Point over Web Services API
 description:
   - Manages package objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -52,6 +52,7 @@ options:
     description:
       - Which Gateways identified by the name or UID to install the policy on.
     type: list
+    elements: str
   qos:
     description:
       - True - enables, False - disables QoS policy, empty - nothing is changed.
@@ -65,6 +66,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   threat_prevention:
     description:
       - True - enables, False - disables Threat policy, empty - nothing is changed.
@@ -107,6 +109,7 @@ options:
         description:
           - Collection of Access layer objects to be added identified by the name or UID.
         type: list
+        elements: dict
         suboptions:
           name:
             description:
@@ -120,10 +123,12 @@ options:
         description:
           - Collection of Access layer objects to be removed identified by the name or UID.
         type: list
+        elements: str
       value:
         description:
           - Collection of Access layer objects to be set identified by the name or UID. Replaces existing Access layers.
         type: list
+        elements: str
   threat_layers:
     description:
       - Threat policy layers.
@@ -133,6 +138,7 @@ options:
         description:
           - Collection of Threat layer objects to be added identified by the name or UID.
         type: list
+        elements: dict
         suboptions:
           name:
             description:
@@ -146,10 +152,12 @@ options:
         description:
           - Collection of Threat layer objects to be removed identified by the name or UID.
         type: list
+        elements: str
       value:
         description:
           - Collection of Threat layer objects to be set identified by the name or UID. Replaces existing Threat layers.
         type: list
+        elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 """
 
@@ -198,10 +206,10 @@ def main():
         name=dict(type='str', required=True),
         access=dict(type='bool'),
         desktop_security=dict(type='bool'),
-        installation_targets=dict(type='list'),
+        installation_targets=dict(type='list', elements='str'),
         qos=dict(type='bool'),
         qos_policy_type=dict(type='str', choices=['recommended', 'express']),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         threat_prevention=dict(type='bool'),
         vpn_traditional_mode=dict(type='bool'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
@@ -214,20 +222,20 @@ def main():
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool'),
         access_layers=dict(type='dict', options=dict(
-            add=dict(type='list', options=dict(
+            add=dict(type='list', elements='dict', options=dict(
                 name=dict(type='str'),
                 position=dict(type='int')
             )),
-            remove=dict(type='list'),
-            value=dict(type='list')
+            remove=dict(type='list', elements='str'),
+            value=dict(type='list', elements='str')
         )),
         threat_layers=dict(type='dict', options=dict(
-            add=dict(type='list', options=dict(
+            add=dict(type='list', elements='dict', options=dict(
                 name=dict(type='str'),
                 position=dict(type='int')
             )),
-            remove=dict(type='list'),
-            value=dict(type='list')
+            remove=dict(type='list', elements='str'),
+            value=dict(type='list', elements='str')
         ))
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)

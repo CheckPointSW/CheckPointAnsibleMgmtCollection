@@ -32,7 +32,7 @@ short_description: install policy on Check Point over Web Services API
 description:
   - install policy on Check Point over Web Services API
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   policy_package:
@@ -43,6 +43,7 @@ options:
     description:
       - On what targets to execute this command. Targets may be identified by their name, or object unique identifier.
     type: list
+    elements: str
   access:
     description:
       - Set to be true in order to install the Access Control policy. By default, the value is true if Access Control policy is enabled on the input
@@ -103,7 +104,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         policy_package=dict(type='str'),
-        targets=dict(type='list'),
+        targets=dict(type='list', elements='str'),
         access=dict(type='bool'),
         desktop_security=dict(type='bool'),
         qos=dict(type='bool'),

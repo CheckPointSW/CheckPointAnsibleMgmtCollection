@@ -32,13 +32,14 @@ short_description: Copies the user database and network objects information to s
 description:
   - Copies the user database and network objects information to specified targets.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   targets:
     description:
       - Check Point host(s) with one or more Management Software Blades enabled. The targets can be identified by their name or unique identifier.
     type: list
+    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
@@ -63,7 +64,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        targets=dict(type='list')
+        targets=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 

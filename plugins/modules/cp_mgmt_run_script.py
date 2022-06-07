@@ -32,7 +32,7 @@ short_description: Executes the script on a given list of targets.
 description:
   - Executes the script on a given list of targets.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   script_name:
@@ -47,6 +47,7 @@ options:
     description:
       - On what targets to execute this command. Targets may be identified by their name, or object unique identifier.
     type: list
+    elements: str
   args:
     description:
       - Script arguments.
@@ -82,7 +83,7 @@ def main():
     argument_spec = dict(
         script_name=dict(type='str'),
         script=dict(type='str'),
-        targets=dict(type='list'),
+        targets=dict(type='list', elements='str'),
         args=dict(type='str'),
         comments=dict(type='str')
     )
