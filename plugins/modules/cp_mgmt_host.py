@@ -32,7 +32,7 @@ short_description: Manages host objects on Check Point over Web Services API
 description:
   - Manages host objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -56,6 +56,7 @@ options:
     description:
       - Host interfaces.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -156,6 +157,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   host_servers:
     description:
       - Servers Configuration.
@@ -182,10 +184,12 @@ options:
             description:
               - Server additional ports.
             type: list
+            elements: str
           application_engines:
             description:
               - Application engines of this web server.
             type: list
+            elements: str
           listen_standard_port:
             description:
               - Whether server listens to standard port.
@@ -220,6 +224,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -268,7 +273,7 @@ def main():
         ip_address=dict(type='str'),
         ipv4_address=dict(type='str'),
         ipv6_address=dict(type='str'),
-        interfaces=dict(type='list', options=dict(
+        interfaces=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             subnet=dict(type='str'),
             subnet4=dict(type='str'),
@@ -296,14 +301,14 @@ def main():
             install_on=dict(type='str'),
             method=dict(type='str', choices=['hide', 'static'])
         )),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         host_servers=dict(type='dict', options=dict(
             dns_server=dict(type='bool'),
             mail_server=dict(type='bool'),
             web_server=dict(type='bool'),
             web_server_config=dict(type='dict', options=dict(
-                additional_ports=dict(type='list'),
-                application_engines=dict(type='list'),
+                additional_ports=dict(type='list', elements='str'),
+                application_engines=dict(type='list', elements='str'),
                 listen_standard_port=dict(type='bool'),
                 operating_system=dict(type='str', choices=['sparc linux', 'windows', 'other', 'x86 linux', 'sparc solaris']),
                 protected_by=dict(type='str')
@@ -316,7 +321,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )

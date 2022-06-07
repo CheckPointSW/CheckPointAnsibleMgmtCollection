@@ -32,7 +32,7 @@ short_description: Manages lsm-gateway objects on Checkpoint over Web Services A
 description:
   - Manages lsm-gateway objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:
@@ -153,7 +153,7 @@ def main():
         provisioning_state=dict(type='str', choices=['off', 'manual', 'using-profile']),
         sic=dict(type='dict', options=dict(
             ip_address=dict(type='str'),
-            one_time_password=dict(type='str')
+            one_time_password=dict(type='str', no_log=True)
         )),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',

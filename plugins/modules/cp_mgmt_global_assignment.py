@@ -32,7 +32,7 @@ short_description: Manages global-assignment objects on Check Point over Web Ser
 description:
   - Manages global-assignment objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   dependent_domain:

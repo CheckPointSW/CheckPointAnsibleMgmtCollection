@@ -32,7 +32,7 @@ short_description: Installs the software package on target machines.
 description:
   - Installs the software package on target machines.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -43,6 +43,7 @@ options:
     description:
       - On what targets to execute this command. Targets may be identified by their name, or object unique identifier.
     type: list
+    elements: str
   cluster_installation_settings:
     description:
       - Installation settings for cluster.
@@ -97,7 +98,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str'),
-        targets=dict(type='list'),
+        targets=dict(type='list', elements='str'),
         cluster_installation_settings=dict(type='dict', options=dict(
             cluster_delay=dict(type='int'),
             cluster_strategy=dict(type='str')
