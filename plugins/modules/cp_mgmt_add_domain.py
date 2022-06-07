@@ -32,7 +32,7 @@ short_description: Create new object
 description:
   - Create new object
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -44,6 +44,7 @@ options:
     description:
       - Domain servers. When this field is provided, 'set-domain' command is executed asynchronously.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -130,7 +131,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        servers=dict(type='list', options=dict(
+        servers=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             ip_address=dict(type='str'),
             ipv4_address=dict(type='str'),

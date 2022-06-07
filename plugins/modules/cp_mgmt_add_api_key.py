@@ -33,7 +33,7 @@ description:
   - Add API key for administrator, to enable login with it. For the key to be valid publish is needed. <br>When using mgmt_cli tool, add -f json to get
     the key in the command's output.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   admin_uid:

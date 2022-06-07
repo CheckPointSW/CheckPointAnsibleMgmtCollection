@@ -32,7 +32,7 @@ short_description: Manages access-rule objects on Check Point over Web Services 
 description:
   - Manages access-rule objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   layer:
@@ -83,6 +83,7 @@ options:
     description:
       - List of processed file types that this rule applies on.
     type: list
+    elements: dict
   content_direction:
     description:
       - On which direction the file types processing is applied.
@@ -113,6 +114,7 @@ options:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   destination_negate:
     description:
       - True if negate is set for destination.
@@ -129,10 +131,12 @@ options:
     description:
       - Which Gateways identified by the name or UID to install the policy on.
     type: list
+    elements: str
   service:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   service_negate:
     description:
       - True if negate is set for service.
@@ -141,6 +145,7 @@ options:
     description:
       - Collection of Network objects identified by the name or UID.
     type: list
+    elements: str
   source_negate:
     description:
       - True if negate is set for source.
@@ -149,6 +154,7 @@ options:
     description:
       - List of time objects. For example, "Weekend", "Off-Work", "Every-Day".
     type: list
+    elements: str
   track:
     description:
       - Track Settings.
@@ -216,15 +222,18 @@ options:
     description:
       - Communities or Directional.
     type: list
+    elements: dict
     suboptions:
       community:
         description:
           - List of community name or UID.
         type: list
+        elements: dict
       directional:
         description:
           - Communities directional match condition.
         type: list
+        elements: dict
         suboptions:
           from:
             description:
@@ -309,7 +318,7 @@ def main():
             enable_identity_captive_portal=dict(type='bool'),
             limit=dict(type='str')
         )),
-        content=dict(type='list'),
+        content=dict(type='list', elements='dict'),
         content_direction=dict(type='str', choices=['any', 'up', 'down']),
         content_negate=dict(type='bool'),
         custom_fields=dict(type='dict', options=dict(
@@ -317,16 +326,16 @@ def main():
             field_2=dict(type='str'),
             field_3=dict(type='str')
         )),
-        destination=dict(type='list'),
+        destination=dict(type='list', elements='str'),
         destination_negate=dict(type='bool'),
         enabled=dict(type='bool'),
         inline_layer=dict(type='str'),
-        install_on=dict(type='list'),
-        service=dict(type='list'),
+        install_on=dict(type='list', elements='str'),
+        service=dict(type='list', elements='str'),
         service_negate=dict(type='bool'),
-        source=dict(type='list'),
+        source=dict(type='list', elements='str'),
         source_negate=dict(type='bool'),
-        time=dict(type='list'),
+        time=dict(type='list', elements='str'),
         track=dict(type='dict', options=dict(
             accounting=dict(type='bool'),
             alert=dict(type='str', choices=['none', 'alert', 'snmp', 'mail', 'user alert 1', 'user alert 2', 'user alert 3']),
@@ -344,9 +353,9 @@ def main():
             frequency=dict(type='str', choices=['once a day', 'once a week', 'once a month', 'custom frequency...']),
             interaction=dict(type='str')
         )),
-        vpn=dict(type='list', options=dict(
-            community=dict(type='list'),
-            directional=dict(type='list', options=dict(
+        vpn=dict(type='list', elements='dict', options=dict(
+            community=dict(type='list', elements='dict'),
+            directional=dict(type='list', elements='dict', options=dict(
                 to=dict(type='str')
             ))
         )),
