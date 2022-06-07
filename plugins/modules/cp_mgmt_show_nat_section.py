@@ -32,7 +32,7 @@ short_description: Retrieve existing object using object name or uid.
 description:
   - Retrieve existing object using object name or uid.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:

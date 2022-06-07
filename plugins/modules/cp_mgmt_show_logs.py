@@ -32,7 +32,7 @@ short_description: Showing logs according to the given filter.
 description:
   - Showing logs according to the given filter.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   new_query:
@@ -84,6 +84,7 @@ options:
         description:
           - List of IP's of logs servers to query.
         type: list
+        elements: str
   query_id:
     description:
       - Get the next page of last run query with specified limit.
@@ -129,7 +130,7 @@ def main():
                 count=dict(type='int')
             )),
             type=dict(type='str', choices=['logs', 'audit']),
-            log_servers=dict(type='list')
+            log_servers=dict(type='list', elements='str')
         )),
         query_id=dict(type='str'),
         ignore_warnings=dict(type='bool')

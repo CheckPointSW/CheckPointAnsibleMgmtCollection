@@ -32,7 +32,7 @@ short_description: Manages service-udp objects on Check Point over Web Services 
 description:
   - Manages service-udp objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -112,6 +112,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   use_default_session_timeout:
     description:
       - Use default virtual session timeout.
@@ -137,6 +138,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -210,7 +212,7 @@ def main():
         session_timeout=dict(type='int'),
         source_port=dict(type='str'),
         sync_connections_on_cluster=dict(type='bool'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         use_default_session_timeout=dict(type='bool'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
@@ -219,7 +221,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )
