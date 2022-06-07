@@ -32,7 +32,7 @@ short_description: Verifies the policy of the selected package.
 description:
   - Verifies the policy of the selected package.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   policy_package:

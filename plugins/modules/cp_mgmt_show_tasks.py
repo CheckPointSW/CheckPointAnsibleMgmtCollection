@@ -32,7 +32,7 @@ short_description: Retrieve all tasks and show their progress and details.
 description:
   - Retrieve all tasks and show their progress and details.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   initiator:
@@ -66,6 +66,7 @@ options:
     description:
       - Sorts results by the given field. By default the results are sorted in the descending order by the task's last update date.
     type: list
+    elements: dict
     suboptions:
       ASC:
         description:
@@ -113,7 +114,7 @@ def main():
         to_date=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
-        order=dict(type='list', options=dict(
+        order=dict(type='list', elements='dict', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
         )),

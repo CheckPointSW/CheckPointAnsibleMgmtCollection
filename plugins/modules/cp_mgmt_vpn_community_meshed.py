@@ -32,7 +32,7 @@ short_description: Manages vpn-community-meshed objects on Check Point over Web 
 description:
   - Manages vpn-community-meshed objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -54,6 +54,7 @@ options:
     description:
       - Collection of Gateway objects identified by the name or UID.
     type: list
+    elements: str
   ike_phase_1:
     description:
       - Ike Phase 1 settings. Only applicable when the encryption-suite is set to [custom].
@@ -93,6 +94,7 @@ options:
     description:
       - Shared secrets for external gateways.
     type: list
+    elements: dict
     suboptions:
       external_gateway:
         description:
@@ -106,6 +108,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   use_shared_secret:
     description:
       - Indicates whether the shared secret should be used for all external gateways.
@@ -189,7 +192,7 @@ def main():
         name=dict(type='str', required=True),
         encryption_method=dict(type='str', choices=['prefer ikev2 but support ikev1', 'ikev2 only', 'ikev1 for ipv4 and ikev2 for ipv6 only']),
         encryption_suite=dict(type='str', choices=['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']),
-        gateways=dict(type='list'),
+        gateways=dict(type='list', elements='str'),
         ike_phase_1=dict(type='dict', options=dict(
             data_integrity=dict(type='str', choices=['aes-xcbc', 'sha1', 'sha256', 'sha384', 'md5']),
             diffie_hellman_group=dict(type='str', choices=['group-1', 'group-2', 'group-5', 'group-14', 'group-19', 'group-20']),
@@ -200,11 +203,11 @@ def main():
             encryption_algorithm=dict(type='str', choices=['cast', 'aes-gcm-256', 'cast-40',
                                                            'aes-256', 'des', 'aes-128', '3des', 'des-40cp', 'aes-gcm-128', 'none'])
         )),
-        shared_secrets=dict(type='list', options=dict(
+        shared_secrets=dict(type='list', elements='dict', no_log=True, options=dict(
             external_gateway=dict(type='str'),
-            shared_secret=dict(type='str')
+            shared_secret=dict(type='str', no_log=True)
         )),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         use_shared_secret=dict(type='bool'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',

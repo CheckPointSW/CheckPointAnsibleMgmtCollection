@@ -32,7 +32,7 @@ short_description: Manages simple-gateway objects on Check Point over Web Servic
 description:
   - Manages simple-gateway objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -105,6 +105,7 @@ options:
     description:
       - Network interfaces. When a gateway is updated with a new interfaces, the existing interfaces are removed.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -183,6 +184,7 @@ options:
         description:
           - Collection of tag identifiers.
         type: list
+        elements: str
       topology:
         description:
           - N/A
@@ -381,18 +383,22 @@ options:
     description:
       - Server(s) to send alerts to.
     type: list
+    elements: str
   send_logs_to_backup_server:
     description:
       - Backup server(s) to send logs to.
     type: list
+    elements: str
   send_logs_to_server:
     description:
       - Server(s) to send logs to.
     type: list
+    elements: str
   tags:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   threat_emulation:
     description:
       - Threat Emulation blade enabled.
@@ -447,6 +453,7 @@ options:
     description:
       - Collection of group identifiers.
     type: list
+    elements: str
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -512,7 +519,7 @@ def main():
             maximum_memory_pool_size=dict(type='int'),
             memory_pool_size=dict(type='int')
         )),
-        interfaces=dict(type='list', options=dict(
+        interfaces=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             anti_spoofing=dict(type='bool'),
             anti_spoofing_settings=dict(type='dict', options=dict(
@@ -532,7 +539,7 @@ def main():
                 auto_calculated=dict(type='bool'),
                 specific_zone=dict(type='str')
             )),
-            tags=dict(type='list'),
+            tags=dict(type='list', elements='str'),
             topology=dict(type='str', choices=['automatic', 'external', 'internal']),
             topology_settings=dict(type='dict', options=dict(
                 interface_leads_to_dmz=dict(type='bool'),
@@ -589,13 +596,13 @@ def main():
             turn_on_qos_logging=dict(type='bool'),
             update_account_log_every=dict(type='int')
         )),
-        one_time_password=dict(type='str'),
+        one_time_password=dict(type='str', no_log=True),
         os_name=dict(type='str'),
         save_logs_locally=dict(type='bool'),
-        send_alerts_to_server=dict(type='list'),
-        send_logs_to_backup_server=dict(type='list'),
-        send_logs_to_server=dict(type='list'),
-        tags=dict(type='list'),
+        send_alerts_to_server=dict(type='list', elements='str'),
+        send_logs_to_backup_server=dict(type='list', elements='str'),
+        send_logs_to_server=dict(type='list', elements='str'),
+        tags=dict(type='list', elements='str'),
         threat_emulation=dict(type='bool'),
         threat_extraction=dict(type='bool'),
         url_filtering=dict(type='bool'),
@@ -613,7 +620,7 @@ def main():
                                         'yellow']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list'),
+        groups=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )

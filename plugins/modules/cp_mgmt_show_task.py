@@ -32,13 +32,14 @@ short_description: Show task progress and details.
 description:
   - Show task progress and details.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   task_id:
     description:
       - Unique identifier of one or more tasks.
     type: list
+    elements: str
   details_level:
     description:
       - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
@@ -67,7 +68,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        task_id=dict(type='list'),
+        task_id=dict(type='list', elements='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full'])
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)

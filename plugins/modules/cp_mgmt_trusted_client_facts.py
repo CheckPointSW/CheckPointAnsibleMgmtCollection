@@ -34,7 +34,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -69,6 +69,7 @@ options:
       - Sorts the results by search criteria. Automatically sorts the results by Name, in the ascending order.
         This parameter is relevant only for getting few objects.
     type: list
+    elements: dict
     suboptions:
       ASC:
         description:
@@ -113,14 +114,14 @@ def main():
         filter=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
-        order=dict(type='list', options=dict(
+        order=dict(type='list', elements='dict', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
         ))
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     api_call_object = "trusted-client"
     api_call_object_plural_version = "trusted-clients"

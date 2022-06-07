@@ -32,7 +32,7 @@ short_description: Edit existing object using object name or uid.
 description:
   - Edit existing object using object name or uid.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -52,6 +52,7 @@ options:
       - Overrides per profile for this protection<br> Note, Remove override for Core protections removes only the action's override. Remove override
         for Threat Cloud protections removes the action, track and packet captures.
     type: list
+    elements: dict
     suboptions:
       action:
         description:
@@ -108,7 +109,7 @@ def main():
         name=dict(type='str'),
         comments=dict(type='str'),
         follow_up=dict(type='bool'),
-        overrides=dict(type='list', options=dict(
+        overrides=dict(type='list', elements='dict', options=dict(
             action=dict(type='str', choices=['Threat Cloud: Inactive', 'Detect', 'Prevent <br> Core: Drop', 'Inactive', 'Accept']),
             profile=dict(type='str'),
             capture_packets=dict(type='bool'),

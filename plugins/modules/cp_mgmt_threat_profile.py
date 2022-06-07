@@ -32,7 +32,7 @@ short_description: Manages threat-profile objects on Check Point over Web Servic
 description:
   - Manages threat-profile objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -69,6 +69,7 @@ options:
     description:
       - Indicators whose action will be overridden in this profile.
     type: list
+    elements: dict
     suboptions:
       action:
         description:
@@ -164,10 +165,12 @@ options:
         description:
           - Recipient list to send a copy of the malicious email.
         type: list
+        elements: str
   overrides:
     description:
       - Overrides per profile for this protection.
     type: list
+    elements: dict
     suboptions:
       action:
         description:
@@ -191,6 +194,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   use_indicators:
     description:
       - Indicates whether the profile should make use of indicators.
@@ -215,6 +219,7 @@ options:
     description:
       - Activate protections by these extended attributes.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -228,6 +233,7 @@ options:
     description:
       - Deactivate protections by these extended attributes.
     type: list
+    elements: dict
     suboptions:
       name:
         description:
@@ -331,7 +337,7 @@ def main():
         confidence_level_high=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
         confidence_level_low=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
         confidence_level_medium=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-        indicator_overrides=dict(type='list', options=dict(
+        indicator_overrides=dict(type='list', elements='dict', options=dict(
             action=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
             indicator=dict(type='str')
         )),
@@ -354,25 +360,25 @@ def main():
             malicious_links_text=dict(type='str'),
             remove_attachments_and_links=dict(type='bool'),
             send_copy=dict(type='bool'),
-            send_copy_list=dict(type='list')
+            send_copy_list=dict(type='list', elements='str')
         )),
-        overrides=dict(type='list', options=dict(
+        overrides=dict(type='list', elements='dict', options=dict(
             action=dict(type='str', choices=['Threat Cloud: Inactive', 'Detect', 'Prevent <br> Core: Drop', 'Inactive', 'Accept']),
             protection=dict(type='str'),
             capture_packets=dict(type='bool'),
             track=dict(type='str', choices=['none', 'log', 'alert', 'mail', 'snmp trap', 'user alert', 'user alert 1', 'user alert 2'])
         )),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         use_indicators=dict(type='bool'),
         anti_bot=dict(type='bool'),
         anti_virus=dict(type='bool'),
         ips=dict(type='bool'),
         threat_emulation=dict(type='bool'),
-        activate_protections_by_extended_attributes=dict(type='list', options=dict(
+        activate_protections_by_extended_attributes=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             category=dict(type='str')
         )),
-        deactivate_protections_by_extended_attributes=dict(type='list', options=dict(
+        deactivate_protections_by_extended_attributes=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
             category=dict(type='str')
         )),

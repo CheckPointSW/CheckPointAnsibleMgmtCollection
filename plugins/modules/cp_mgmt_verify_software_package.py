@@ -32,7 +32,7 @@ short_description: Verifies the software package on target machines.
 description:
   - Verifies the software package on target machines.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -43,6 +43,7 @@ options:
     description:
       - On what targets to execute this command. Targets may be identified by their name, or object unique identifier.
     type: list
+    elements: str
   concurrency_limit:
     description:
       - The number of targets, on which the same package is installed at the same time.
@@ -84,7 +85,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str'),
-        targets=dict(type='list'),
+        targets=dict(type='list', elements='str'),
         concurrency_limit=dict(type='int'),
         download_package=dict(type='bool'),
         download_package_from=dict(type='str', choices=['automatic', 'central', 'target-machine'])

@@ -32,7 +32,7 @@ short_description: Manages trusted-client objects on Checkpoint over Web Service
 description:
   - Manages trusted-client objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
   name:
@@ -56,6 +56,7 @@ options:
     description:
       - Domains to be added to this profile. Use domain name only. See example below, "add-trusted-client (with domain)".
     type: list
+    elements: str
   ip_address_first:
     description:
       - First IP address in the range. If both IPv4 and IPv6 address ranges are required, use the ipv4-address-first and the ipv6-address-first fields instead.
@@ -100,6 +101,7 @@ options:
     description:
       - Collection of tag identifiers.
     type: list
+    elements: str
   type:
     description:
       - Trusted client type.
@@ -176,7 +178,7 @@ def main():
         ip_address=dict(type='str'),
         ipv4_address=dict(type='str'),
         ipv6_address=dict(type='str'),
-        domains_assignment=dict(type='list'),
+        domains_assignment=dict(type='list', elements='str'),
         ip_address_first=dict(type='str'),
         ipv4_address_first=dict(type='str'),
         ipv6_address_first=dict(type='str'),
@@ -187,7 +189,7 @@ def main():
         mask_length4=dict(type='int'),
         mask_length6=dict(type='int'),
         multi_domain_server_trusted_client=dict(type='bool'),
-        tags=dict(type='list'),
+        tags=dict(type='list', elements='str'),
         type=dict(type='str', choices=['any', 'domain', 'ipv4 address', 'ipv4 address range', 'ipv4 netmask',
                                        'ipv6 address', 'ipv6 address range', 'ipv6 netmask', 'name', 'wild cards (ip only)']),
         wild_card=dict(type='str'),

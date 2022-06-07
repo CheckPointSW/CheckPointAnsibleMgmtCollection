@@ -7,13 +7,13 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: Ansible Networking Team
-httpapi : checkpoint
+author: Ansible Networking Team (@rcarrillocruz)
+name: checkpoint
 short_description: HttpApi Plugin for Checkpoint devices
 description:
   - This HttpApi plugin provides methods to connect to Checkpoint
     devices over a HTTP(S)-based api.
-version_added: "2.8"
+version_added: "2.8.0"
 options:
   domain:
     type: str

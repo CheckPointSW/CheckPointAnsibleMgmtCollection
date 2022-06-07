@@ -60,6 +60,11 @@ checkpoint_argument_spec_for_commands = dict(
 
 delete_params = ['name', 'uid', 'layer', 'exception-group-name', 'rule-name', 'package']
 
+remove_from_set_payload = {'lsm-cluster': ['security-profile', 'name-prefix', 'name-suffix', 'main-ip-address'],
+                           'md-permissions-profile': ['permission-level']}
+
+remove_from_add_payload = {'lsm-cluster': ['name']}
+
 
 # parse failure message with code and response
 def parse_fail_message(code, response):
@@ -82,6 +87,14 @@ def is_checkpoint_param(parameter):
             parameter == 'version':
         return False
     return True
+
+
+def contains_show_identifier_param(payload):
+    identifier_params = ["name", "uid", "assigned-domain"]
+    for param in identifier_params:
+        if payload.get(param) is not None:
+            return True
+    return False
 
 
 # build the payload from the parameters which has value (not None), and they are parameter of checkpoint API as well
@@ -210,7 +223,7 @@ def discard_and_fail(module, code, response, connection, version):
 
 # handle publish command, and wait for it to end if the user asked so
 def handle_publish(module, connection, version):
-    if module.params['auto_publish_session']:
+    if 'auto_publish_session' in module.params and module.params['auto_publish_session']:
         publish_code, publish_response = send_request(connection, version, 'publish')
         if publish_code != 200:
             discard_and_fail(module, publish_code, publish_response, connection, version)
@@ -275,6 +288,8 @@ def api_command(module, command):
                 del response['tasks']
 
         result[command] = response
+
+        handle_publish(module, connection, version)
     else:
         discard_and_fail(module, code, response, connection, version)
 
@@ -287,8 +302,8 @@ def api_call_facts(module, api_call_object, api_call_object_plural_version):
     connection = Connection(module._socket_path)
     version = get_version(module)
 
-    # if there is neither name nor uid, the API command will be in plural version (e.g. show-hosts instead of show-host)
-    if payload.get("name") is None and payload.get("uid") is None:
+    # if there isn't an identifier param, the API command will be in plural version (e.g. show-hosts instead of show-host)
+    if not contains_show_identifier_param(payload):
         api_call_object = api_call_object_plural_version
 
     response = handle_call(connection, version, 'show-' + api_call_object, payload, module, False, False)
@@ -331,12 +346,10 @@ def api_call(module, api_call_object):
         if equals_code == 200:
             # else objects are equals and there is no need for set request
             if not equals_response['equals']:
-                if 'lsm-cluster' == api_call_object:
-                    build_lsm_cluster_payload(payload, 'set')
+                build_payload(api_call_object, payload, remove_from_set_payload)
                 handle_call_and_set_result(connection, version, 'set-' + api_call_object, payload, module, result)
         elif equals_code == 404:
-            if 'lsm-cluster' == api_call_object:
-                build_lsm_cluster_payload(payload, 'add')
+            build_payload(api_call_object, payload, remove_from_add_payload)
             handle_call_and_set_result(connection, version, 'add-' + api_call_object, payload, module, result)
     elif module.params['state'] == 'absent':
         handle_delete(equals_code, payload, delete_params, connection, version, api_call_object, module, result)
@@ -406,17 +419,6 @@ def build_rulebase_payload(api_call_object, payload, position_number):
     return rulebase_payload
 
 
-def build_lsm_cluster_payload(payload, operator):
-    fields = ['security-profile', 'name-prefix', 'name-suffix', 'main-ip-address']
-    if operator == 'add':
-        del payload['name']
-    else:
-        for field in fields:
-            if field in payload.keys():
-                del payload[field]
-    return payload
-
-
 def build_rulebase_command(api_call_object):
     rulebase_command = 'show-' + api_call_object.split('-')[0] + '-rulebase'
 
@@ -424,6 +426,14 @@ def build_rulebase_command(api_call_object):
         rulebase_command = 'show-threat-rule-exception-rulebase'
 
     return rulebase_command
+
+
+# remove from payload unrecognized params (used for cases where add payload differs from that of a set)
+def build_payload(api_call_object, payload, params_to_remove):
+    if api_call_object in params_to_remove:
+        for param in params_to_remove[api_call_object]:
+            del payload[param]
+    return payload
 
 
 # extract rule from rulebase response
