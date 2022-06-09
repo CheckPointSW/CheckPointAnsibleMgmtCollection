@@ -50,7 +50,7 @@ dependencies: {}
 repository: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 
 # The URL to any online docs
-documentation: https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#check-point
+documentation: https://docs.ansible.com/ansible/latest/collections/check_point/mgmt/index.html
 
 # The URL to the homepage of the collection/project
 homepage: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
