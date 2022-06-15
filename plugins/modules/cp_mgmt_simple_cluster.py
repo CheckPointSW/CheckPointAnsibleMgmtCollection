@@ -660,7 +660,7 @@ options:
                 description:
                   - Controls portal access settings for interfaces that are part of a VPN Encryption Domain.
                 type: bool
-  version:
+  cluster_version:
     description:
       - Cluster platform version.
     type: str
@@ -1002,7 +1002,7 @@ EXAMPLES = """
     name: cluster1
     os_name: Gaia
     state: present
-    version: R80.30
+    cluster_version: R80.30
 
 - name: set-simple-cluster
   cp_mgmt_simple_cluster:
@@ -1200,7 +1200,7 @@ def main():
                 ))
             ))
         )),
-        version=dict(type='str'),
+        cluster_version=dict(type='str'),
         vpn=dict(type='bool'),
         vpn_settings=dict(type='dict', options=dict(
             authentication=dict(type='dict', options=dict(

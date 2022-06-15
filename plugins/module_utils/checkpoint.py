@@ -112,7 +112,7 @@ def get_payload_from_parameters(params):
                 payload[parameter.replace("_", "-")] = payload_list
             else:
                 # special handle for this param in order to avoid two params called "version"
-                if parameter == "gateway_version":
+                if parameter == "gateway_version" or parameter == "cluster_version":
                     parameter = "version"
 
                 payload[parameter.replace("_", "-")] = parameter_value
