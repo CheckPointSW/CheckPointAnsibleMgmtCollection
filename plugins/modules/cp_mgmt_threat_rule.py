@@ -37,7 +37,7 @@ author: "Or Soffer (@chkp-orso)"
 options:
   position:
     description:
-      - Position in the rulebase.
+      - Position in the rulebase. The use of values "top" and "bottom" may not be idempotent.
     type: str
   layer:
     description:

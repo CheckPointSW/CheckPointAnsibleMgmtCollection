@@ -358,53 +358,37 @@ def api_call(module, api_call_object):
 
 
 # get the position in integer format
-def get_number_from_position(payload, connection, version):
-    if 'position' in payload:
-        if type(payload['position']) is not dict:
-            position = payload['position']
-        else:
-            position = None
-            payload_for_show_access_rulebase = {'name': payload['layer']}
-            code, response = send_request(connection, version, 'show-access-rulebase', payload_for_show_access_rulebase)
-            rulebase = response['rulebase']
-            for rules in rulebase:
-                if 'rulebase' in rules:
-                    rules = rules['rulebase']
-                    for rule in rules:
-                        if 'below' in payload['position'].keys() and rule['name'] == payload['position']['below']:
-                            position = int(rule['rule-number']) + 1
-                            return position
-                        elif 'above' in payload['position'].keys() and rule['name'] == payload['position']['above']:
-                            position = max(int(rule['rule-number']) - 1, 1)
-                            return position
-                elif 'below' in payload['position'].keys() and rules['name'] == payload['position']['below']:
-                    position = int(rules['rule-number']) + 1
-                    return position
-                elif 'above' in payload['position'].keys() and rules['name'] == payload['position']['above']:
-                    position = max(int(rules['rule-number']) - 1, 1)
-                    return position
-            return position
+def get_number_from_position(payload, connection, version, show_rulebase_command):
+    if type(payload['position']) is not dict:
+        position = payload['position']
+        if position == 'top':
+            position = 1
+        elif position == 'bottom':
+            payload_for_show_obj_rulebase = {'name': payload['layer'], 'limit': 0}
+            code, response = send_request(connection, version, show_rulebase_command, payload_for_show_obj_rulebase)
+            position = response['total']
     else:
-        return None
-
-    # This code relevant if we will decide to support 'top' and 'bottom' in position
-
-    # position_number = None
-    # # if position is not int, convert it to int. There are several cases: "top"
-    # if position == 'top':
-    #     position_number = 1
-    # elif position == 'bottom':
-    #     payload_for_show_access_rulebase = {'name': payload['layer'], 'limit': 0}
-    #     code, response = send_request(connection, version, 'show-access-rulebase', payload_for_show_access_rulebase)
-    #     position_number = response['total']
-    # elif isinstance(position, str):
-    #     # here position is a number in format str (e.g. "5" and not 5)
-    #     position_number = int(position)
-    # else:
-    #     # here position suppose to be int
-    #     position_number = position
-    #
-    # return position_number
+        position = None
+        payload_for_show_access_rulebase = {'name': payload['layer']}
+        code, response = send_request(connection, version, 'show-access-rulebase', payload_for_show_access_rulebase)
+        rulebase = response['rulebase']
+        for rules in rulebase:
+            if 'rulebase' in rules:
+                rules = rules['rulebase']
+                for rule in rules:
+                    if 'below' in payload['position'].keys() and rule['name'] == payload['position']['below']:
+                        position = int(rule['rule-number']) + 1
+                        return position
+                    elif 'above' in payload['position'].keys() and rule['name'] == payload['position']['above']:
+                        position = max(int(rule['rule-number']) - 1, 1)
+                        return position
+            elif 'below' in payload['position'].keys() and rules['name'] == payload['position']['below']:
+                position = int(rules['rule-number']) + 1
+                return position
+            elif 'above' in payload['position'].keys() and rules['name'] == payload['position']['above']:
+                position = max(int(rules['rule-number']) - 1, 1)
+                return position
+        return position
 
     return int(position)
 
@@ -444,13 +428,27 @@ def extract_rule_from_rulebase_response(response):
     return rule
 
 
+def get_relevant_show_rulebase_command(api_call_object):
+    if api_call_object == 'access-rule':
+        return 'show-access-rulebase'
+    elif api_call_object == "threat-rule":
+        return 'show-threat-rulebase'
+    elif api_call_object == "threat-exception":
+        return 'show-threat-rule-exception-rulebase'
+    #uncomment code below when https & nat modules are added as crud modules
+    # elif api_call_object == 'nat-rule':
+    #     return 'show-nat-rulebase'
+    # elif api_call_object == 'https-rule':
+    #     return 'show-https-rulebase'
+
+
 # is the param position (if the user inserted it) equals between the object and the user input
 def is_equals_with_position_param(payload, connection, version, api_call_object):
-    position_number = get_number_from_position(payload, connection, version)
-
     # if there is no position param, then it's equals in vacuous truth
-    if position_number is None:
+    if 'position' not in payload:
         return True
+
+    position_number = payload['position']
 
     rulebase_payload = build_rulebase_payload(api_call_object, payload, position_number)
     rulebase_command = build_rulebase_command(api_call_object)
@@ -530,6 +528,9 @@ def api_call_for_rule(module, api_call_object):
 
     if module.params['state'] == 'present':
         if equals_code == 200:
+            if 'position' in payload:
+                payload['position'] = get_number_from_position(payload, connection, version,
+                                                               get_relevant_show_rulebase_command(api_call_object))
             if equals_response['equals']:
                 if not is_equals_with_all_params(payload, connection, version, api_call_object, is_access_rule):
                     equals_response['equals'] = False
