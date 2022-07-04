@@ -251,6 +251,14 @@ options:
         description:
           - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
         type: bool
+      state:
+        description:
+          - State of the access rule (present or absent). Defaults to present.
+        type: str
+        default: present
+        choices:
+          - 'present'
+          - 'absent'
   details_level:
     description:
       - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
@@ -345,7 +353,9 @@ def main():
             comments=dict(type='str'),
             details_level=dict(type='str', choices=['uid', 'standard', 'full']),
             ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool')
+            ignore_errors=dict(type='bool'),
+            state=dict(type='str', choices=['present', 'absent'], default='present')
+
         )),
         layer=dict(type='str', required=True),
         details_level=dict(type='str', choices=['uid', 'standard', 'full'])

@@ -34,11 +34,7 @@ description:
   - All operations are performed over Web Services API.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
-options:
-  uid:
-    description:
-      - Session unique identifier. Specify it to publish a different session than the one you currently use.
-    type: str
+options: {}
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
@@ -60,7 +56,6 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
