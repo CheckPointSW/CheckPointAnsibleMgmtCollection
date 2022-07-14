@@ -40,7 +40,7 @@ options:
       - Object name.
     type: str
     required: True
-  machines:
+  machines_list:
     description:
       - Machines that can access the system.
     type: list
@@ -59,6 +59,11 @@ options:
         description:
           - When source is "Active Directory" use "base-dn" to refine the query in AD database.
         type: str
+  machines:
+    description:
+      - Any or All Identified.
+    type: str
+    choices: ['any', 'all identified']
   networks:
     description:
       - Collection of Network objects identified by the name or UID that can access the system.
@@ -73,7 +78,7 @@ options:
       - Collection of tag identifiers.
     type: list
     elements: str
-  users:
+  users_list:
     description:
       - Users that can access the system.
     type: list
@@ -92,6 +97,11 @@ options:
         description:
           - When source is "Active Directory" use "base-dn" to refine the query in AD database.
         type: str
+  users:
+    description:
+      - Any or All Identified.
+    type: str
+    choices: ['any', 'all identified']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -123,7 +133,6 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 EXAMPLES = """
 - name: add-access-role
   cp_mgmt_access_role:
-    machines: all identified
     name: New Access Role 1
     networks: any
     remote_access_clients: any
@@ -132,10 +141,11 @@ EXAMPLES = """
 
 - name: set-access-role
   cp_mgmt_access_role:
-    machines: any
+    users_list:
+        - source: "Internal User Groups"
+          selection: usersGroup
     name: New Access Role 1
     state: present
-    users: all identified
 
 - name: delete-access-role
   cp_mgmt_access_role:
@@ -157,19 +167,21 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        machines=dict(type='list', elements='dict', options=dict(
+        machines_list=dict(type='list', elements='dict', options=dict(
             source=dict(type='str'),
             selection=dict(type='list', elements='str'),
             base_dn=dict(type='str')
         )),
+        machines=dict(type='str', choices=['any', 'all identified']),
         networks=dict(type='list', elements='str'),
         remote_access_clients=dict(type='str'),
         tags=dict(type='list', elements='str'),
-        users=dict(type='list', elements='dict', options=dict(
+        users_list=dict(type='list', elements='dict', options=dict(
             source=dict(type='str'),
             selection=dict(type='list', elements='str'),
             base_dn=dict(type='str')
         )),
+        users=dict(type='str', choices=['any', 'all identified']),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
@@ -184,6 +196,18 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     api_call_object = 'access-role'
+
+    if module.params["machines_list"] is not None:
+        if module.params["machines"] is not None:
+            raise AssertionError("The use of both 'machines_list' and 'machines' arguments isn't allowed")
+        module.params["machines"] = module.params["machines_list"]
+    module.params.pop("machines_list")
+
+    if module.params["users_list"] is not None:
+        if module.params["users"] is not None:
+            raise AssertionError("The use of both 'users_list' and 'users' arguments isn't allowed")
+        module.params["users"] = module.params["users_list"]
+    module.params.pop("users_list")
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)

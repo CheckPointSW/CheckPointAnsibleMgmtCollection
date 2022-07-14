@@ -435,7 +435,7 @@ def get_relevant_show_rulebase_command(api_call_object):
         return 'show-threat-rulebase'
     elif api_call_object == "threat-exception":
         return 'show-threat-rule-exception-rulebase'
-    #uncomment code below when https & nat modules are added as crud modules
+# uncomment code below when https & nat modules are added as crud modules
     # elif api_call_object == 'nat-rule':
     #     return 'show-nat-rulebase'
     # elif api_call_object == 'https-rule':

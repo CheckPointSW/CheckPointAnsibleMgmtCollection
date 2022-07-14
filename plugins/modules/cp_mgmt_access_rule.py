@@ -218,7 +218,7 @@ options:
         description:
           - N/A
         type: str
-  vpn:
+  vpn_list:
     description:
       - Communities or Directional.
     type: list
@@ -228,7 +228,7 @@ options:
         description:
           - List of community name or UID.
         type: list
-        elements: dict
+        elements: str
       directional:
         description:
           - Communities directional match condition.
@@ -243,6 +243,11 @@ options:
             description:
               - To community name or UID.
             type: str
+  vpn:
+    description:
+      - Any or All_GwToGw.
+    type: str
+    choices: ['Any', 'All_GwToGw']
   comments:
     description:
       - Comments string.
@@ -273,6 +278,7 @@ EXAMPLES = """
     service:
     - SMTP
     - AOL
+    vpn: All_GwToGw
     state: present
 
 - name: set-access-rule
@@ -353,22 +359,29 @@ def main():
             frequency=dict(type='str', choices=['once a day', 'once a week', 'once a month', 'custom frequency...']),
             interaction=dict(type='str')
         )),
-        vpn=dict(type='list', elements='dict', options=dict(
-            community=dict(type='list', elements='dict'),
+        vpn_list=dict(type='list', elements='dict', options=dict(
+            community=dict(type='list', elements='str'),
             directional=dict(type='list', elements='dict', options=dict(
                 to=dict(type='str')
             ))
         )),
+        vpn=dict(type='str', choices=['Any', 'All_GwToGw']),
         comments=dict(type='str'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         ignore_warnings=dict(type='bool'),
         ignore_errors=dict(type='bool')
     )
-    argument_spec['vpn']['options']['directional']['options']['from'] = dict(type='str')
+    argument_spec['vpn_list']['options']['directional']['options']['from'] = dict(type='str')
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     api_call_object = 'access-rule'
+
+    if module.params["vpn_list"] is not None:
+        if module.params["vpn"] is not None:
+            raise AssertionError("The use of both 'vpn_list' and 'vpn' arguments isn't allowed")
+        module.params["vpn"] = module.params["vpn_list"]
+    module.params.pop("vpn_list")
 
     if module.params['action'] is None and module.params['position'] is None:
         result = api_call(module, api_call_object)
