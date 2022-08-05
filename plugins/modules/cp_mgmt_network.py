@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   subnet:
     description:
       - IPv4 or IPv6 network address. If both addresses are required use subnet4 and subnet6 fields explicitly.
@@ -185,6 +189,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         subnet=dict(type='str'),
         subnet4=dict(type='str'),
         subnet6=dict(type='str'),
