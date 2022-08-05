@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   is_sub_domain:
     description:
       - Whether to match sub-domains in addition to the domain itself.
@@ -90,6 +94,13 @@ EXAMPLES = """
     name: .www.example.com
     state: present
 
+- name: rename-dns-domain
+  cp_mgmt_dns_domain:
+    is_sub_domain: true
+    name: .www.example.com
+    new_name: .www.newexample.com
+    state: present
+
 - name: delete-dns-domain
   cp_mgmt_dns_domain:
     name: .example.com
@@ -110,6 +121,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         is_sub_domain=dict(type='bool'),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
