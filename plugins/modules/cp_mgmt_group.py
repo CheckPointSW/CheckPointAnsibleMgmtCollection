@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   members:
     description:
       - Collection of Network objects identified by the name or UID.
@@ -97,6 +101,12 @@ EXAMPLES = """
     name: New Group 1
     state: present
 
+- name: rename-group
+  cp_mgmt_group:
+    name: Old Group Name
+    new_name: New Group Name
+    state: present
+
 - name: delete-group
   cp_mgmt_group:
     name: New Group 1
@@ -117,6 +127,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         members=dict(type='list', elements='str'),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
