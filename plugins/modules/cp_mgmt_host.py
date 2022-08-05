@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   ip_address:
     description:
       - IPv4 or IPv6 address. If both addresses are required use ipv4-address and ipv6-address fields explicitly.
@@ -250,6 +254,12 @@ EXAMPLES = """
     name: New Host 1
     state: present
 
+- name: rename-host
+  cp_mgmt_host:
+    name: Old Host Name
+    new_name: New Host Name
+    state: present
+
 - name: delete-host
   cp_mgmt_host:
     name: New Host 1
@@ -270,6 +280,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         ip_address=dict(type='str'),
         ipv4_address=dict(type='str'),
         ipv6_address=dict(type='str'),
