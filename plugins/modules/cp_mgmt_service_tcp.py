@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   aggressive_aging:
     description:
       - Sets short (aggressive) timeouts for idle connections.
@@ -170,6 +174,13 @@ EXAMPLES = """
     port: 5656
     state: present
 
+- name: rename-service-tcp
+  cp_mgmt_service_tcp:
+    name: TCP_Service_Old_Name
+    new_name: TCP_Service_New_Name
+    state: present
+
+
 - name: delete-service-tcp
   cp_mgmt_service_tcp:
     name: New_TCP_Service_1
@@ -190,6 +201,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         aggressive_aging=dict(type='dict', options=dict(
             default_timeout=dict(type='int'),
             enable=dict(type='bool'),
