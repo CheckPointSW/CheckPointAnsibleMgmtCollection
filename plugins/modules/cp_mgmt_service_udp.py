@@ -40,6 +40,10 @@ options:
       - Object name.
     type: str
     required: True
+  new_name:
+    description:
+      - New Object name.
+    type: str
   accept_replies:
     description:
       - N/A
@@ -176,6 +180,12 @@ EXAMPLES = """
     port: 5656
     state: present
 
+- name: rename-service-udp
+  cp_mgmt_service_udp:
+    name: UDP_Service_Old_Name
+    new_name: UDP_Service_New_Name
+    state: present
+
 - name: delete-service-udp
   cp_mgmt_service_udp:
     name: New_UDP_Service_2
@@ -196,6 +206,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
+        new_name=dict(type='str'),
         accept_replies=dict(type='bool'),
         aggressive_aging=dict(type='dict', options=dict(
             default_timeout=dict(type='int'),
