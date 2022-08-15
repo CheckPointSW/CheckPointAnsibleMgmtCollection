@@ -71,14 +71,21 @@ options:
     type: str
   permissions_profile:
     description:
+      - Permission profile
+  permissions_profile_list:
+    description:
       - Administrator permissions profile. Permissions profile should not be provided when multi-domain-profile is set to "Multi-Domain Super User" or
-        "Domain Super User".
+        "Domain Super User". Used only in MDS.
     type: list
     elements: dict
     suboptions:
       profile:
         description:
           - Permission profile.
+        type: str
+      domain:
+        description:
+          - Domain.
         type: str
   phone_number:
     description:
@@ -128,7 +135,7 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_objects
 EXAMPLES = """
 - name: add-administrator
   cp_mgmt_administrator:
-    authentication_method: INTERNAL_PASSWORD
+    authentication_method: check point password
     email: admin@gmail.com
     must_change_password: false
     name: admin
@@ -140,7 +147,7 @@ EXAMPLES = """
 - name: set-administrator
   cp_mgmt_administrator:
     name: admin
-    password: bew secret
+    password: new secret
     permissions_profile: read only profile
     state: present
 
@@ -148,6 +155,19 @@ EXAMPLES = """
   cp_mgmt_administrator:
     name: admin
     state: absent
+    
+- name: add-administrator-in-MDS
+  cp_mgmt_administrator:
+    authentication_method: check point password
+    email: admin@gmail.com
+    must_change_password: false
+    name: admin
+    password: secret
+    permissions_profile_list: 
+      profile: read write all
+      domain: dom1
+    phone_number: 1800-800-800
+    state: present
 """
 
 RETURN = """
@@ -172,8 +192,10 @@ def main():
         must_change_password=dict(type='bool'),
         password=dict(type='str', no_log=True),
         password_hash=dict(type='str', no_log=True),
-        permissions_profile=dict(type='list', elements='dict', options=dict(
-            profile=dict(type='str')
+        permissions_profile=dict(type='str'),
+        permissions_profile_list=dict(type='list', elements='dict', options=dict(
+            profile=dict(type='str'),
+            domain=dict(type='str')
         )),
         phone_number=dict(type='str'),
         radius_server=dict(type='str'),
@@ -193,6 +215,12 @@ def main():
 
     module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
     api_call_object = 'administrator'
+
+    if module.params["permissions_profile_list"] is not None:
+        if module.params["permissions_profile"] is not None:
+            raise AssertionError("The use of both 'permissions_profile_list' and 'permissions_profile' arguments isn't allowed")
+        module.params["permissions_profile"] = module.params["permissions_profile_list"]
+    module.params.pop("permissions_profile_list")
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
