@@ -43,7 +43,7 @@ options:
     description:
       - Position in the rulebase. The use of values "top" and "bottom" may not be idempotent.
     type: str
-  position_by_rule:
+  relative_position:
     description:
       - Position in the rulebase.
       - Use of this field may not be idempotent.
@@ -51,12 +51,30 @@ options:
     suboptions:
       below:
         description:
-          - Add rule below specific rule identified by uid or name (limited to 500 rules).
+          - Add rule below specific rule/section identified by name (limited to 50 rules if
+            search_entire_rulebase is False).
         type: str
       above:
         description:
-          - Add rule above specific rule identified by uid or name (limited to 500 rules).
+          - Add rule above specific rule/section identified by name (limited to 50 rules if
+            search_entire_rulebase is False).
         type: str
+      top:
+        description:
+          - Add rule to the top of a specific section identified by name (limited to 50 rules if
+            search_entire_rulebase is False).
+        type: str
+      bottom:
+        description:
+          - Add rule to the bottom of a specific section identified by name (limited to 50 rules if
+            search_entire_rulebase is False).
+        type: str
+  search_entire_rulebase:
+    description:
+      - Whether to search the entire rulebase for a rule that's been edited in its relative_position field to make sure
+        there indeed has been a change in its position or the section it might be in.
+    type: bool
+    default: False
   name:
     description:
       - Object name.
@@ -314,10 +332,13 @@ def main():
     argument_spec = dict(
         layer=dict(type='str'),
         position=dict(type='str'),
-        position_by_rule=dict(type='dict', options=dict(
+        relative_position=dict(type='dict', options=dict(
             below=dict(type='str'),
-            above=dict(type='str')
+            above=dict(type='str'),
+            top=dict(type='str'),
+            bottom=dict(type='str')
         )),
+        search_entire_rulebase=dict(type='bool', default=False),
         name=dict(type='str', required=True),
         action=dict(type='str'),
         action_settings=dict(type='dict', options=dict(
@@ -383,7 +404,14 @@ def main():
         module.params["vpn"] = module.params["vpn_list"]
     module.params.pop("vpn_list")
 
+    if module.params["relative_position"] is not None:
+        if module.params["position"] is not None:
+            raise AssertionError("The use of both 'relative_position' and 'position' arguments isn't allowed")
+        module.params["position"] = module.params["relative_position"]
+    module.params.pop("relative_position")
+
     if module.params['action'] is None and module.params['position'] is None:
+        module.params.pop("search_entire_rulebase")
         result = api_call(module, api_call_object)
     else:
         result = api_call_for_rule(module, api_call_object)
