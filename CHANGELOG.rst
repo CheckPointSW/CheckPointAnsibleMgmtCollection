@@ -5,6 +5,50 @@ Check_Point.Mgmt Release Notes
 .. contents:: Topics
 
 
+v4.0.0
+======
+
+Release Summary
+---------------
+
+This is release 4.0.0 of ``check_point.mgmt``, released on 2022-09-14.
+
+Major Changes
+-------------
+
+- plugins/httpapi/checkpoint - Support for Smart-1 Cloud with new variable 'ansible_cloud_mgmt_id'
+
+Breaking Changes / Porting Guide
+--------------------------------
+
+- cp_mgmt_access_role - the 'machines' parameter now accepts a single str and a new parameter 'machines_list' of type dict has been added. the 'users' parameter now accepts a single str and a new parameter 'users_list' of type dict has been added.
+- cp_mgmt_access_rule - the 'vpn' parameter now accepts a single str and a new parameter 'vpn_list' of type dict has been added. the 'position_by_rule' parameter has been changed to 'relative_position' with support of positioning above/below a section (and not just a rule). the 'relative_position' parameter has also 'top' and 'bottom' suboptions which allows positioning a rule at the top and bottom of a section respectively. a new parameter 'search_entire_rulebase' has been added to allow the relative positioning to be unlimited (was previously limited to 50 rules)
+- cp_mgmt_administrator - the 'permissions_profile' parameter now accepts a single str and a new parameter 'permissions_profile_list' of type dict has been added.
+- cp_mgmt_publish - the 'uid' parameter has been removed.
+
+Bugfixes
+--------
+
+- cp_mgmt_access_rule - support for relative positioning for rulebase with more than 50 rules (https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues/69)
+- cp_mgmt_administrator - specifying the administartor's permissions profile now works for both SMC and MDS (https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues/83)
+- meta/runtime.yml - update value of minimum ansible version and remove redirect (https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues/84)
+
+v3.2.0
+======
+
+Release Summary
+---------------
+
+This is release 3.2.0 of ``check_point.mgmt``, released on 2022-08-09.
+
+v3.1.0
+======
+
+Release Summary
+---------------
+
+This is release 3.1.0 of ``check_point.mgmt``, released on 2022-07-04.
+
 v3.0.0
 ======
 

@@ -27,6 +27,12 @@ options:
       - Login with api-key instead of user & password
     vars:
       - name: ansible_api_key
+  cloud_mgmt_id:
+    type: str
+    description:
+      - The Cloud Management ID
+    vars:
+      - name: ansible_cloud_mgmt_id
 """
 
 import json
@@ -79,7 +85,9 @@ class HttpApi(HttpApiBase):
 
     def send_request(self, path, body_params):
         data = json.dumps(body_params) if body_params else '{}'
-
+        cp_cloud_mgmt_id = self.get_option('cloud_mgmt_id')
+        if cp_cloud_mgmt_id:
+            path = '/' + cp_cloud_mgmt_id + path
         try:
             self._display_request()
             response, response_data = self.connection.send(path, data, method='POST', headers=BASE_HEADERS)

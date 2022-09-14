@@ -72,6 +72,7 @@ options:
   permissions_profile:
     description:
       - Permission profile
+    type: str
   permissions_profile_list:
     description:
       - Administrator permissions profile. Permissions profile should not be provided when multi-domain-profile is set to "Multi-Domain Super User" or
@@ -155,7 +156,7 @@ EXAMPLES = """
   cp_mgmt_administrator:
     name: admin
     state: absent
-    
+
 - name: add-administrator-in-MDS
   cp_mgmt_administrator:
     authentication_method: check point password
@@ -163,7 +164,7 @@ EXAMPLES = """
     must_change_password: false
     name: admin
     password: secret
-    permissions_profile_list: 
+    permissions_profile_list:
       profile: read write all
       domain: dom1
     phone_number: 1800-800-800
