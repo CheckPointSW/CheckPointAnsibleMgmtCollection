@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -264,75 +266,178 @@ cp_mgmt_host:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        ip_address=dict(type='str'),
-        ipv4_address=dict(type='str'),
-        ipv6_address=dict(type='str'),
-        interfaces=dict(type='list', elements='dict', options=dict(
-            name=dict(type='str'),
-            subnet=dict(type='str'),
-            subnet4=dict(type='str'),
-            subnet6=dict(type='str'),
-            mask_length=dict(type='int'),
-            mask_length4=dict(type='int'),
-            mask_length6=dict(type='int'),
-            subnet_mask=dict(type='str'),
-            color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan',
-                                            'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick',
-                                            'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral',
-                                            'sea green', 'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red',
-                                            'sienna', 'yellow']),
-            comments=dict(type='str'),
-            details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-            ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool')
-        )),
-        nat_settings=dict(type='dict', options=dict(
-            auto_rule=dict(type='bool'),
-            ip_address=dict(type='str'),
-            ipv4_address=dict(type='str'),
-            ipv6_address=dict(type='str'),
-            hide_behind=dict(type='str', choices=['gateway', 'ip-address']),
-            install_on=dict(type='str'),
-            method=dict(type='str', choices=['hide', 'static'])
-        )),
-        tags=dict(type='list', elements='str'),
-        host_servers=dict(type='dict', options=dict(
-            dns_server=dict(type='bool'),
-            mail_server=dict(type='bool'),
-            web_server=dict(type='bool'),
-            web_server_config=dict(type='dict', options=dict(
-                additional_ports=dict(type='list', elements='str'),
-                application_engines=dict(type='list', elements='str'),
-                listen_standard_port=dict(type='bool'),
-                operating_system=dict(type='str', choices=['sparc linux', 'windows', 'other', 'x86 linux', 'sparc solaris']),
-                protected_by=dict(type='str')
-            ))
-        )),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list', elements='str'),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        ip_address=dict(type="str"),
+        ipv4_address=dict(type="str"),
+        ipv6_address=dict(type="str"),
+        interfaces=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                name=dict(type="str"),
+                subnet=dict(type="str"),
+                subnet4=dict(type="str"),
+                subnet6=dict(type="str"),
+                mask_length=dict(type="int"),
+                mask_length4=dict(type="int"),
+                mask_length6=dict(type="int"),
+                subnet_mask=dict(type="str"),
+                color=dict(
+                    type="str",
+                    choices=[
+                        "aquamarine",
+                        "black",
+                        "blue",
+                        "crete blue",
+                        "burlywood",
+                        "cyan",
+                        "dark green",
+                        "khaki",
+                        "orchid",
+                        "dark orange",
+                        "dark sea green",
+                        "pink",
+                        "turquoise",
+                        "dark blue",
+                        "firebrick",
+                        "brown",
+                        "forest green",
+                        "gold",
+                        "dark gold",
+                        "gray",
+                        "dark gray",
+                        "light green",
+                        "lemon chiffon",
+                        "coral",
+                        "sea green",
+                        "sky blue",
+                        "magenta",
+                        "purple",
+                        "slate blue",
+                        "violet red",
+                        "navy blue",
+                        "olive",
+                        "orange",
+                        "red",
+                        "sienna",
+                        "yellow",
+                    ],
+                ),
+                comments=dict(type="str"),
+                details_level=dict(
+                    type="str", choices=["uid", "standard", "full"]
+                ),
+                ignore_warnings=dict(type="bool"),
+                ignore_errors=dict(type="bool"),
+            ),
+        ),
+        nat_settings=dict(
+            type="dict",
+            options=dict(
+                auto_rule=dict(type="bool"),
+                ip_address=dict(type="str"),
+                ipv4_address=dict(type="str"),
+                ipv6_address=dict(type="str"),
+                hide_behind=dict(
+                    type="str", choices=["gateway", "ip-address"]
+                ),
+                install_on=dict(type="str"),
+                method=dict(type="str", choices=["hide", "static"]),
+            ),
+        ),
+        tags=dict(type="list", elements="str"),
+        host_servers=dict(
+            type="dict",
+            options=dict(
+                dns_server=dict(type="bool"),
+                mail_server=dict(type="bool"),
+                web_server=dict(type="bool"),
+                web_server_config=dict(
+                    type="dict",
+                    options=dict(
+                        additional_ports=dict(type="list", elements="str"),
+                        application_engines=dict(type="list", elements="str"),
+                        listen_standard_port=dict(type="bool"),
+                        operating_system=dict(
+                            type="str",
+                            choices=[
+                                "sparc linux",
+                                "windows",
+                                "other",
+                                "x86 linux",
+                                "sparc solaris",
+                            ],
+                        ),
+                        protected_by=dict(type="str"),
+                    ),
+                ),
+            ),
+        ),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        groups=dict(type="list", elements="str"),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'host'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "host"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -21,12 +21,20 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from units.modules.utils import set_module_args, exit_json, fail_json, AnsibleFailJson, AnsibleExitJson
+from units.modules.utils import (
+    set_module_args,
+    exit_json,
+    fail_json,
+    AnsibleFailJson,
+    AnsibleExitJson,
+)
 
 from ansible.module_utils import basic
-from ansible_collections.check_point.mgmt.plugins.modules import _checkpoint_session
+from ansible_collections.check_point.mgmt.plugins.modules import (
+    _checkpoint_session,
+)
 
-OBJECT = {'uid': '1234'}
+OBJECT = {"uid": "1234"}
 PAYLOAD = {}
 
 
@@ -35,16 +43,22 @@ class TestCheckpointAccessRule(object):
 
     @pytest.fixture(autouse=True)
     def module_mock(self, mocker):
-        return mocker.patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json)
+        return mocker.patch.multiple(
+            basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json
+        )
 
     @pytest.fixture
     def connection_mock(self, mocker):
-        connection_class_mock = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_session.Connection')
+        connection_class_mock = mocker.patch(
+            "ansible_collections.check_point.mgmt.plugins.modules._checkpoint_session.Connection"
+        )
         return connection_class_mock.return_value
 
     @pytest.fixture
     def get_session_200(self, mocker):
-        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_session.get_session')
+        mock_function = mocker.patch(
+            "ansible_collections.check_point.mgmt.plugins.modules._checkpoint_session.get_session"
+        )
         mock_function.return_value = (200, OBJECT)
         return mock_function.return_value
 
@@ -52,8 +66,8 @@ class TestCheckpointAccessRule(object):
         connection_mock.send_request.return_value = (200, OBJECT)
         result = self._run_module(PAYLOAD)
 
-        assert result['changed']
-        assert 'checkpoint_session' in result
+        assert result["changed"]
+        assert "checkpoint_session" in result
 
     def _run_module(self, module_args):
         set_module_args(module_args)

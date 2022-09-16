@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -159,45 +161,62 @@ ansible_facts:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_facts, api_call_facts_for_rule
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_facts,
+    api_call_facts_for_rule,
+)
 
 
 def main():
     argument_spec = dict(
-        rule_number=dict(type='str'),
-        package=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        filter=dict(type='str'),
-        filter_settings=dict(type='dict', options=dict(
-            search_mode=dict(type='str', choices=['general', 'packet']),
-            packet_search_settings=dict(type='dict', options=dict(
-                expand_group_members=dict(type='bool'),
-                expand_group_with_exclusion_members=dict(type='bool'),
-                match_on_any=dict(type='bool'),
-                match_on_group_with_exclusion=dict(type='bool'),
-                match_on_negate=dict(type='bool')
-            ))
-        )),
-        limit=dict(type='int'),
-        offset=dict(type='int'),
-        order=dict(type='list', elements='dict', options=dict(
-            ASC=dict(type='str', choices=['name']),
-            DESC=dict(type='str', choices=['name'])
-        )),
-        use_object_dictionary=dict(type='bool'),
-        dereference_group_members=dict(type='bool'),
-        show_membership=dict(type='bool')
+        rule_number=dict(type="str"),
+        package=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        filter=dict(type="str"),
+        filter_settings=dict(
+            type="dict",
+            options=dict(
+                search_mode=dict(type="str", choices=["general", "packet"]),
+                packet_search_settings=dict(
+                    type="dict",
+                    options=dict(
+                        expand_group_members=dict(type="bool"),
+                        expand_group_with_exclusion_members=dict(type="bool"),
+                        match_on_any=dict(type="bool"),
+                        match_on_group_with_exclusion=dict(type="bool"),
+                        match_on_negate=dict(type="bool"),
+                    ),
+                ),
+            ),
+        ),
+        limit=dict(type="int"),
+        offset=dict(type="int"),
+        order=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                ASC=dict(type="str", choices=["name"]),
+                DESC=dict(type="str", choices=["name"]),
+            ),
+        ),
+        use_object_dictionary=dict(type="bool"),
+        dereference_group_members=dict(type="bool"),
+        show_membership=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
 
     api_call_object = "nat-rule"
     api_call_object_plural_version = "nat-rulebase"
 
-    result = api_call_facts_for_rule(module, api_call_object, api_call_object_plural_version)
+    result = api_call_facts_for_rule(
+        module, api_call_object, api_call_object_plural_version
+    )
     module.exit_json(ansible_facts=result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

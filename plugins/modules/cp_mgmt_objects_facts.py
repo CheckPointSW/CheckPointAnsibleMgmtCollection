@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -145,37 +147,48 @@ ansible_facts:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_facts, api_call_facts
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_facts,
+    api_call_facts,
+)
 
 
 def main():
     argument_spec = dict(
-        uid=dict(type='str'),
-        uids=dict(type='list', elements='str'),
-        filter=dict(type='str'),
-        ip_only=dict(type='bool'),
-        limit=dict(type='int'),
-        offset=dict(type='int'),
-        order=dict(type='list', elements='dict', options=dict(
-            ASC=dict(type='str', choices=['name']),
-            DESC=dict(type='str', choices=['name'])
-        )),
-        type=dict(type='str'),
-        dereference_group_members=dict(type='bool'),
-        show_membership=dict(type='bool'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list', elements='str')
+        uid=dict(type="str"),
+        uids=dict(type="list", elements="str"),
+        filter=dict(type="str"),
+        ip_only=dict(type="bool"),
+        limit=dict(type="int"),
+        offset=dict(type="int"),
+        order=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                ASC=dict(type="str", choices=["name"]),
+                DESC=dict(type="str", choices=["name"]),
+            ),
+        ),
+        type=dict(type="str"),
+        dereference_group_members=dict(type="bool"),
+        show_membership=dict(type="bool"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        domains_to_process=dict(type="list", elements="str"),
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
 
     api_call_object = "object"
     api_call_object_plural_version = "objects"
 
-    result = api_call_facts(module, api_call_object, api_call_object_plural_version)
+    result = api_call_facts(
+        module, api_call_object, api_call_object_plural_version
+    )
     module.exit_json(ansible_facts=result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

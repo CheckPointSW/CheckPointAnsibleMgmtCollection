@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -1635,400 +1637,987 @@ cp_mgmt_set_global_properties:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_commands,
+    api_command,
+)
 
 
 def main():
     argument_spec = dict(
-        firewall=dict(type='dict', options=dict(
-            accept_control_connections=dict(type='bool'),
-            accept_ips1_management_connections=dict(type='bool'),
-            accept_remote_access_control_connections=dict(type='bool'),
-            accept_smart_update_connections=dict(type='bool'),
-            accept_outgoing_packets_originating_from_gw=dict(type='bool'),
-            accept_outgoing_packets_originating_from_gw_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_outgoing_packets_originating_from_connectra_gw=dict(type='bool'),
-            accept_outgoing_packets_to_cp_online_services=dict(type='bool'),
-            accept_outgoing_packets_to_cp_online_services_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_domain_name_over_tcp=dict(type='bool'),
-            accept_domain_name_over_tcp_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_domain_name_over_udp=dict(type='bool'),
-            accept_domain_name_over_udp_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_dynamic_addr_modules_outgoing_internet_connections=dict(type='bool'),
-            accept_icmp_requests=dict(type='bool'),
-            accept_icmp_requests_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_identity_awareness_control_connections=dict(type='bool'),
-            accept_identity_awareness_control_connections_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_incoming_traffic_to_dhcp_and_dns_services_of_gws=dict(type='bool'),
-            accept_rip=dict(type='bool'),
-            accept_rip_position=dict(type='str', choices=['first', 'last', 'before last']),
-            accept_vrrp_packets_originating_from_cluster_members=dict(type='bool'),
-            accept_web_and_ssh_connections_for_gw_administration=dict(type='bool'),
-            log_implied_rules=dict(type='bool'),
-            security_server=dict(type='dict', options=dict(
-                client_auth_welcome_file=dict(type='str'),
-                ftp_welcome_msg_file=dict(type='str'),
-                rlogin_welcome_msg_file=dict(type='str'),
-                telnet_welcome_msg_file=dict(type='str'),
-                mdq_welcome_msg=dict(type='str'),
-                smtp_welcome_msg=dict(type='str'),
-                http_next_proxy_host=dict(type='str'),
-                http_next_proxy_port=dict(type='int'),
-                http_servers=dict(type='list', elements='dict', options=dict(
-                    logical_name=dict(type='str'),
-                    host=dict(type='str'),
-                    port=dict(type='int'),
-                    reauthentication=dict(type='str', choices=['standard', 'post request', 'every request'])
-                )),
-                server_for_null_requests=dict(type='str')
-            ))
-        )),
-        nat=dict(type='dict', options=dict(
-            allow_bi_directional_nat=dict(type='bool'),
-            auto_arp_conf=dict(type='bool'),
-            merge_manual_proxy_arp_conf=dict(type='bool'),
-            auto_translate_dest_on_client_side=dict(type='bool'),
-            manually_translate_dest_on_client_side=dict(type='bool'),
-            enable_ip_pool_nat=dict(type='bool'),
-            addr_alloc_and_release_track=dict(type='str', choices=['ip allocation log', 'none']),
-            addr_exhaustion_track=dict(type='str', choices=['ip exhaustion alert', 'none', 'ip exhaustion log'])
-        )),
-        authentication=dict(type='dict', options=dict(
-            auth_internal_users_with_specific_suffix=dict(type='bool'),
-            allowed_suffix_for_internal_users=dict(type='str'),
-            max_days_before_expiration_of_non_pulled_user_certificates=dict(type='int'),
-            max_client_auth_attempts_before_connection_termination=dict(type='int'),
-            max_rlogin_attempts_before_connection_termination=dict(type='int'),
-            max_session_auth_attempts_before_connection_termination=dict(type='int'),
-            max_telnet_attempts_before_connection_termination=dict(type='int'),
-            enable_delayed_auth=dict(type='bool'),
-            delay_each_auth_attempt_by=dict(type='int')
-        )),
-        vpn=dict(type='dict', options=dict(
-            vpn_conf_method=dict(type='str', choices=['simplified', 'traditional', 'per policy']),
-            domain_name_for_dns_resolving=dict(type='str'),
-            enable_backup_gw=dict(type='bool'),
-            enable_decrypt_on_accept_for_gw_to_gw_traffic=dict(type='bool'),
-            enable_load_distribution_for_mep_conf=dict(type='bool'),
-            enable_vpn_directional_match_in_vpn_column=dict(type='bool'),
-            grace_period_after_the_crl_is_not_valid=dict(type='int'),
-            grace_period_before_the_crl_is_valid=dict(type='int'),
-            grace_period_extension_for_secure_remote_secure_client=dict(type='int'),
-            support_ike_dos_protection_from_identified_src=dict(type='str', choices=['puzzles', 'stateless', 'none']),
-            support_ike_dos_protection_from_unidentified_src=dict(type='str', choices=['puzzles', 'stateless', 'none'])
-        )),
-        remote_access=dict(type='dict', options=dict(
-            enable_back_connections=dict(type='bool'),
-            keep_alive_packet_to_gw_interval=dict(type='int'),
-            encrypt_dns_traffic=dict(type='bool'),
-            simultaneous_login_mode=dict(type='str', choices=['allowonlysinglelogintouser', 'allowseverallogintouser']),
-            vpn_authentication_and_encryption=dict(type='dict', options=dict(
-                encryption_algorithms=dict(type='dict', options=dict(
-                    ike=dict(type='dict', options=dict(
-                        support_encryption_algorithms=dict(type='dict', options=dict(
-                            tdes=dict(type='bool'),
-                            aes_128=dict(type='bool'),
-                            aes_256=dict(type='bool'),
-                            des=dict(type='bool')
-                        )),
-                        use_encryption_algorithm=dict(type='str', choices=['AES-256', 'DES', 'AES-128', 'TDES']),
-                        support_data_integrity=dict(type='dict', options=dict(
-                            aes_xcbc=dict(type='bool'),
-                            md5=dict(type='bool'),
-                            sha1=dict(type='bool'),
-                            sha256=dict(type='bool')
-                        )),
-                        use_data_integrity=dict(type='str', choices=['aes-xcbc', 'sha256', 'sha1', 'md5']),
-                        support_diffie_hellman_groups=dict(type='dict', options=dict(
-                            group1=dict(type='bool'),
-                            group14=dict(type='bool'),
-                            group2=dict(type='bool'),
-                            group5=dict(type='bool')
-                        )),
-                        use_diffie_hellman_group=dict(type='str', choices=['group 1', 'group 2', 'group 5', 'group 14'])
-                    )),
-                    ipsec=dict(type='dict', options=dict(
-                        support_encryption_algorithms=dict(type='dict', options=dict(
-                            tdes=dict(type='bool'),
-                            aes_128=dict(type='bool'),
-                            aes_256=dict(type='bool'),
-                            des=dict(type='bool')
-                        )),
-                        use_encryption_algorithm=dict(type='str', choices=['AES-256', 'DES', 'AES-128', 'TDES']),
-                        support_data_integrity=dict(type='dict', options=dict(
-                            aes_xcbc=dict(type='bool'),
-                            md5=dict(type='bool'),
-                            sha1=dict(type='bool'),
-                            sha256=dict(type='bool')
-                        )),
-                        use_data_integrity=dict(type='str', choices=['aes-xcbc', 'sha1', 'sha256', 'sha384', 'sha512', 'md5']),
-                        enforce_encryption_alg_and_data_integrity_on_all_users=dict(type='bool')
-                    ))
-                )),
-                encryption_method=dict(type='str', choices=['prefer_ikev2_support_ikev1', 'ike_v2_only', 'ike_v1_only']),
-                pre_shared_secret=dict(type='bool'),
-                support_legacy_auth_for_sc_l2tp_nokia_clients=dict(type='bool'),
-                support_legacy_eap=dict(type='bool'),
-                support_l2tp_with_pre_shared_key=dict(type='bool'),
-                l2tp_pre_shared_key=dict(type='str', no_log=True)
-            )),
-            vpn_advanced=dict(type='dict', options=dict(
-                allow_clear_traffic_to_encryption_domain_when_disconnected=dict(type='bool'),
-                enable_load_distribution_for_mep_conf=dict(type='bool'),
-                use_first_allocated_om_ip_addr_for_all_conn_to_the_gws_of_the_site=dict(type='bool')
-            )),
-            scv=dict(type='dict', options=dict(
-                apply_scv_on_simplified_mode_fw_policies=dict(type='bool'),
-                exceptions=dict(type='list', elements='dict', options=dict(
-                    hosts=dict(type='list', elements='str'),
-                    services=dict(type='list', elements='str')
-                )),
-                no_scv_for_unsupported_cp_clients=dict(type='bool'),
-                upon_verification_accept_and_log_client_connection=dict(type='bool'),
-                only_tcp_ip_protocols_are_used=dict(type='bool'),
-                policy_installed_on_all_interfaces=dict(type='bool'),
-                generate_log=dict(type='bool'),
-                notify_user=dict(type='bool')
-            )),
-            ssl_network_extender=dict(type='dict', options=dict(
-                user_auth_method=dict(type='str', choices=['certificate_with_enrollment', 'certificate', 'mixed', 'legacy']),
-                supported_encryption_methods=dict(type='str', choices=['3des_or_rc4', '3des_only']),
-                client_upgrade_upon_connection=dict(type='str', choices=['force_upgrade', 'ask_user', 'no_upgrade']),
-                client_uninstall_upon_disconnection=dict(type='str', choices=['force_uninstall', 'ask_user', 'dont_uninstall']),
-                re_auth_user_interval=dict(type='int'),
-                scan_ep_machine_for_compliance_with_ep_compliance_policy=dict(type='bool'),
-                client_outgoing_keep_alive_packets_frequency=dict(type='int')
-            )),
-            secure_client_mobile=dict(type='dict', options=dict(
-                user_auth_method=dict(type='str', choices=['certificate_with_enrollment', 'certificate', 'mixed', 'legacy']),
-                enable_password_caching=dict(type='str', choices=['client_decide', 'true', 'false']),
-                cache_password_timeout=dict(type='int'),
-                re_auth_user_interval=dict(type='int'),
-                connect_mode=dict(type='str', choices=['manual', 'always connected', 'on application request', 'configured on endpoint client']),
-                automatically_initiate_dialup=dict(type='str', choices=['client_decide', 'true', 'false']),
-                disconnect_when_device_is_idle=dict(type='str', choices=['client_decide', 'true', 'false']),
-                supported_encryption_methods=dict(type='str', choices=['3des_or_rc4', '3des_only']),
-                route_all_traffic_to_gw=dict(type='str', choices=['client_decide', 'true', 'false'])
-            )),
-            endpoint_connect=dict(type='dict', options=dict(
-                enable_password_caching=dict(type='str', choices=['client_decide', 'true', 'false']),
-                cache_password_timeout=dict(type='int'),
-                re_auth_user_interval=dict(type='int'),
-                connect_mode=dict(type='str', choices=['Manual', 'Always Connected', 'Configured On Endpoint Client']),
-                network_location_awareness=dict(type='str', choices=['client_decide', 'true', 'false']),
-                network_location_awareness_conf=dict(type='dict', options=dict(
-                    vpn_clients_are_considered_inside_the_internal_network_when_the_client=dict(
-                        type='str',
-                        choices=['connects to gw through internal interface',
-                                 'connects from network or group',
-                                 'runs on computer with access to active directory domain']),
-                    network_or_group_of_conn_vpn_client=dict(type='str'),
-                    consider_wireless_networks_as_external=dict(type='bool'),
-                    excluded_internal_wireless_networks=dict(type='list', elements='str'),
-                    consider_undefined_dns_suffixes_as_external=dict(type='bool'),
-                    dns_suffixes=dict(type='list', elements='str'),
-                    remember_previously_detected_external_networks=dict(type='bool')
-                )),
-                disconnect_when_conn_to_network_is_lost=dict(type='str', choices=['client_decide', 'true', 'false']),
-                disconnect_when_device_is_idle=dict(type='str', choices=['client_decide', 'true', 'false']),
-                route_all_traffic_to_gw=dict(type='str', choices=['client_decide', 'true', 'false']),
-                client_upgrade_mode=dict(type='str', choices=['force_upgrade', 'ask_user', 'no_upgrade'])
-            )),
-            hot_spot_and_hotel_registration=dict(type='dict', options=dict(
-                enable_registration=dict(type='bool'),
-                local_subnets_access_only=dict(type='bool'),
-                registration_timeout=dict(type='int'),
-                track_log=dict(type='bool'),
-                max_ip_access_during_registration=dict(type='int'),
-                ports=dict(type='list', elements='str')
-            ))
-        )),
-        user_directory=dict(type='dict', options=dict(
-            enable_password_change_when_user_active_directory_expires=dict(type='bool'),
-            cache_size=dict(type='int'),
-            enable_password_expiration_configuration=dict(type='bool'),
-            password_expires_after=dict(type='int', no_log=False),
-            timeout_on_cached_users=dict(type='int'),
-            display_user_dn_at_login=dict(type='str', choices=['no display', 'display upon request', 'display']),
-            enforce_rules_for_user_mgmt_admins=dict(type='bool'),
-            min_password_length=dict(type='int', no_log=False),
-            password_must_include_a_digit=dict(type='bool'),
-            password_must_include_a_symbol=dict(type='bool'),
-            password_must_include_lowercase_char=dict(type='bool'),
-            password_must_include_uppercase_char=dict(type='bool')
-        )),
-        qos=dict(type='dict', options=dict(
-            default_weight_of_rule=dict(type='int'),
-            max_weight_of_rule=dict(type='int'),
-            unit_of_measure=dict(type='str', choices=['bits-per-sec', 'bytes-per-sec', 'kbits-per-sec', 'kbytes-per-sec', 'mbits-per-sec', 'mbytes-per-sec']),
-            authenticated_ip_expiration=dict(type='int'),
-            non_authenticated_ip_expiration=dict(type='int'),
-            unanswered_queried_ip_expiration=dict(type='int')
-        )),
-        carrier_security=dict(type='dict', options=dict(
-            block_gtp_in_gtp=dict(type='bool'),
-            enforce_gtp_anti_spoofing=dict(type='bool'),
-            produce_extended_logs_on_unmatched_pdus=dict(type='bool'),
-            produce_extended_logs_on_unmatched_pdus_position=dict(type='str', choices=['before last', 'last']),
-            protocol_violation_track_option=dict(type='str', choices=['none', 'log',
-                                                                      'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                      'user defined alert no.2', 'user defined alert no.3']),
-            enable_g_pdu_seq_number_check_with_max_deviation=dict(type='bool'),
-            g_pdu_seq_number_check_max_deviation=dict(type='int'),
-            verify_flow_labels=dict(type='bool'),
-            allow_ggsn_replies_from_multiple_interfaces=dict(type='bool'),
-            enable_reverse_connections=dict(type='bool'),
-            gtp_signaling_rate_limit_sampling_interval=dict(type='int'),
-            one_gtp_echo_on_each_path_frequency=dict(type='int'),
-            aggressive_aging=dict(type='bool'),
-            aggressive_timeout=dict(type='int'),
-            memory_activation_threshold=dict(type='int'),
-            memory_deactivation_threshold=dict(type='int'),
-            tunnel_activation_threshold=dict(type='int'),
-            tunnel_deactivation_threshold=dict(type='int')
-        )),
-        user_accounts=dict(type='dict', options=dict(
-            expiration_date_method=dict(type='str', choices=['expire after', 'expire at']),
-            expiration_date=dict(type='str'),
-            days_until_expiration=dict(type='int'),
-            show_accounts_expiration_indication_days_in_advance=dict(type='bool')
-        )),
-        user_authority=dict(type='dict', options=dict(
-            display_web_access_view=dict(type='bool'),
-            windows_domains_to_trust=dict(type='str', choices=['selectively', 'all']),
-            trust_only_following_windows_domains=dict(type='list', elements='str')
-        )),
-        connect_control=dict(type='dict', options=dict(
-            load_agents_port=dict(type='int'),
-            load_measurement_interval=dict(type='int'),
-            persistence_server_timeout=dict(type='int'),
-            server_availability_check_interval=dict(type='int'),
-            server_check_retries=dict(type='int')
-        )),
-        stateful_inspection=dict(type='dict', options=dict(
-            tcp_start_timeout=dict(type='int'),
-            tcp_session_timeout=dict(type='int'),
-            tcp_end_timeout=dict(type='int'),
-            tcp_end_timeout_r8020_gw_and_above=dict(type='int'),
-            udp_virtual_session_timeout=dict(type='int'),
-            icmp_virtual_session_timeout=dict(type='int'),
-            other_ip_protocols_virtual_session_timeout=dict(type='int'),
-            sctp_start_timeout=dict(type='int'),
-            sctp_session_timeout=dict(type='int'),
-            sctp_end_timeout=dict(type='int'),
-            accept_stateful_udp_replies_for_unknown_services=dict(type='bool'),
-            accept_stateful_icmp_errors=dict(type='bool'),
-            accept_stateful_icmp_replies=dict(type='bool'),
-            accept_stateful_other_ip_protocols_replies_for_unknown_services=dict(type='bool'),
-            drop_out_of_state_tcp_packets=dict(type='bool'),
-            log_on_drop_out_of_state_tcp_packets=dict(type='bool'),
-            tcp_out_of_state_drop_exceptions=dict(type='list', elements='str'),
-            drop_out_of_state_icmp_packets=dict(type='bool'),
-            log_on_drop_out_of_state_icmp_packets=dict(type='bool'),
-            drop_out_of_state_sctp_packets=dict(type='bool'),
-            log_on_drop_out_of_state_sctp_packets=dict(type='bool')
-        )),
-        log_and_alert=dict(type='dict', options=dict(
-            administrative_notifications=dict(type='str', choices=['none', 'log',
-                                                                   'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                   'user defined alert no.2', 'user defined alert no.3']),
-            connection_matched_by_sam=dict(type='str', choices=['Popup Alert', 'Mail Alert',
-                                                                'SNMP Trap Alert', 'User Defined Alert no.1', 'User Defined Alert no.2',
-                                                                'User Defined Alert no.3']),
-            dynamic_object_resolution_failure=dict(type='str', choices=['none', 'log',
-                                                                        'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                        'user defined alert no.2', 'user defined alert no.3']),
-            ip_options_drop=dict(type='str', choices=['none', 'log', 'popup alert', 'mail alert',
-                                                      'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3']),
-            packet_is_incorrectly_tagged=dict(type='str', choices=['none', 'log',
-                                                                   'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                   'user defined alert no.2', 'user defined alert no.3']),
-            packet_tagging_brute_force_attack=dict(type='str', choices=['none', 'log',
-                                                                        'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                        'user defined alert no.2', 'user defined alert no.3']),
-            sla_violation=dict(type='str', choices=['none', 'log', 'popup alert', 'mail alert',
-                                                    'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3']),
-            vpn_conf_and_key_exchange_errors=dict(type='str', choices=['none', 'log',
-                                                                       'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                       'user defined alert no.2', 'user defined alert no.3']),
-            vpn_packet_handling_error=dict(type='str', choices=['none', 'log', 'popup alert',
-                                                                'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
-                                                                'user defined alert no.3']),
-            vpn_successful_key_exchange=dict(type='str', choices=['none', 'log',
-                                                                  'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1',
-                                                                  'user defined alert no.2', 'user defined alert no.3']),
-            log_every_authenticated_http_connection=dict(type='bool'),
-            log_traffic=dict(type='str', choices=['none', 'log']),
-            alerts=dict(type='dict', options=dict(
-                send_popup_alert_to_smartview_monitor=dict(type='bool'),
-                popup_alert_script=dict(type='str'),
-                send_mail_alert_to_smartview_monitor=dict(type='bool'),
-                mail_alert_script=dict(type='str'),
-                send_snmp_trap_alert_to_smartview_monitor=dict(type='bool'),
-                snmp_trap_alert_script=dict(type='str'),
-                send_user_defined_alert_num1_to_smartview_monitor=dict(type='bool'),
-                user_defined_script_num1=dict(type='str'),
-                send_user_defined_alert_num2_to_smartview_monitor=dict(type='bool'),
-                user_defined_script_num2=dict(type='str'),
-                send_user_defined_alert_num3_to_smartview_monitor=dict(type='bool'),
-                user_defined_script_num3=dict(type='str'),
-                default_track_option_for_system_alerts=dict(type='str', choices=['Popup Alert', 'Mail Alert', 'SNMP Trap Alert',
-                                                                                 'User Defined Alert no.1', 'User Defined Alert no.2',
-                                                                                 'User Defined Alert no.3'])
-            )),
-            time_settings=dict(type='dict', options=dict(
-                excessive_log_grace_period=dict(type='int'),
-                logs_resolving_timeout=dict(type='int'),
-                status_fetching_interval=dict(type='int'),
-                virtual_link_statistics_logging_interval=dict(type='int')
-            ))
-        )),
-        data_access_control=dict(type='dict', options=dict(
-            auto_download_important_data=dict(type='bool'),
-            auto_download_sw_updates_and_new_features=dict(type='bool'),
-            send_anonymous_info=dict(type='bool'),
-            share_sensitive_info=dict(type='bool')
-        )),
-        non_unique_ip_address_ranges=dict(type='list', elements='dict', options=dict(
-            address_type=dict(type='str', choices=['IPv4', 'IPv6']),
-            first_ipv4_address=dict(type='str'),
-            first_ipv6_address=dict(type='str'),
-            last_ipv4_address=dict(type='str'),
-            last_ipv6_address=dict(type='str')
-        )),
-        proxy=dict(type='dict', options=dict(
-            use_proxy_server=dict(type='bool'),
-            proxy_address=dict(type='str'),
-            proxy_port=dict(type='int')
-        )),
-        user_check=dict(type='dict', options=dict(
-            preferred_language=dict(type='str', choices=['Afrikaans', 'Albanian', 'Amharic', 'Arabic',
-                                                         'Armenian', 'Basque', 'Belarusian', 'Bosnian', 'Bulgarian', 'Catalan', 'Chinese', 'Croatian', 'Czech',
-                                                         'Danish', 'Dutch', 'English', 'Estonian', 'Finnish', 'French', 'Gaelic', 'Georgian', 'German',
-                                                         'Greek', 'Hebrew', 'Hindi', 'Hungarian', 'Icelandic', 'Indonesian', 'Irish', 'Italian', 'Japanese',
-                                                         'Korean', 'Latvian', 'Lithuanian', 'Macedonia', 'Maltese', 'Nepali', 'Norwegian', 'Polish',
-                                                         'Portuguese', 'Romanian', 'Russian', 'Serbian', 'Slovak', 'Slovenian', 'Sorbian', 'Spanish',
-                                                         'Swahili', 'Swedish', 'Thai', 'Turkish', 'Ukrainian', 'Vietnamese', 'Welsh']),
-            send_emails_using_mail_server=dict(type='str')
-        )),
-        hit_count=dict(type='dict', options=dict(
-            enable_hit_count=dict(type='bool'),
-            keep_hit_count_data_up_to=dict(type='str', choices=['3 months', '6 months', '1 year', '2 years'])
-        )),
-        advanced_conf=dict(type='dict', options=dict(
-            certs_and_pki=dict(type='dict', options=dict(
-                cert_validation_enforce_key_size=dict(type='str', choices=['off', 'alert', 'fail']),
-                host_certs_ecdsa_key_size=dict(type='str', choices=['p-256', 'p-384', 'p-521']),
-                host_certs_key_size=dict(type='str', choices=['4096', '1024', '2048'])
-            ))
-        )),
-        allow_remote_registration_of_opsec_products=dict(type='bool'),
-        num_spoofing_errs_that_trigger_brute_force=dict(type='int'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list', elements='str'),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool'),
-        auto_publish_session=dict(type='bool')
+        firewall=dict(
+            type="dict",
+            options=dict(
+                accept_control_connections=dict(type="bool"),
+                accept_ips1_management_connections=dict(type="bool"),
+                accept_remote_access_control_connections=dict(type="bool"),
+                accept_smart_update_connections=dict(type="bool"),
+                accept_outgoing_packets_originating_from_gw=dict(type="bool"),
+                accept_outgoing_packets_originating_from_gw_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_outgoing_packets_originating_from_connectra_gw=dict(
+                    type="bool"
+                ),
+                accept_outgoing_packets_to_cp_online_services=dict(
+                    type="bool"
+                ),
+                accept_outgoing_packets_to_cp_online_services_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_domain_name_over_tcp=dict(type="bool"),
+                accept_domain_name_over_tcp_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_domain_name_over_udp=dict(type="bool"),
+                accept_domain_name_over_udp_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_dynamic_addr_modules_outgoing_internet_connections=dict(
+                    type="bool"
+                ),
+                accept_icmp_requests=dict(type="bool"),
+                accept_icmp_requests_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_identity_awareness_control_connections=dict(
+                    type="bool"
+                ),
+                accept_identity_awareness_control_connections_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_incoming_traffic_to_dhcp_and_dns_services_of_gws=dict(
+                    type="bool"
+                ),
+                accept_rip=dict(type="bool"),
+                accept_rip_position=dict(
+                    type="str", choices=["first", "last", "before last"]
+                ),
+                accept_vrrp_packets_originating_from_cluster_members=dict(
+                    type="bool"
+                ),
+                accept_web_and_ssh_connections_for_gw_administration=dict(
+                    type="bool"
+                ),
+                log_implied_rules=dict(type="bool"),
+                security_server=dict(
+                    type="dict",
+                    options=dict(
+                        client_auth_welcome_file=dict(type="str"),
+                        ftp_welcome_msg_file=dict(type="str"),
+                        rlogin_welcome_msg_file=dict(type="str"),
+                        telnet_welcome_msg_file=dict(type="str"),
+                        mdq_welcome_msg=dict(type="str"),
+                        smtp_welcome_msg=dict(type="str"),
+                        http_next_proxy_host=dict(type="str"),
+                        http_next_proxy_port=dict(type="int"),
+                        http_servers=dict(
+                            type="list",
+                            elements="dict",
+                            options=dict(
+                                logical_name=dict(type="str"),
+                                host=dict(type="str"),
+                                port=dict(type="int"),
+                                reauthentication=dict(
+                                    type="str",
+                                    choices=[
+                                        "standard",
+                                        "post request",
+                                        "every request",
+                                    ],
+                                ),
+                            ),
+                        ),
+                        server_for_null_requests=dict(type="str"),
+                    ),
+                ),
+            ),
+        ),
+        nat=dict(
+            type="dict",
+            options=dict(
+                allow_bi_directional_nat=dict(type="bool"),
+                auto_arp_conf=dict(type="bool"),
+                merge_manual_proxy_arp_conf=dict(type="bool"),
+                auto_translate_dest_on_client_side=dict(type="bool"),
+                manually_translate_dest_on_client_side=dict(type="bool"),
+                enable_ip_pool_nat=dict(type="bool"),
+                addr_alloc_and_release_track=dict(
+                    type="str", choices=["ip allocation log", "none"]
+                ),
+                addr_exhaustion_track=dict(
+                    type="str",
+                    choices=[
+                        "ip exhaustion alert",
+                        "none",
+                        "ip exhaustion log",
+                    ],
+                ),
+            ),
+        ),
+        authentication=dict(
+            type="dict",
+            options=dict(
+                auth_internal_users_with_specific_suffix=dict(type="bool"),
+                allowed_suffix_for_internal_users=dict(type="str"),
+                max_days_before_expiration_of_non_pulled_user_certificates=dict(
+                    type="int"
+                ),
+                max_client_auth_attempts_before_connection_termination=dict(
+                    type="int"
+                ),
+                max_rlogin_attempts_before_connection_termination=dict(
+                    type="int"
+                ),
+                max_session_auth_attempts_before_connection_termination=dict(
+                    type="int"
+                ),
+                max_telnet_attempts_before_connection_termination=dict(
+                    type="int"
+                ),
+                enable_delayed_auth=dict(type="bool"),
+                delay_each_auth_attempt_by=dict(type="int"),
+            ),
+        ),
+        vpn=dict(
+            type="dict",
+            options=dict(
+                vpn_conf_method=dict(
+                    type="str",
+                    choices=["simplified", "traditional", "per policy"],
+                ),
+                domain_name_for_dns_resolving=dict(type="str"),
+                enable_backup_gw=dict(type="bool"),
+                enable_decrypt_on_accept_for_gw_to_gw_traffic=dict(
+                    type="bool"
+                ),
+                enable_load_distribution_for_mep_conf=dict(type="bool"),
+                enable_vpn_directional_match_in_vpn_column=dict(type="bool"),
+                grace_period_after_the_crl_is_not_valid=dict(type="int"),
+                grace_period_before_the_crl_is_valid=dict(type="int"),
+                grace_period_extension_for_secure_remote_secure_client=dict(
+                    type="int"
+                ),
+                support_ike_dos_protection_from_identified_src=dict(
+                    type="str", choices=["puzzles", "stateless", "none"]
+                ),
+                support_ike_dos_protection_from_unidentified_src=dict(
+                    type="str", choices=["puzzles", "stateless", "none"]
+                ),
+            ),
+        ),
+        remote_access=dict(
+            type="dict",
+            options=dict(
+                enable_back_connections=dict(type="bool"),
+                keep_alive_packet_to_gw_interval=dict(type="int"),
+                encrypt_dns_traffic=dict(type="bool"),
+                simultaneous_login_mode=dict(
+                    type="str",
+                    choices=[
+                        "allowonlysinglelogintouser",
+                        "allowseverallogintouser",
+                    ],
+                ),
+                vpn_authentication_and_encryption=dict(
+                    type="dict",
+                    options=dict(
+                        encryption_algorithms=dict(
+                            type="dict",
+                            options=dict(
+                                ike=dict(
+                                    type="dict",
+                                    options=dict(
+                                        support_encryption_algorithms=dict(
+                                            type="dict",
+                                            options=dict(
+                                                tdes=dict(type="bool"),
+                                                aes_128=dict(type="bool"),
+                                                aes_256=dict(type="bool"),
+                                                des=dict(type="bool"),
+                                            ),
+                                        ),
+                                        use_encryption_algorithm=dict(
+                                            type="str",
+                                            choices=[
+                                                "AES-256",
+                                                "DES",
+                                                "AES-128",
+                                                "TDES",
+                                            ],
+                                        ),
+                                        support_data_integrity=dict(
+                                            type="dict",
+                                            options=dict(
+                                                aes_xcbc=dict(type="bool"),
+                                                md5=dict(type="bool"),
+                                                sha1=dict(type="bool"),
+                                                sha256=dict(type="bool"),
+                                            ),
+                                        ),
+                                        use_data_integrity=dict(
+                                            type="str",
+                                            choices=[
+                                                "aes-xcbc",
+                                                "sha256",
+                                                "sha1",
+                                                "md5",
+                                            ],
+                                        ),
+                                        support_diffie_hellman_groups=dict(
+                                            type="dict",
+                                            options=dict(
+                                                group1=dict(type="bool"),
+                                                group14=dict(type="bool"),
+                                                group2=dict(type="bool"),
+                                                group5=dict(type="bool"),
+                                            ),
+                                        ),
+                                        use_diffie_hellman_group=dict(
+                                            type="str",
+                                            choices=[
+                                                "group 1",
+                                                "group 2",
+                                                "group 5",
+                                                "group 14",
+                                            ],
+                                        ),
+                                    ),
+                                ),
+                                ipsec=dict(
+                                    type="dict",
+                                    options=dict(
+                                        support_encryption_algorithms=dict(
+                                            type="dict",
+                                            options=dict(
+                                                tdes=dict(type="bool"),
+                                                aes_128=dict(type="bool"),
+                                                aes_256=dict(type="bool"),
+                                                des=dict(type="bool"),
+                                            ),
+                                        ),
+                                        use_encryption_algorithm=dict(
+                                            type="str",
+                                            choices=[
+                                                "AES-256",
+                                                "DES",
+                                                "AES-128",
+                                                "TDES",
+                                            ],
+                                        ),
+                                        support_data_integrity=dict(
+                                            type="dict",
+                                            options=dict(
+                                                aes_xcbc=dict(type="bool"),
+                                                md5=dict(type="bool"),
+                                                sha1=dict(type="bool"),
+                                                sha256=dict(type="bool"),
+                                            ),
+                                        ),
+                                        use_data_integrity=dict(
+                                            type="str",
+                                            choices=[
+                                                "aes-xcbc",
+                                                "sha1",
+                                                "sha256",
+                                                "sha384",
+                                                "sha512",
+                                                "md5",
+                                            ],
+                                        ),
+                                        enforce_encryption_alg_and_data_integrity_on_all_users=dict(
+                                            type="bool"
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                        encryption_method=dict(
+                            type="str",
+                            choices=[
+                                "prefer_ikev2_support_ikev1",
+                                "ike_v2_only",
+                                "ike_v1_only",
+                            ],
+                        ),
+                        pre_shared_secret=dict(type="bool"),
+                        support_legacy_auth_for_sc_l2tp_nokia_clients=dict(
+                            type="bool"
+                        ),
+                        support_legacy_eap=dict(type="bool"),
+                        support_l2tp_with_pre_shared_key=dict(type="bool"),
+                        l2tp_pre_shared_key=dict(type="str", no_log=True),
+                    ),
+                ),
+                vpn_advanced=dict(
+                    type="dict",
+                    options=dict(
+                        allow_clear_traffic_to_encryption_domain_when_disconnected=dict(
+                            type="bool"
+                        ),
+                        enable_load_distribution_for_mep_conf=dict(
+                            type="bool"
+                        ),
+                        use_first_allocated_om_ip_addr_for_all_conn_to_the_gws_of_the_site=dict(
+                            type="bool"
+                        ),
+                    ),
+                ),
+                scv=dict(
+                    type="dict",
+                    options=dict(
+                        apply_scv_on_simplified_mode_fw_policies=dict(
+                            type="bool"
+                        ),
+                        exceptions=dict(
+                            type="list",
+                            elements="dict",
+                            options=dict(
+                                hosts=dict(type="list", elements="str"),
+                                services=dict(type="list", elements="str"),
+                            ),
+                        ),
+                        no_scv_for_unsupported_cp_clients=dict(type="bool"),
+                        upon_verification_accept_and_log_client_connection=dict(
+                            type="bool"
+                        ),
+                        only_tcp_ip_protocols_are_used=dict(type="bool"),
+                        policy_installed_on_all_interfaces=dict(type="bool"),
+                        generate_log=dict(type="bool"),
+                        notify_user=dict(type="bool"),
+                    ),
+                ),
+                ssl_network_extender=dict(
+                    type="dict",
+                    options=dict(
+                        user_auth_method=dict(
+                            type="str",
+                            choices=[
+                                "certificate_with_enrollment",
+                                "certificate",
+                                "mixed",
+                                "legacy",
+                            ],
+                        ),
+                        supported_encryption_methods=dict(
+                            type="str", choices=["3des_or_rc4", "3des_only"]
+                        ),
+                        client_upgrade_upon_connection=dict(
+                            type="str",
+                            choices=[
+                                "force_upgrade",
+                                "ask_user",
+                                "no_upgrade",
+                            ],
+                        ),
+                        client_uninstall_upon_disconnection=dict(
+                            type="str",
+                            choices=[
+                                "force_uninstall",
+                                "ask_user",
+                                "dont_uninstall",
+                            ],
+                        ),
+                        re_auth_user_interval=dict(type="int"),
+                        scan_ep_machine_for_compliance_with_ep_compliance_policy=dict(
+                            type="bool"
+                        ),
+                        client_outgoing_keep_alive_packets_frequency=dict(
+                            type="int"
+                        ),
+                    ),
+                ),
+                secure_client_mobile=dict(
+                    type="dict",
+                    options=dict(
+                        user_auth_method=dict(
+                            type="str",
+                            choices=[
+                                "certificate_with_enrollment",
+                                "certificate",
+                                "mixed",
+                                "legacy",
+                            ],
+                        ),
+                        enable_password_caching=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        cache_password_timeout=dict(type="int"),
+                        re_auth_user_interval=dict(type="int"),
+                        connect_mode=dict(
+                            type="str",
+                            choices=[
+                                "manual",
+                                "always connected",
+                                "on application request",
+                                "configured on endpoint client",
+                            ],
+                        ),
+                        automatically_initiate_dialup=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        disconnect_when_device_is_idle=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        supported_encryption_methods=dict(
+                            type="str", choices=["3des_or_rc4", "3des_only"]
+                        ),
+                        route_all_traffic_to_gw=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                    ),
+                ),
+                endpoint_connect=dict(
+                    type="dict",
+                    options=dict(
+                        enable_password_caching=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        cache_password_timeout=dict(type="int"),
+                        re_auth_user_interval=dict(type="int"),
+                        connect_mode=dict(
+                            type="str",
+                            choices=[
+                                "Manual",
+                                "Always Connected",
+                                "Configured On Endpoint Client",
+                            ],
+                        ),
+                        network_location_awareness=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        network_location_awareness_conf=dict(
+                            type="dict",
+                            options=dict(
+                                vpn_clients_are_considered_inside_the_internal_network_when_the_client=dict(
+                                    type="str",
+                                    choices=[
+                                        "connects to gw through internal interface",
+                                        "connects from network or group",
+                                        "runs on computer with access to active directory domain",
+                                    ],
+                                ),
+                                network_or_group_of_conn_vpn_client=dict(
+                                    type="str"
+                                ),
+                                consider_wireless_networks_as_external=dict(
+                                    type="bool"
+                                ),
+                                excluded_internal_wireless_networks=dict(
+                                    type="list", elements="str"
+                                ),
+                                consider_undefined_dns_suffixes_as_external=dict(
+                                    type="bool"
+                                ),
+                                dns_suffixes=dict(type="list", elements="str"),
+                                remember_previously_detected_external_networks=dict(
+                                    type="bool"
+                                ),
+                            ),
+                        ),
+                        disconnect_when_conn_to_network_is_lost=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        disconnect_when_device_is_idle=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        route_all_traffic_to_gw=dict(
+                            type="str",
+                            choices=["client_decide", "true", "false"],
+                        ),
+                        client_upgrade_mode=dict(
+                            type="str",
+                            choices=[
+                                "force_upgrade",
+                                "ask_user",
+                                "no_upgrade",
+                            ],
+                        ),
+                    ),
+                ),
+                hot_spot_and_hotel_registration=dict(
+                    type="dict",
+                    options=dict(
+                        enable_registration=dict(type="bool"),
+                        local_subnets_access_only=dict(type="bool"),
+                        registration_timeout=dict(type="int"),
+                        track_log=dict(type="bool"),
+                        max_ip_access_during_registration=dict(type="int"),
+                        ports=dict(type="list", elements="str"),
+                    ),
+                ),
+            ),
+        ),
+        user_directory=dict(
+            type="dict",
+            options=dict(
+                enable_password_change_when_user_active_directory_expires=dict(
+                    type="bool"
+                ),
+                cache_size=dict(type="int"),
+                enable_password_expiration_configuration=dict(type="bool"),
+                password_expires_after=dict(type="int", no_log=False),
+                timeout_on_cached_users=dict(type="int"),
+                display_user_dn_at_login=dict(
+                    type="str",
+                    choices=["no display", "display upon request", "display"],
+                ),
+                enforce_rules_for_user_mgmt_admins=dict(type="bool"),
+                min_password_length=dict(type="int", no_log=False),
+                password_must_include_a_digit=dict(type="bool"),
+                password_must_include_a_symbol=dict(type="bool"),
+                password_must_include_lowercase_char=dict(type="bool"),
+                password_must_include_uppercase_char=dict(type="bool"),
+            ),
+        ),
+        qos=dict(
+            type="dict",
+            options=dict(
+                default_weight_of_rule=dict(type="int"),
+                max_weight_of_rule=dict(type="int"),
+                unit_of_measure=dict(
+                    type="str",
+                    choices=[
+                        "bits-per-sec",
+                        "bytes-per-sec",
+                        "kbits-per-sec",
+                        "kbytes-per-sec",
+                        "mbits-per-sec",
+                        "mbytes-per-sec",
+                    ],
+                ),
+                authenticated_ip_expiration=dict(type="int"),
+                non_authenticated_ip_expiration=dict(type="int"),
+                unanswered_queried_ip_expiration=dict(type="int"),
+            ),
+        ),
+        carrier_security=dict(
+            type="dict",
+            options=dict(
+                block_gtp_in_gtp=dict(type="bool"),
+                enforce_gtp_anti_spoofing=dict(type="bool"),
+                produce_extended_logs_on_unmatched_pdus=dict(type="bool"),
+                produce_extended_logs_on_unmatched_pdus_position=dict(
+                    type="str", choices=["before last", "last"]
+                ),
+                protocol_violation_track_option=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                enable_g_pdu_seq_number_check_with_max_deviation=dict(
+                    type="bool"
+                ),
+                g_pdu_seq_number_check_max_deviation=dict(type="int"),
+                verify_flow_labels=dict(type="bool"),
+                allow_ggsn_replies_from_multiple_interfaces=dict(type="bool"),
+                enable_reverse_connections=dict(type="bool"),
+                gtp_signaling_rate_limit_sampling_interval=dict(type="int"),
+                one_gtp_echo_on_each_path_frequency=dict(type="int"),
+                aggressive_aging=dict(type="bool"),
+                aggressive_timeout=dict(type="int"),
+                memory_activation_threshold=dict(type="int"),
+                memory_deactivation_threshold=dict(type="int"),
+                tunnel_activation_threshold=dict(type="int"),
+                tunnel_deactivation_threshold=dict(type="int"),
+            ),
+        ),
+        user_accounts=dict(
+            type="dict",
+            options=dict(
+                expiration_date_method=dict(
+                    type="str", choices=["expire after", "expire at"]
+                ),
+                expiration_date=dict(type="str"),
+                days_until_expiration=dict(type="int"),
+                show_accounts_expiration_indication_days_in_advance=dict(
+                    type="bool"
+                ),
+            ),
+        ),
+        user_authority=dict(
+            type="dict",
+            options=dict(
+                display_web_access_view=dict(type="bool"),
+                windows_domains_to_trust=dict(
+                    type="str", choices=["selectively", "all"]
+                ),
+                trust_only_following_windows_domains=dict(
+                    type="list", elements="str"
+                ),
+            ),
+        ),
+        connect_control=dict(
+            type="dict",
+            options=dict(
+                load_agents_port=dict(type="int"),
+                load_measurement_interval=dict(type="int"),
+                persistence_server_timeout=dict(type="int"),
+                server_availability_check_interval=dict(type="int"),
+                server_check_retries=dict(type="int"),
+            ),
+        ),
+        stateful_inspection=dict(
+            type="dict",
+            options=dict(
+                tcp_start_timeout=dict(type="int"),
+                tcp_session_timeout=dict(type="int"),
+                tcp_end_timeout=dict(type="int"),
+                tcp_end_timeout_r8020_gw_and_above=dict(type="int"),
+                udp_virtual_session_timeout=dict(type="int"),
+                icmp_virtual_session_timeout=dict(type="int"),
+                other_ip_protocols_virtual_session_timeout=dict(type="int"),
+                sctp_start_timeout=dict(type="int"),
+                sctp_session_timeout=dict(type="int"),
+                sctp_end_timeout=dict(type="int"),
+                accept_stateful_udp_replies_for_unknown_services=dict(
+                    type="bool"
+                ),
+                accept_stateful_icmp_errors=dict(type="bool"),
+                accept_stateful_icmp_replies=dict(type="bool"),
+                accept_stateful_other_ip_protocols_replies_for_unknown_services=dict(
+                    type="bool"
+                ),
+                drop_out_of_state_tcp_packets=dict(type="bool"),
+                log_on_drop_out_of_state_tcp_packets=dict(type="bool"),
+                tcp_out_of_state_drop_exceptions=dict(
+                    type="list", elements="str"
+                ),
+                drop_out_of_state_icmp_packets=dict(type="bool"),
+                log_on_drop_out_of_state_icmp_packets=dict(type="bool"),
+                drop_out_of_state_sctp_packets=dict(type="bool"),
+                log_on_drop_out_of_state_sctp_packets=dict(type="bool"),
+            ),
+        ),
+        log_and_alert=dict(
+            type="dict",
+            options=dict(
+                administrative_notifications=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                connection_matched_by_sam=dict(
+                    type="str",
+                    choices=[
+                        "Popup Alert",
+                        "Mail Alert",
+                        "SNMP Trap Alert",
+                        "User Defined Alert no.1",
+                        "User Defined Alert no.2",
+                        "User Defined Alert no.3",
+                    ],
+                ),
+                dynamic_object_resolution_failure=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                ip_options_drop=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                packet_is_incorrectly_tagged=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                packet_tagging_brute_force_attack=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                sla_violation=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                vpn_conf_and_key_exchange_errors=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                vpn_packet_handling_error=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                vpn_successful_key_exchange=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                log_every_authenticated_http_connection=dict(type="bool"),
+                log_traffic=dict(type="str", choices=["none", "log"]),
+                alerts=dict(
+                    type="dict",
+                    options=dict(
+                        send_popup_alert_to_smartview_monitor=dict(
+                            type="bool"
+                        ),
+                        popup_alert_script=dict(type="str"),
+                        send_mail_alert_to_smartview_monitor=dict(type="bool"),
+                        mail_alert_script=dict(type="str"),
+                        send_snmp_trap_alert_to_smartview_monitor=dict(
+                            type="bool"
+                        ),
+                        snmp_trap_alert_script=dict(type="str"),
+                        send_user_defined_alert_num1_to_smartview_monitor=dict(
+                            type="bool"
+                        ),
+                        user_defined_script_num1=dict(type="str"),
+                        send_user_defined_alert_num2_to_smartview_monitor=dict(
+                            type="bool"
+                        ),
+                        user_defined_script_num2=dict(type="str"),
+                        send_user_defined_alert_num3_to_smartview_monitor=dict(
+                            type="bool"
+                        ),
+                        user_defined_script_num3=dict(type="str"),
+                        default_track_option_for_system_alerts=dict(
+                            type="str",
+                            choices=[
+                                "Popup Alert",
+                                "Mail Alert",
+                                "SNMP Trap Alert",
+                                "User Defined Alert no.1",
+                                "User Defined Alert no.2",
+                                "User Defined Alert no.3",
+                            ],
+                        ),
+                    ),
+                ),
+                time_settings=dict(
+                    type="dict",
+                    options=dict(
+                        excessive_log_grace_period=dict(type="int"),
+                        logs_resolving_timeout=dict(type="int"),
+                        status_fetching_interval=dict(type="int"),
+                        virtual_link_statistics_logging_interval=dict(
+                            type="int"
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        data_access_control=dict(
+            type="dict",
+            options=dict(
+                auto_download_important_data=dict(type="bool"),
+                auto_download_sw_updates_and_new_features=dict(type="bool"),
+                send_anonymous_info=dict(type="bool"),
+                share_sensitive_info=dict(type="bool"),
+            ),
+        ),
+        non_unique_ip_address_ranges=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                address_type=dict(type="str", choices=["IPv4", "IPv6"]),
+                first_ipv4_address=dict(type="str"),
+                first_ipv6_address=dict(type="str"),
+                last_ipv4_address=dict(type="str"),
+                last_ipv6_address=dict(type="str"),
+            ),
+        ),
+        proxy=dict(
+            type="dict",
+            options=dict(
+                use_proxy_server=dict(type="bool"),
+                proxy_address=dict(type="str"),
+                proxy_port=dict(type="int"),
+            ),
+        ),
+        user_check=dict(
+            type="dict",
+            options=dict(
+                preferred_language=dict(
+                    type="str",
+                    choices=[
+                        "Afrikaans",
+                        "Albanian",
+                        "Amharic",
+                        "Arabic",
+                        "Armenian",
+                        "Basque",
+                        "Belarusian",
+                        "Bosnian",
+                        "Bulgarian",
+                        "Catalan",
+                        "Chinese",
+                        "Croatian",
+                        "Czech",
+                        "Danish",
+                        "Dutch",
+                        "English",
+                        "Estonian",
+                        "Finnish",
+                        "French",
+                        "Gaelic",
+                        "Georgian",
+                        "German",
+                        "Greek",
+                        "Hebrew",
+                        "Hindi",
+                        "Hungarian",
+                        "Icelandic",
+                        "Indonesian",
+                        "Irish",
+                        "Italian",
+                        "Japanese",
+                        "Korean",
+                        "Latvian",
+                        "Lithuanian",
+                        "Macedonia",
+                        "Maltese",
+                        "Nepali",
+                        "Norwegian",
+                        "Polish",
+                        "Portuguese",
+                        "Romanian",
+                        "Russian",
+                        "Serbian",
+                        "Slovak",
+                        "Slovenian",
+                        "Sorbian",
+                        "Spanish",
+                        "Swahili",
+                        "Swedish",
+                        "Thai",
+                        "Turkish",
+                        "Ukrainian",
+                        "Vietnamese",
+                        "Welsh",
+                    ],
+                ),
+                send_emails_using_mail_server=dict(type="str"),
+            ),
+        ),
+        hit_count=dict(
+            type="dict",
+            options=dict(
+                enable_hit_count=dict(type="bool"),
+                keep_hit_count_data_up_to=dict(
+                    type="str",
+                    choices=["3 months", "6 months", "1 year", "2 years"],
+                ),
+            ),
+        ),
+        advanced_conf=dict(
+            type="dict",
+            options=dict(
+                certs_and_pki=dict(
+                    type="dict",
+                    options=dict(
+                        cert_validation_enforce_key_size=dict(
+                            type="str", choices=["off", "alert", "fail"]
+                        ),
+                        host_certs_ecdsa_key_size=dict(
+                            type="str", choices=["p-256", "p-384", "p-521"]
+                        ),
+                        host_certs_key_size=dict(
+                            type="str", choices=["4096", "1024", "2048"]
+                        ),
+                    ),
+                )
+            ),
+        ),
+        allow_remote_registration_of_opsec_products=dict(type="bool"),
+        num_spoofing_errs_that_trigger_brute_force=dict(type="int"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        domains_to_process=dict(type="list", elements="str"),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
+        auto_publish_session=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
@@ -2040,5 +2629,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
