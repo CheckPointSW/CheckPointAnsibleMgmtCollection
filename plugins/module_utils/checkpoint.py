@@ -90,12 +90,14 @@ remove_from_set_payload = {
 
 remove_from_add_payload = {"lsm-cluster": ["name"]}
 
+
 def _fail_json(msg):
     """Replace the AnsibleModule fai;_json here
     :param msg: The message for the failure
     :type msg: str
     """
     raise AnsibleActionFail(msg)
+
 
 def map_params_to_obj(module_params, key_transform):
     """The fn to convert the api returned params to module params
@@ -424,7 +426,8 @@ def discard_and_fail(module, code, response, connection, version):
                     )
                 )
             except AttributeError:
-                _fail_json(msg = parse_fail_message(code, response)
+                _fail_json(
+                    msg=parse_fail_message(code, response)
                     + " Failed to discard session"
                     " with error {0} with message {1}".format(
                         discard_code, discard_response
@@ -436,7 +439,10 @@ def discard_and_fail(module, code, response, connection, version):
             + " Unpublished changes were discarded"
         )
     except AttributeError:
-        _fail_json(msg=parse_fail_message(code, response) + " Unpublished changes were discarded")
+        _fail_json(
+            msg=parse_fail_message(code, response)
+            + " Unpublished changes were discarded"
+        )
 
 
 # handle publish command, and wait for it to end if the user asked so
@@ -546,6 +552,7 @@ def api_command(module, command):
         discard_and_fail(module, code, response, connection, version)
 
     return result
+
 
 # handle api call facts
 def api_call_facts(module, api_call_object, api_call_object_plural_version):
@@ -667,52 +674,75 @@ def api_call(module, api_call_object):
 
 
 # returns a generator of the entire rulebase
-def get_rulebase_generator(connection, version, layer, show_rulebase_command, rules_amount):
+def get_rulebase_generator(
+    connection, version, layer, show_rulebase_command, rules_amount
+):
     offset = 0
     limit = 100
     while True:
         payload_for_show_rulebase = {
-            'name': layer,
-            'limit': limit,
-            'offset': offset,
+            "name": layer,
+            "limit": limit,
+            "offset": offset,
         }
         # in case there are empty sections after the last rule, we need them to appear in the reply and the limit might
         # cut them out
         if offset + limit >= rules_amount:
-            del payload_for_show_rulebase['limit']
-        code, response = send_request(connection, version, show_rulebase_command, payload_for_show_rulebase)
-        offset = response['to']
-        total = response['total']
-        rulebase = response['rulebase']
+            del payload_for_show_rulebase["limit"]
+        code, response = send_request(
+            connection,
+            version,
+            show_rulebase_command,
+            payload_for_show_rulebase,
+        )
+        offset = response["to"]
+        total = response["total"]
+        rulebase = response["rulebase"]
         yield rulebase
         if total <= offset:
             return
 
 
 # get 'to' or 'from' of given section
-def get_edge_position_in_section(connection, version, layer, section_name, edge):
-    code, response = send_request(connection, version, "show-layer-structure", {'name': layer, 'details-level': 'uid'})
-    if response['code'] == 'generic_err_command_not_found':
-        raise ValueError("The use of the relative_position field with a section as its value is available only for"
-                         " version 1.7.1 with JHF take 42 and above")
-    sections_in_layer = response['root-section']['children']
+def get_edge_position_in_section(
+    connection, version, layer, section_name, edge
+):
+    code, response = send_request(
+        connection,
+        version,
+        "show-layer-structure",
+        {"name": layer, "details-level": "uid"},
+    )
+    if response["code"] == "generic_err_command_not_found":
+        raise ValueError(
+            "The use of the relative_position field with a section as its value is available only for"
+            " version 1.7.1 with JHF take 42 and above"
+        )
+    sections_in_layer = response["root-section"]["children"]
     for section in sections_in_layer:
-        if section['name'] == section_name:
-            return int(section[edge + '-rule'])
+        if section["name"] == section_name:
+            return int(section[edge + "-rule"])
 
     return None
 
 
 # return the total amount of rules in the rulebase of the given layer
 def get_rules_amount(connection, version, layer, show_rulebase_command):
-    payload_for_show_obj_rulebase = {'name': layer, 'limit': 0}
-    code, response = send_request(connection, version, show_rulebase_command, payload_for_show_obj_rulebase)
-    return int(response['total'])
+    payload_for_show_obj_rulebase = {"name": layer, "limit": 0}
+    code, response = send_request(
+        connection,
+        version,
+        show_rulebase_command,
+        payload_for_show_obj_rulebase,
+    )
+    return int(response["total"])
 
 
-def keep_searching_rulebase(position, current_section, relative_position, relative_position_is_section):
+def keep_searching_rulebase(
+    position, current_section, relative_position, relative_position_is_section
+):
     position_not_found = position is None
-    if relative_position_is_section and 'above' not in relative_position:
+    if relative_position_is_section and "above" not in relative_position:
         # if 'above' in relative_position then get_number_and_section_from_relative_position returns the previous section
         # so there isn't a need to further search for the relative section
         relative_section = list(relative_position.values())[0]
@@ -722,132 +752,289 @@ def keep_searching_rulebase(position, current_section, relative_position, relati
     return position_not_found
 
 
-def relative_position_is_section(connection, version, layer, relative_position):
-    if 'top' in relative_position or 'bottom' in relative_position:
+def relative_position_is_section(
+    connection, version, layer, relative_position
+):
+    if "top" in relative_position or "bottom" in relative_position:
         return True
 
     relative_position_value = list(relative_position.values())[0]
-    code, response = send_request(connection, version, "show-access-section", {'layer': layer, 'name': relative_position_value})
+    code, response = send_request(
+        connection,
+        version,
+        "show-access-section",
+        {"layer": layer, "name": relative_position_value},
+    )
     if code == 200:
         return True
     return False
 
 
-def get_number_and_section_from_relative_position(payload, connection, version, rulebase, above_relative_position, pos_before_relative_empty_section):
+def get_number_and_section_from_relative_position(
+    payload,
+    connection,
+    version,
+    rulebase,
+    above_relative_position,
+    pos_before_relative_empty_section,
+):
     section_name = None
     position = None
     for rules in rulebase:
-        if 'rulebase' in rules:
+        if "rulebase" in rules:
             # cases relevant for relative-position=section
-            if 'above' in payload['position'] and rules['name'] == payload['position']['above']:
-                if len(rules['rulebase']) == 0:
-                    position = pos_before_relative_empty_section if above_relative_position else pos_before_relative_empty_section + 1
+            if (
+                "above" in payload["position"]
+                and rules["name"] == payload["position"]["above"]
+            ):
+                if len(rules["rulebase"]) == 0:
+                    position = (
+                        pos_before_relative_empty_section
+                        if above_relative_position
+                        else pos_before_relative_empty_section + 1
+                    )
                 else:
                     # if the entire section isn't present in rulebase, the 'from' value of the section might not be
                     # the first position in the section, which is why we use get_edge_position_in_section
-                    from_value = get_edge_position_in_section(connection, version, payload['layer'], rules['name'], "from")
+                    from_value = get_edge_position_in_section(
+                        connection,
+                        version,
+                        payload["layer"],
+                        rules["name"],
+                        "from",
+                    )
                     if from_value is not None:  # section exists in rulebase
-                        position = max(from_value - 1, 1) if above_relative_position else from_value
-                return position, section_name, above_relative_position, pos_before_relative_empty_section
+                        position = (
+                            max(from_value - 1, 1)
+                            if above_relative_position
+                            else from_value
+                        )
+                return (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
 
             # we update this only after the 'above' case since the section that should be returned in that case isn't
             # the one we are currently iterating over (but the one beforehand)
-            section_name = rules['name']
+            section_name = rules["name"]
 
-            if 'bottom' in payload['position'] and rules['name'] == payload['position']['bottom']:
-                if len(rules['rulebase']) == 0:
-                    position = pos_before_relative_empty_section if above_relative_position else pos_before_relative_empty_section + 1
+            if (
+                "bottom" in payload["position"]
+                and rules["name"] == payload["position"]["bottom"]
+            ):
+                if len(rules["rulebase"]) == 0:
+                    position = (
+                        pos_before_relative_empty_section
+                        if above_relative_position
+                        else pos_before_relative_empty_section + 1
+                    )
                 else:
                     # if the entire section isn't present in rulebase, the 'to' value of the section might not be the
                     # last position in the section, which is why we use get_edge_position_in_section
-                    to_value = get_edge_position_in_section(connection, version, payload['layer'], section_name, "to")
-                    if to_value is not None and to_value == int(rules['to']):  # meaning the entire section is present in rulebase
+                    to_value = get_edge_position_in_section(
+                        connection,
+                        version,
+                        payload["layer"],
+                        section_name,
+                        "to",
+                    )
+                    if to_value is not None and to_value == int(
+                        rules["to"]
+                    ):  # meaning the entire section is present in rulebase
                         # is the rule already at the bottom of the section. Can infer this only if the entire section is
                         # present in rulebase
-                        is_bottom = rules['rulebase'][-1]['name'] == payload['name']
-                        position = to_value if (above_relative_position or is_bottom) else to_value + 1
+                        is_bottom = (
+                            rules["rulebase"][-1]["name"] == payload["name"]
+                        )
+                        position = (
+                            to_value
+                            if (above_relative_position or is_bottom)
+                            else to_value + 1
+                        )
                     # else: need to keep searching the rulebase, so position=None is returned
-                return position, section_name, above_relative_position, pos_before_relative_empty_section
+                return (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
 
             # setting a rule 'below' a section is equivalent to setting the rule at the top of that section
-            if ('below' in payload['position'] and section_name == payload['position']['below']) or \
-                    ('top' in payload['position'] and section_name == payload['position']['top']):
-                if len(rules['rulebase']) == 0:
-                    position = pos_before_relative_empty_section if above_relative_position else pos_before_relative_empty_section + 1
+            if (
+                "below" in payload["position"]
+                and section_name == payload["position"]["below"]
+            ) or (
+                "top" in payload["position"]
+                and section_name == payload["position"]["top"]
+            ):
+                if len(rules["rulebase"]) == 0:
+                    position = (
+                        pos_before_relative_empty_section
+                        if above_relative_position
+                        else pos_before_relative_empty_section + 1
+                    )
                 else:
                     # is the rule already at the top of the section
-                    is_top = rules['rulebase'][0]['name'] == payload['name']
-                    position = max(int(rules['from']) - 1, 1) if (above_relative_position or not is_top) else int(rules['from'])
-                return position, section_name, above_relative_position, pos_before_relative_empty_section
+                    is_top = rules["rulebase"][0]["name"] == payload["name"]
+                    position = (
+                        max(int(rules["from"]) - 1, 1)
+                        if (above_relative_position or not is_top)
+                        else int(rules["from"])
+                    )
+                return (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
 
-            if len(rules['rulebase']) != 0:
+            if len(rules["rulebase"]) != 0:
                 # if search_entire_rulebase=True: even if rules['rulebase'] is cut (due to query limit) this will
                 # eventually be updated to the correct value in further calls
-                pos_before_relative_empty_section = int(rules['to'])
+                pos_before_relative_empty_section = int(rules["to"])
 
-            rules = rules['rulebase']
+            rules = rules["rulebase"]
             for rule in rules:
-                if payload['name'] == rule['name']:
+                if payload["name"] == rule["name"]:
                     above_relative_position = True
                 # cases relevant for relative-position=rule
-                if 'below' in payload['position'] and rule['name'] == payload['position']['below']:
-                    position = int(rule['rule-number']) if above_relative_position else int(rule['rule-number']) + 1
-                    return position, section_name, above_relative_position, pos_before_relative_empty_section
-                elif 'above' in payload['position'] and rule['name'] == payload['position']['above']:
-                    position = max(int(rule['rule-number']) - 1, 1) if above_relative_position else int(rule['rule-number'])
-                    return position, section_name, above_relative_position, pos_before_relative_empty_section
+                if (
+                    "below" in payload["position"]
+                    and rule["name"] == payload["position"]["below"]
+                ):
+                    position = (
+                        int(rule["rule-number"])
+                        if above_relative_position
+                        else int(rule["rule-number"]) + 1
+                    )
+                    return (
+                        position,
+                        section_name,
+                        above_relative_position,
+                        pos_before_relative_empty_section,
+                    )
+                elif (
+                    "above" in payload["position"]
+                    and rule["name"] == payload["position"]["above"]
+                ):
+                    position = (
+                        max(int(rule["rule-number"]) - 1, 1)
+                        if above_relative_position
+                        else int(rule["rule-number"])
+                    )
+                    return (
+                        position,
+                        section_name,
+                        above_relative_position,
+                        pos_before_relative_empty_section,
+                    )
 
         else:  # cases relevant for relative-position=rule
-            if payload['name'] == rules['name']:
+            if payload["name"] == rules["name"]:
                 above_relative_position = True
-            if 'below' in payload['position'] and rules['name'] == payload['position']['below']:
-                position = int(rules['rule-number']) if above_relative_position else int(rules['rule-number']) + 1
-                return position, section_name, above_relative_position, pos_before_relative_empty_section
-            elif 'above' in payload['position'] and rules['name'] == payload['position']['above']:
-                position = max(int(rules['rule-number']) - 1, 1) if above_relative_position else int(rules['rule-number'])
-                return position, section_name, above_relative_position, pos_before_relative_empty_section
+            if (
+                "below" in payload["position"]
+                and rules["name"] == payload["position"]["below"]
+            ):
+                position = (
+                    int(rules["rule-number"])
+                    if above_relative_position
+                    else int(rules["rule-number"]) + 1
+                )
+                return (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
+            elif (
+                "above" in payload["position"]
+                and rules["name"] == payload["position"]["above"]
+            ):
+                position = (
+                    max(int(rules["rule-number"]) - 1, 1)
+                    if above_relative_position
+                    else int(rules["rule-number"])
+                )
+                return (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
 
-    return position, section_name, above_relative_position, pos_before_relative_empty_section  # None, None, False/True, x>=1
+    return (
+        position,
+        section_name,
+        above_relative_position,
+        pos_before_relative_empty_section,
+    )  # None, None, False/True, x>=1
 
 
 # get the position in integer format and the section it is.
-def get_number_and_section_from_position(payload, connection, version, api_call_object):
+def get_number_and_section_from_position(
+    payload, connection, version, api_call_object
+):
     show_rulebase_command = get_relevant_show_rulebase_command(api_call_object)
-    if 'position' in payload:
+    if "position" in payload:
         section_name = None
-        if type(payload['position']) is not dict:
-            position = payload['position']
-            if position == 'top':
+        if type(payload["position"]) is not dict:
+            position = payload["position"]
+            if position == "top":
                 position = 1
                 return position, section_name
-            elif position == 'bottom':
-                position = get_rules_amount(connection, version, payload['layer'], show_rulebase_command)
-                code, response = send_request(connection, version, show_rulebase_command, {'name': payload['layer'], 'offset': position - 1})
-                rulebase = reversed(response['rulebase'])
+            elif position == "bottom":
+                position = get_rules_amount(
+                    connection,
+                    version,
+                    payload["layer"],
+                    show_rulebase_command,
+                )
+                code, response = send_request(
+                    connection,
+                    version,
+                    show_rulebase_command,
+                    {"name": payload["layer"], "offset": position - 1},
+                )
+                rulebase = reversed(response["rulebase"])
             else:  # is a number so we need to get the section (if exists) of the rule in that position
                 position = int(position)
-                payload_for_show_obj_rulebase = build_rulebase_payload(api_call_object, payload, position)
-                code, response = send_request(connection, version, show_rulebase_command, payload_for_show_obj_rulebase)
-                rulebase = response['rulebase']
-                if position > response['total']:
-                    raise ValueError("The given position " + str(position) + " of rule " + payload['name'] +
-                                     "exceeds the total amount of rules in the rulebase")
+                payload_for_show_obj_rulebase = build_rulebase_payload(
+                    api_call_object, payload, position
+                )
+                code, response = send_request(
+                    connection,
+                    version,
+                    show_rulebase_command,
+                    payload_for_show_obj_rulebase,
+                )
+                rulebase = response["rulebase"]
+                if position > response["total"]:
+                    raise ValueError(
+                        "The given position "
+                        + str(position)
+                        + " of rule "
+                        + payload["name"]
+                        + "exceeds the total amount of rules in the rulebase"
+                    )
                 #  in case position=1 and there are empty sections at the beginning of the rulebase we want to skip them
                 i = 0
                 for rules in rulebase:
-                    if 'rulebase' in rules and len(rules['rulebase']) == 0:
+                    if "rulebase" in rules and len(rules["rulebase"]) == 0:
                         i += 1
                 rulebase = rulebase[i:]
 
             for rules in rulebase:
-                if 'rulebase' in rules:
-                    section_name = rules['name']
+                if "rulebase" in rules:
+                    section_name = rules["name"]
                     return position, section_name
                 else:
                     return position, section_name  # section = None
 
         else:
-            search_entire_rulebase = payload['search-entire-rulebase']
+            search_entire_rulebase = payload["search-entire-rulebase"]
             position = None
             # is the rule we're getting its position number above the rule it is relatively positioned to
             above_relative_position = False
@@ -855,20 +1042,63 @@ def get_number_and_section_from_position(payload, connection, version, api_call_
             # before the empty relative section
             pos_before_relative_empty_section = 1
             if not search_entire_rulebase:
-                code, response = send_request(connection, version, show_rulebase_command, {'name': payload['layer']})
-                rulebase = response['rulebase']
-                position, section_name, above_relative_position, pos_before_relative_empty_section = \
-                    get_number_and_section_from_relative_position(payload, connection, version, rulebase,
-                                                                  above_relative_position, pos_before_relative_empty_section)
+                code, response = send_request(
+                    connection,
+                    version,
+                    show_rulebase_command,
+                    {"name": payload["layer"]},
+                )
+                rulebase = response["rulebase"]
+                (
+                    position,
+                    section_name,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                ) = get_number_and_section_from_relative_position(
+                    payload,
+                    connection,
+                    version,
+                    rulebase,
+                    above_relative_position,
+                    pos_before_relative_empty_section,
+                )
             else:
-                rules_amount = get_rules_amount(connection, version, payload['layer'], show_rulebase_command)
-                relative_pos_is_section = relative_position_is_section(connection, version, payload['layer'], payload['position'])
-                rulebase_generator = get_rulebase_generator(connection, version, payload['layer'], show_rulebase_command, rules_amount)
+                rules_amount = get_rules_amount(
+                    connection,
+                    version,
+                    payload["layer"],
+                    show_rulebase_command,
+                )
+                relative_pos_is_section = relative_position_is_section(
+                    connection, version, payload["layer"], payload["position"]
+                )
+                rulebase_generator = get_rulebase_generator(
+                    connection,
+                    version,
+                    payload["layer"],
+                    show_rulebase_command,
+                    rules_amount,
+                )
                 for rulebase in rulebase_generator:
-                    position, section_name, above_relative_position, pos_before_relative_empty_section = \
-                        get_number_and_section_from_relative_position(payload, connection, version, rulebase,
-                                                                      above_relative_position, pos_before_relative_empty_section)
-                    if not keep_searching_rulebase(position, section_name, payload['position'], relative_pos_is_section):
+                    (
+                        position,
+                        section_name,
+                        above_relative_position,
+                        pos_before_relative_empty_section,
+                    ) = get_number_and_section_from_relative_position(
+                        payload,
+                        connection,
+                        version,
+                        rulebase,
+                        above_relative_position,
+                        pos_before_relative_empty_section,
+                    )
+                    if not keep_searching_rulebase(
+                        position,
+                        section_name,
+                        payload["position"],
+                        relative_pos_is_section,
+                    ):
                         break
 
             return position, section_name
@@ -909,16 +1139,16 @@ def build_payload(api_call_object, payload, params_to_remove):
 # extract first rule from given rulebase response and the section it is in.
 def extract_rule_and_section_from_rulebase_response(response):
     section_name = None
-    rule = response['rulebase'][0]
+    rule = response["rulebase"][0]
     i = 0
     # skip empty sections (possible when offset=0)
-    while 'rulebase' in rule and len(rule['rulebase']) == 0:
+    while "rulebase" in rule and len(rule["rulebase"]) == 0:
         i += 1
-        rule = response['rulebase'][i]
+        rule = response["rulebase"][i]
 
-    while 'rulebase' in rule:
-        section_name = rule['name']
-        rule = rule['rulebase'][0]
+    while "rulebase" in rule:
+        section_name = rule["name"]
+        rule = rule["rulebase"][0]
 
     return rule, section_name
 
@@ -940,9 +1170,16 @@ def get_relevant_show_rulebase_command(api_call_object):
 
 
 # is the param position (if the user inserted it) equals between the object and the user input, as well as the section the rule is in
-def is_equals_with_position_param(payload, connection, version, api_call_object):
+def is_equals_with_position_param(
+    payload, connection, version, api_call_object
+):
 
-    position_number, section_according_to_position = get_number_and_section_from_position(payload, connection, version, api_call_object)
+    (
+        position_number,
+        section_according_to_position,
+    ) = get_number_and_section_from_position(
+        payload, connection, version, api_call_object
+    )
 
     # In this case the one of the following has occurred:
     # 1) There is no position param, then it's equals in vacuous truth
@@ -956,13 +1193,18 @@ def is_equals_with_position_param(payload, connection, version, api_call_object)
     )
     rulebase_command = build_rulebase_command(api_call_object)
 
-    code, response = send_request(connection, version, rulebase_command, rulebase_payload)
+    code, response = send_request(
+        connection, version, rulebase_command, rulebase_payload
+    )
     rule, section = extract_rule_and_section_from_rulebase_response(response)
 
     # if the names of the exist rule and the user input rule are equals, as well as the section they're in, then it
     # means that their positions are equals so I return True. and there is no way that there is another rule with this
     # name cause otherwise the 'equals' command would fail
-    if rule['name'] == payload['name'] and section_according_to_position == section:
+    if (
+        rule["name"] == payload["name"]
+        and section_according_to_position == section
+    ):
         return True
     else:
         return False
@@ -1026,7 +1268,9 @@ def api_call_for_rule(module, api_call_object):
         return result
 
     if is_access_rule:
-        copy_payload_without_some_params = extract_payload_without_some_params(payload, ['action', 'position', 'search_entire_rulebase'])
+        copy_payload_without_some_params = extract_payload_without_some_params(
+            payload, ["action", "position", "search_entire_rulebase"]
+        )
     else:
         copy_payload_without_some_params = extract_payload_without_some_params(
             payload, ["position"]
@@ -1043,24 +1287,53 @@ def api_call_for_rule(module, api_call_object):
 
     if module.params["state"] == "present":
         if equals_code == 200:
-            if equals_response['equals']:
-                if not is_equals_with_all_params(payload, connection, version, api_call_object, is_access_rule):
-                    equals_response['equals'] = False
+            if equals_response["equals"]:
+                if not is_equals_with_all_params(
+                    payload,
+                    connection,
+                    version,
+                    api_call_object,
+                    is_access_rule,
+                ):
+                    equals_response["equals"] = False
             # else objects are equals and there is no need for set request
             if not equals_response["equals"]:
                 # if user insert param 'position' and needed to use the 'set' command, change the param name to 'new-position'
-                if 'position' in payload:
-                    payload['new-position'] = payload['position']
-                    del payload['position']
-                if 'search-entire-rulebase' in payload:
-                    del payload['search-entire-rulebase']
-                handle_call_and_set_result(connection, version, 'set-' + api_call_object, payload, module, result)
+                if "position" in payload:
+                    payload["new-position"] = payload["position"]
+                    del payload["position"]
+                if "search-entire-rulebase" in payload:
+                    del payload["search-entire-rulebase"]
+                handle_call_and_set_result(
+                    connection,
+                    version,
+                    "set-" + api_call_object,
+                    payload,
+                    module,
+                    result,
+                )
         elif equals_code == 404:
-            if 'search-entire-rulebase' in payload:
-                del payload['search-entire-rulebase']
-            handle_call_and_set_result(connection, version, 'add-' + api_call_object, payload, module, result)
-    elif module.params['state'] == 'absent':
-        handle_delete(equals_code, payload, delete_params, connection, version, api_call_object, module, result)
+            if "search-entire-rulebase" in payload:
+                del payload["search-entire-rulebase"]
+            handle_call_and_set_result(
+                connection,
+                version,
+                "add-" + api_call_object,
+                payload,
+                module,
+                result,
+            )
+    elif module.params["state"] == "absent":
+        handle_delete(
+            equals_code,
+            payload,
+            delete_params,
+            connection,
+            version,
+            api_call_object,
+            module,
+            result,
+        )
 
     return result
 
@@ -1106,18 +1379,26 @@ def api_call_facts_for_rule(
     result = {api_call_object: response}
     return result
 
-def prepare_rule_params_for_execute_module(rule, module_args, position, below_rule_name):
-    rule['layer'] = module_args['layer']
-    if 'details_level' in module_args.keys():
-        rule['details_level'] = module_args['details_level']
-    if 'state' not in rule.keys() or ('state' in rule.keys() and rule['state'] != 'absent'):
+
+def prepare_rule_params_for_execute_module(
+    rule, module_args, position, below_rule_name
+):
+    rule["layer"] = module_args["layer"]
+    if "details_level" in module_args.keys():
+        rule["details_level"] = module_args["details_level"]
+    if "state" not in rule.keys() or (
+        "state" in rule.keys() and rule["state"] != "absent"
+    ):
         if below_rule_name:
-            relative_position = {'relative_position': {'below': below_rule_name}}
+            relative_position = {
+                "relative_position": {"below": below_rule_name}
+            }
             rule.update(relative_position)
         else:
-            rule['position'] = position
+            rule["position"] = position
         position = position + 1
-        below_rule_name = rule['name']
+        below_rule_name = rule["name"]
+
 
 class CheckPointRequest(object):
     def __init__(

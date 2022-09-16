@@ -93,9 +93,9 @@ class HttpApi(HttpApiBase):
         query_string_auth=False,
     ):
         data = json.dumps(data) if data else "{}"
-        cp_cloud_mgmt_id = self.get_option('cloud_mgmt_id')
+        cp_cloud_mgmt_id = self.get_option("cloud_mgmt_id")
         if cp_cloud_mgmt_id:
-            path = '/' + cp_cloud_mgmt_id + path
+            path = "/" + cp_cloud_mgmt_id + path
         try:
             self._display_request()
             response, response_data = self.connection.send(
