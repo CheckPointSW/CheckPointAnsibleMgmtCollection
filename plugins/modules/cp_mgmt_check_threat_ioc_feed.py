@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -173,41 +175,69 @@ cp_mgmt_check_threat_ioc_feed:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_commands,
+    api_command,
+)
 
 
 def main():
     argument_spec = dict(
-        ioc_feed=dict(type='dict', options=dict(
-            name=dict(type='str'),
-            feed_url=dict(type='str'),
-            action=dict(type='str', choices=['Prevent', 'Detect']),
-            certificate_id=dict(type='str'),
-            custom_comment=dict(type='int'),
-            custom_confidence=dict(type='int'),
-            custom_header=dict(type='list', elements='dict', options=dict(
-                header_name=dict(type='str'),
-                header_value=dict(type='str')
-            )),
-            custom_name=dict(type='int'),
-            custom_severity=dict(type='int'),
-            custom_type=dict(type='int'),
-            custom_value=dict(type='int'),
-            enabled=dict(type='bool'),
-            feed_type=dict(type='str', choices=['any type', 'domain', 'ip address', 'md5', 'url', 'ip range',
-                                                'mail subject', 'mail from', 'mail to', 'mail reply to', 'mail cc', 'sha1', 'sha256']),
-            password=dict(type='str', no_log=True),
-            use_custom_feed_settings=dict(type='bool'),
-            username=dict(type='str'),
-            fields_delimiter=dict(type='str'),
-            ignore_lines_that_start_with=dict(type='str'),
-            use_gateway_proxy=dict(type='bool'),
-            details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-            ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool')
-        )),
-        targets=dict(type='list', elements='str'),
-        auto_publish_session=dict(type='bool')
+        ioc_feed=dict(
+            type="dict",
+            options=dict(
+                name=dict(type="str"),
+                feed_url=dict(type="str"),
+                action=dict(type="str", choices=["Prevent", "Detect"]),
+                certificate_id=dict(type="str"),
+                custom_comment=dict(type="int"),
+                custom_confidence=dict(type="int"),
+                custom_header=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        header_name=dict(type="str"),
+                        header_value=dict(type="str"),
+                    ),
+                ),
+                custom_name=dict(type="int"),
+                custom_severity=dict(type="int"),
+                custom_type=dict(type="int"),
+                custom_value=dict(type="int"),
+                enabled=dict(type="bool"),
+                feed_type=dict(
+                    type="str",
+                    choices=[
+                        "any type",
+                        "domain",
+                        "ip address",
+                        "md5",
+                        "url",
+                        "ip range",
+                        "mail subject",
+                        "mail from",
+                        "mail to",
+                        "mail reply to",
+                        "mail cc",
+                        "sha1",
+                        "sha256",
+                    ],
+                ),
+                password=dict(type="str", no_log=True),
+                use_custom_feed_settings=dict(type="bool"),
+                username=dict(type="str"),
+                fields_delimiter=dict(type="str"),
+                ignore_lines_that_start_with=dict(type="str"),
+                use_gateway_proxy=dict(type="bool"),
+                details_level=dict(
+                    type="str", choices=["uid", "standard", "full"]
+                ),
+                ignore_warnings=dict(type="bool"),
+                ignore_errors=dict(type="bool"),
+            ),
+        ),
+        targets=dict(type="list", elements="str"),
+        auto_publish_session=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
@@ -219,5 +249,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

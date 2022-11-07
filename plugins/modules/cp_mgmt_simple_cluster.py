@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -1023,265 +1025,608 @@ cp_mgmt_simple_cluster:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        ip_address=dict(type='str'),
-        ipv4_address=dict(type='str'),
-        ipv6_address=dict(type='str'),
-        anti_bot=dict(type='bool'),
-        anti_virus=dict(type='bool'),
-        application_control=dict(type='bool'),
-        cluster_mode=dict(type='str', choices=['cluster-xl-ha', 'cluster-ls-multicast', 'cluster-ls-unicast', 'opsec-ha', 'opsec-ls']),
-        content_awareness=dict(type='bool'),
-        firewall=dict(type='bool'),
-        firewall_settings=dict(type='dict', options=dict(
-            auto_calculate_connections_hash_table_size_and_memory_pool=dict(type='bool'),
-            auto_maximum_limit_for_concurrent_connections=dict(type='bool'),
-            connections_hash_size=dict(type='int'),
-            maximum_limit_for_concurrent_connections=dict(type='int'),
-            maximum_memory_pool_size=dict(type='int'),
-            memory_pool_size=dict(type='int')
-        )),
-        hardware=dict(type='str'),
-        interfaces=dict(type='list', elements='dict', options=dict(
-            name=dict(type='str'),
-            interface_type=dict(type='str', choices=['cluster', 'sync', 'cluster + sync', 'private']),
-            ip_address=dict(type='str'),
-            ipv4_address=dict(type='str'),
-            ipv6_address=dict(type='str'),
-            network_mask=dict(type='str'),
-            ipv4_network_mask=dict(type='str'),
-            ipv6_network_mask=dict(type='str'),
-            mask_length=dict(type='str'),
-            ipv4_mask_length=dict(type='str'),
-            ipv6_mask_length=dict(type='str'),
-            anti_spoofing=dict(type='bool'),
-            anti_spoofing_settings=dict(type='dict', options=dict(
-                action=dict(type='str', choices=['prevent', 'detect']),
-                exclude_packets=dict(type='bool'),
-                excluded_network_name=dict(type='str'),
-                excluded_network_uid=dict(type='str'),
-                spoof_tracking=dict(type='str', choices=['none', 'log', 'alert'])
-            )),
-            multicast_address=dict(type='str'),
-            multicast_address_type=dict(type='str', choices=['manual', 'default']),
-            security_zone=dict(type='bool'),
-            security_zone_settings=dict(type='dict', options=dict(
-                auto_calculated=dict(type='bool'),
-                specific_zone=dict(type='str')
-            )),
-            tags=dict(type='list', elements='str'),
-            topology=dict(type='str', choices=['automatic', 'external', 'internal']),
-            topology_settings=dict(type='dict', options=dict(
-                interface_leads_to_dmz=dict(type='bool'),
-                ip_address_behind_this_interface=dict(type='str', choices=['not defined', 'network defined by the interface ip and net mask',
-                                                                           'network defined by routing', 'specific']),
-                specific_network=dict(type='str')
-            )),
-            color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan',
-                                            'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick',
-                                            'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral',
-                                            'sea green', 'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red',
-                                            'sienna', 'yellow']),
-            comments=dict(type='str'),
-            details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-            ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool')
-        )),
-        ips=dict(type='bool'),
-        members=dict(type='list', elements='dict', options=dict(
-            name=dict(type='str'),
-            interfaces=dict(type='list', elements='dict', options=dict(
-                name=dict(type='str'),
-                anti_spoofing=dict(type='bool'),
-                anti_spoofing_settings=dict(type='dict', options=dict(
-                    action=dict(type='str', choices=['prevent', 'detect']),
-                    exclude_packets=dict(type='bool'),
-                    excluded_network_name=dict(type='str'),
-                    excluded_network_uid=dict(type='str'),
-                    spoof_tracking=dict(type='str', choices=['none', 'log', 'alert'])
-                )),
-                ip_address=dict(type='str'),
-                ipv4_address=dict(type='str'),
-                ipv6_address=dict(type='str'),
-                network_mask=dict(type='str'),
-                ipv4_network_mask=dict(type='str'),
-                ipv6_network_mask=dict(type='str'),
-                mask_length=dict(type='str'),
-                ipv4_mask_length=dict(type='str'),
-                ipv6_mask_length=dict(type='str'),
-                security_zone=dict(type='bool'),
-                security_zone_settings=dict(type='dict', options=dict(
-                    auto_calculated=dict(type='bool'),
-                    specific_zone=dict(type='str')
-                )),
-                tags=dict(type='list', elements='str'),
-                topology=dict(type='str', choices=['automatic', 'external', 'internal']),
-                topology_settings=dict(type='dict', options=dict(
-                    interface_leads_to_dmz=dict(type='bool'),
-                    ip_address_behind_this_interface=dict(type='str', choices=['not defined', 'network defined by the interface ip and net mask',
-                                                                               'network defined by routing', 'specific']),
-                    specific_network=dict(type='str')
-                )),
-                color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood',
-                                                'cyan', 'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue',
-                                                'firebrick', 'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon',
-                                                'coral', 'sea green', 'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive',
-                                                'orange', 'red', 'sienna', 'yellow']),
-                comments=dict(type='str'),
-                details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-                ignore_warnings=dict(type='bool'),
-                ignore_errors=dict(type='bool')
-            )),
-            ip_address=dict(type='str'),
-            ipv4_address=dict(type='str'),
-            ipv6_address=dict(type='str'),
-            one_time_password=dict(type='str', no_log=True),
-            tags=dict(type='list', elements='str'),
-            color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan',
-                                            'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick',
-                                            'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral',
-                                            'sea green', 'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red',
-                                            'sienna', 'yellow']),
-            comments=dict(type='str'),
-            details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-            ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool')
-        )),
-        os_name=dict(type='str'),
-        platform_portal_settings=dict(type='dict', options=dict(
-            portal_web_settings=dict(type='dict', options=dict(
-                aliases=dict(type='list', elements='str'),
-                ip_address=dict(type='str'),
-                main_url=dict(type='str')
-            )),
-            certificate_settings=dict(type='dict', options=dict(
-                base64_certificate=dict(type='str'),
-                base64_password=dict(type='str', no_log=True)
-            )),
-            accessibility=dict(type='dict', options=dict(
-                allow_access_from=dict(type='str', choices=['rule_base', 'internal_interfaces', 'all_interfaces']),
-                internal_access_settings=dict(type='dict', options=dict(
-                    undefined=dict(type='bool'),
-                    dmz=dict(type='bool'),
-                    vpn=dict(type='bool')
-                ))
-            ))
-        )),
-        send_alerts_to_server=dict(type='list', elements='str'),
-        send_logs_to_backup_server=dict(type='list', elements='str'),
-        send_logs_to_server=dict(type='list', elements='str'),
-        tags=dict(type='list', elements='str'),
-        threat_emulation=dict(type='bool'),
-        threat_extraction=dict(type='bool'),
-        threat_prevention_mode=dict(type='str', choices=['autonomous', 'custom']),
-        url_filtering=dict(type='bool'),
-        usercheck_portal_settings=dict(type='dict', options=dict(
-            enabled=dict(type='bool'),
-            portal_web_settings=dict(type='dict', options=dict(
-                aliases=dict(type='list', elements='str'),
-                ip_address=dict(type='str'),
-                main_url=dict(type='str')
-            )),
-            certificate_settings=dict(type='dict', options=dict(
-                base64_certificate=dict(type='str'),
-                base64_password=dict(type='str', no_log=True)
-            )),
-            accessibility=dict(type='dict', options=dict(
-                allow_access_from=dict(type='str', choices=['rule_base', 'internal_interfaces', 'all_interfaces']),
-                internal_access_settings=dict(type='dict', options=dict(
-                    undefined=dict(type='bool'),
-                    dmz=dict(type='bool'),
-                    vpn=dict(type='bool')
-                ))
-            ))
-        )),
-        cluster_version=dict(type='str'),
-        vpn=dict(type='bool'),
-        vpn_settings=dict(type='dict', options=dict(
-            authentication=dict(type='dict', options=dict(
-                authentication_clients=dict(type='list', elements='str')
-            )),
-            link_selection=dict(type='dict', options=dict(
-                ip_selection=dict(type='str', choices=['use-main-address',
-                                                       'use-selected-address-from-topology', 'use-statically-nated-ip', 'calculated-ip-based-on-topology',
-                                                       'dns-resolving-from-hostname', 'dns-resolving-from-gateway-and-domain-name',
-                                                       'use-probing-with-high-availability', 'use-probing-with-load-sharing', 'use-one-time-probing']),
-                dns_resolving_hostname=dict(type='str'),
-                ip_address=dict(type='str')
-            )),
-            maximum_concurrent_ike_negotiations=dict(type='int'),
-            maximum_concurrent_tunnels=dict(type='int'),
-            office_mode=dict(type='dict', options=dict(
-                mode=dict(type='str', choices=['off', 'specific-group', 'all-users']),
-                group=dict(type='str'),
-                allocate_ip_address_from=dict(type='dict', options=dict(
-                    radius_server=dict(type='bool'),
-                    use_allocate_method=dict(type='bool'),
-                    allocate_method=dict(type='str', choices=['manual', 'automatic']),
-                    manual_network=dict(type='str'),
-                    dhcp_server=dict(type='str'),
-                    virtual_ip_address=dict(type='str'),
-                    dhcp_mac_address=dict(type='str', choices=['per-machine', 'per-user']),
-                    optional_parameters=dict(type='dict', options=dict(
-                        use_primary_dns_server=dict(type='bool'),
-                        primary_dns_server=dict(type='str'),
-                        use_first_backup_dns_server=dict(type='bool'),
-                        first_backup_dns_server=dict(type='str'),
-                        use_second_backup_dns_server=dict(type='bool'),
-                        second_backup_dns_server=dict(type='str'),
-                        dns_suffixes=dict(type='str'),
-                        use_primary_wins_server=dict(type='bool'),
-                        primary_wins_server=dict(type='str'),
-                        use_first_backup_wins_server=dict(type='bool'),
-                        first_backup_wins_server=dict(type='str'),
-                        use_second_backup_wins_server=dict(type='bool'),
-                        second_backup_wins_server=dict(type='str'),
-                        ip_lease_duration=dict(type='int')
-                    ))
-                )),
-                support_multiple_interfaces=dict(type='bool'),
-                perform_anti_spoofing=dict(type='bool'),
-                anti_spoofing_additional_addresses=dict(type='str')
-            )),
-            remote_access=dict(type='dict', options=dict(
-                support_l2tp=dict(type='bool'),
-                l2tp_auth_method=dict(type='str', choices=['certificate', 'md5']),
-                l2tp_certificate=dict(type='str'),
-                allow_vpn_clients_to_route_traffic=dict(type='bool'),
-                support_nat_traversal_mechanism=dict(type='bool'),
-                nat_traversal_service=dict(type='str'),
-                support_visitor_mode=dict(type='bool'),
-                visitor_mode_service=dict(type='str'),
-                visitor_mode_interface=dict(type='str')
-            )),
-            vpn_domain=dict(type='str'),
-            vpn_domain_type=dict(type='str', choices=['manual', 'addresses_behind_gw'])
-        )),
-        show_portals_certificate=dict(type='bool'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list', elements='str'),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        ip_address=dict(type="str"),
+        ipv4_address=dict(type="str"),
+        ipv6_address=dict(type="str"),
+        anti_bot=dict(type="bool"),
+        anti_virus=dict(type="bool"),
+        application_control=dict(type="bool"),
+        cluster_mode=dict(
+            type="str",
+            choices=[
+                "cluster-xl-ha",
+                "cluster-ls-multicast",
+                "cluster-ls-unicast",
+                "opsec-ha",
+                "opsec-ls",
+            ],
+        ),
+        content_awareness=dict(type="bool"),
+        firewall=dict(type="bool"),
+        firewall_settings=dict(
+            type="dict",
+            options=dict(
+                auto_calculate_connections_hash_table_size_and_memory_pool=dict(
+                    type="bool"
+                ),
+                auto_maximum_limit_for_concurrent_connections=dict(
+                    type="bool"
+                ),
+                connections_hash_size=dict(type="int"),
+                maximum_limit_for_concurrent_connections=dict(type="int"),
+                maximum_memory_pool_size=dict(type="int"),
+                memory_pool_size=dict(type="int"),
+            ),
+        ),
+        hardware=dict(type="str"),
+        interfaces=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                name=dict(type="str"),
+                interface_type=dict(
+                    type="str",
+                    choices=["cluster", "sync", "cluster + sync", "private"],
+                ),
+                ip_address=dict(type="str"),
+                ipv4_address=dict(type="str"),
+                ipv6_address=dict(type="str"),
+                network_mask=dict(type="str"),
+                ipv4_network_mask=dict(type="str"),
+                ipv6_network_mask=dict(type="str"),
+                mask_length=dict(type="str"),
+                ipv4_mask_length=dict(type="str"),
+                ipv6_mask_length=dict(type="str"),
+                anti_spoofing=dict(type="bool"),
+                anti_spoofing_settings=dict(
+                    type="dict",
+                    options=dict(
+                        action=dict(type="str", choices=["prevent", "detect"]),
+                        exclude_packets=dict(type="bool"),
+                        excluded_network_name=dict(type="str"),
+                        excluded_network_uid=dict(type="str"),
+                        spoof_tracking=dict(
+                            type="str", choices=["none", "log", "alert"]
+                        ),
+                    ),
+                ),
+                multicast_address=dict(type="str"),
+                multicast_address_type=dict(
+                    type="str", choices=["manual", "default"]
+                ),
+                security_zone=dict(type="bool"),
+                security_zone_settings=dict(
+                    type="dict",
+                    options=dict(
+                        auto_calculated=dict(type="bool"),
+                        specific_zone=dict(type="str"),
+                    ),
+                ),
+                tags=dict(type="list", elements="str"),
+                topology=dict(
+                    type="str", choices=["automatic", "external", "internal"]
+                ),
+                topology_settings=dict(
+                    type="dict",
+                    options=dict(
+                        interface_leads_to_dmz=dict(type="bool"),
+                        ip_address_behind_this_interface=dict(
+                            type="str",
+                            choices=[
+                                "not defined",
+                                "network defined by the interface ip and net mask",
+                                "network defined by routing",
+                                "specific",
+                            ],
+                        ),
+                        specific_network=dict(type="str"),
+                    ),
+                ),
+                color=dict(
+                    type="str",
+                    choices=[
+                        "aquamarine",
+                        "black",
+                        "blue",
+                        "crete blue",
+                        "burlywood",
+                        "cyan",
+                        "dark green",
+                        "khaki",
+                        "orchid",
+                        "dark orange",
+                        "dark sea green",
+                        "pink",
+                        "turquoise",
+                        "dark blue",
+                        "firebrick",
+                        "brown",
+                        "forest green",
+                        "gold",
+                        "dark gold",
+                        "gray",
+                        "dark gray",
+                        "light green",
+                        "lemon chiffon",
+                        "coral",
+                        "sea green",
+                        "sky blue",
+                        "magenta",
+                        "purple",
+                        "slate blue",
+                        "violet red",
+                        "navy blue",
+                        "olive",
+                        "orange",
+                        "red",
+                        "sienna",
+                        "yellow",
+                    ],
+                ),
+                comments=dict(type="str"),
+                details_level=dict(
+                    type="str", choices=["uid", "standard", "full"]
+                ),
+                ignore_warnings=dict(type="bool"),
+                ignore_errors=dict(type="bool"),
+            ),
+        ),
+        ips=dict(type="bool"),
+        members=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                name=dict(type="str"),
+                interfaces=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        name=dict(type="str"),
+                        anti_spoofing=dict(type="bool"),
+                        anti_spoofing_settings=dict(
+                            type="dict",
+                            options=dict(
+                                action=dict(
+                                    type="str", choices=["prevent", "detect"]
+                                ),
+                                exclude_packets=dict(type="bool"),
+                                excluded_network_name=dict(type="str"),
+                                excluded_network_uid=dict(type="str"),
+                                spoof_tracking=dict(
+                                    type="str",
+                                    choices=["none", "log", "alert"],
+                                ),
+                            ),
+                        ),
+                        ip_address=dict(type="str"),
+                        ipv4_address=dict(type="str"),
+                        ipv6_address=dict(type="str"),
+                        network_mask=dict(type="str"),
+                        ipv4_network_mask=dict(type="str"),
+                        ipv6_network_mask=dict(type="str"),
+                        mask_length=dict(type="str"),
+                        ipv4_mask_length=dict(type="str"),
+                        ipv6_mask_length=dict(type="str"),
+                        security_zone=dict(type="bool"),
+                        security_zone_settings=dict(
+                            type="dict",
+                            options=dict(
+                                auto_calculated=dict(type="bool"),
+                                specific_zone=dict(type="str"),
+                            ),
+                        ),
+                        tags=dict(type="list", elements="str"),
+                        topology=dict(
+                            type="str",
+                            choices=["automatic", "external", "internal"],
+                        ),
+                        topology_settings=dict(
+                            type="dict",
+                            options=dict(
+                                interface_leads_to_dmz=dict(type="bool"),
+                                ip_address_behind_this_interface=dict(
+                                    type="str",
+                                    choices=[
+                                        "not defined",
+                                        "network defined by the interface ip and net mask",
+                                        "network defined by routing",
+                                        "specific",
+                                    ],
+                                ),
+                                specific_network=dict(type="str"),
+                            ),
+                        ),
+                        color=dict(
+                            type="str",
+                            choices=[
+                                "aquamarine",
+                                "black",
+                                "blue",
+                                "crete blue",
+                                "burlywood",
+                                "cyan",
+                                "dark green",
+                                "khaki",
+                                "orchid",
+                                "dark orange",
+                                "dark sea green",
+                                "pink",
+                                "turquoise",
+                                "dark blue",
+                                "firebrick",
+                                "brown",
+                                "forest green",
+                                "gold",
+                                "dark gold",
+                                "gray",
+                                "dark gray",
+                                "light green",
+                                "lemon chiffon",
+                                "coral",
+                                "sea green",
+                                "sky blue",
+                                "magenta",
+                                "purple",
+                                "slate blue",
+                                "violet red",
+                                "navy blue",
+                                "olive",
+                                "orange",
+                                "red",
+                                "sienna",
+                                "yellow",
+                            ],
+                        ),
+                        comments=dict(type="str"),
+                        details_level=dict(
+                            type="str", choices=["uid", "standard", "full"]
+                        ),
+                        ignore_warnings=dict(type="bool"),
+                        ignore_errors=dict(type="bool"),
+                    ),
+                ),
+                ip_address=dict(type="str"),
+                ipv4_address=dict(type="str"),
+                ipv6_address=dict(type="str"),
+                one_time_password=dict(type="str", no_log=True),
+                tags=dict(type="list", elements="str"),
+                color=dict(
+                    type="str",
+                    choices=[
+                        "aquamarine",
+                        "black",
+                        "blue",
+                        "crete blue",
+                        "burlywood",
+                        "cyan",
+                        "dark green",
+                        "khaki",
+                        "orchid",
+                        "dark orange",
+                        "dark sea green",
+                        "pink",
+                        "turquoise",
+                        "dark blue",
+                        "firebrick",
+                        "brown",
+                        "forest green",
+                        "gold",
+                        "dark gold",
+                        "gray",
+                        "dark gray",
+                        "light green",
+                        "lemon chiffon",
+                        "coral",
+                        "sea green",
+                        "sky blue",
+                        "magenta",
+                        "purple",
+                        "slate blue",
+                        "violet red",
+                        "navy blue",
+                        "olive",
+                        "orange",
+                        "red",
+                        "sienna",
+                        "yellow",
+                    ],
+                ),
+                comments=dict(type="str"),
+                details_level=dict(
+                    type="str", choices=["uid", "standard", "full"]
+                ),
+                ignore_warnings=dict(type="bool"),
+                ignore_errors=dict(type="bool"),
+            ),
+        ),
+        os_name=dict(type="str"),
+        platform_portal_settings=dict(
+            type="dict",
+            options=dict(
+                portal_web_settings=dict(
+                    type="dict",
+                    options=dict(
+                        aliases=dict(type="list", elements="str"),
+                        ip_address=dict(type="str"),
+                        main_url=dict(type="str"),
+                    ),
+                ),
+                certificate_settings=dict(
+                    type="dict",
+                    options=dict(
+                        base64_certificate=dict(type="str"),
+                        base64_password=dict(type="str", no_log=True),
+                    ),
+                ),
+                accessibility=dict(
+                    type="dict",
+                    options=dict(
+                        allow_access_from=dict(
+                            type="str",
+                            choices=[
+                                "rule_base",
+                                "internal_interfaces",
+                                "all_interfaces",
+                            ],
+                        ),
+                        internal_access_settings=dict(
+                            type="dict",
+                            options=dict(
+                                undefined=dict(type="bool"),
+                                dmz=dict(type="bool"),
+                                vpn=dict(type="bool"),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        send_alerts_to_server=dict(type="list", elements="str"),
+        send_logs_to_backup_server=dict(type="list", elements="str"),
+        send_logs_to_server=dict(type="list", elements="str"),
+        tags=dict(type="list", elements="str"),
+        threat_emulation=dict(type="bool"),
+        threat_extraction=dict(type="bool"),
+        threat_prevention_mode=dict(
+            type="str", choices=["autonomous", "custom"]
+        ),
+        url_filtering=dict(type="bool"),
+        usercheck_portal_settings=dict(
+            type="dict",
+            options=dict(
+                enabled=dict(type="bool"),
+                portal_web_settings=dict(
+                    type="dict",
+                    options=dict(
+                        aliases=dict(type="list", elements="str"),
+                        ip_address=dict(type="str"),
+                        main_url=dict(type="str"),
+                    ),
+                ),
+                certificate_settings=dict(
+                    type="dict",
+                    options=dict(
+                        base64_certificate=dict(type="str"),
+                        base64_password=dict(type="str", no_log=True),
+                    ),
+                ),
+                accessibility=dict(
+                    type="dict",
+                    options=dict(
+                        allow_access_from=dict(
+                            type="str",
+                            choices=[
+                                "rule_base",
+                                "internal_interfaces",
+                                "all_interfaces",
+                            ],
+                        ),
+                        internal_access_settings=dict(
+                            type="dict",
+                            options=dict(
+                                undefined=dict(type="bool"),
+                                dmz=dict(type="bool"),
+                                vpn=dict(type="bool"),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        cluster_version=dict(type="str"),
+        vpn=dict(type="bool"),
+        vpn_settings=dict(
+            type="dict",
+            options=dict(
+                authentication=dict(
+                    type="dict",
+                    options=dict(
+                        authentication_clients=dict(
+                            type="list", elements="str"
+                        )
+                    ),
+                ),
+                link_selection=dict(
+                    type="dict",
+                    options=dict(
+                        ip_selection=dict(
+                            type="str",
+                            choices=[
+                                "use-main-address",
+                                "use-selected-address-from-topology",
+                                "use-statically-nated-ip",
+                                "calculated-ip-based-on-topology",
+                                "dns-resolving-from-hostname",
+                                "dns-resolving-from-gateway-and-domain-name",
+                                "use-probing-with-high-availability",
+                                "use-probing-with-load-sharing",
+                                "use-one-time-probing",
+                            ],
+                        ),
+                        dns_resolving_hostname=dict(type="str"),
+                        ip_address=dict(type="str"),
+                    ),
+                ),
+                maximum_concurrent_ike_negotiations=dict(type="int"),
+                maximum_concurrent_tunnels=dict(type="int"),
+                office_mode=dict(
+                    type="dict",
+                    options=dict(
+                        mode=dict(
+                            type="str",
+                            choices=["off", "specific-group", "all-users"],
+                        ),
+                        group=dict(type="str"),
+                        allocate_ip_address_from=dict(
+                            type="dict",
+                            options=dict(
+                                radius_server=dict(type="bool"),
+                                use_allocate_method=dict(type="bool"),
+                                allocate_method=dict(
+                                    type="str", choices=["manual", "automatic"]
+                                ),
+                                manual_network=dict(type="str"),
+                                dhcp_server=dict(type="str"),
+                                virtual_ip_address=dict(type="str"),
+                                dhcp_mac_address=dict(
+                                    type="str",
+                                    choices=["per-machine", "per-user"],
+                                ),
+                                optional_parameters=dict(
+                                    type="dict",
+                                    options=dict(
+                                        use_primary_dns_server=dict(
+                                            type="bool"
+                                        ),
+                                        primary_dns_server=dict(type="str"),
+                                        use_first_backup_dns_server=dict(
+                                            type="bool"
+                                        ),
+                                        first_backup_dns_server=dict(
+                                            type="str"
+                                        ),
+                                        use_second_backup_dns_server=dict(
+                                            type="bool"
+                                        ),
+                                        second_backup_dns_server=dict(
+                                            type="str"
+                                        ),
+                                        dns_suffixes=dict(type="str"),
+                                        use_primary_wins_server=dict(
+                                            type="bool"
+                                        ),
+                                        primary_wins_server=dict(type="str"),
+                                        use_first_backup_wins_server=dict(
+                                            type="bool"
+                                        ),
+                                        first_backup_wins_server=dict(
+                                            type="str"
+                                        ),
+                                        use_second_backup_wins_server=dict(
+                                            type="bool"
+                                        ),
+                                        second_backup_wins_server=dict(
+                                            type="str"
+                                        ),
+                                        ip_lease_duration=dict(type="int"),
+                                    ),
+                                ),
+                            ),
+                        ),
+                        support_multiple_interfaces=dict(type="bool"),
+                        perform_anti_spoofing=dict(type="bool"),
+                        anti_spoofing_additional_addresses=dict(type="str"),
+                    ),
+                ),
+                remote_access=dict(
+                    type="dict",
+                    options=dict(
+                        support_l2tp=dict(type="bool"),
+                        l2tp_auth_method=dict(
+                            type="str", choices=["certificate", "md5"]
+                        ),
+                        l2tp_certificate=dict(type="str"),
+                        allow_vpn_clients_to_route_traffic=dict(type="bool"),
+                        support_nat_traversal_mechanism=dict(type="bool"),
+                        nat_traversal_service=dict(type="str"),
+                        support_visitor_mode=dict(type="bool"),
+                        visitor_mode_service=dict(type="str"),
+                        visitor_mode_interface=dict(type="str"),
+                    ),
+                ),
+                vpn_domain=dict(type="str"),
+                vpn_domain_type=dict(
+                    type="str", choices=["manual", "addresses_behind_gw"]
+                ),
+            ),
+        ),
+        show_portals_certificate=dict(type="bool"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        groups=dict(type="list", elements="str"),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'simple-cluster'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "simple-cluster"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

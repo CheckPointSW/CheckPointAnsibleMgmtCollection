@@ -21,15 +21,29 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import pytest
-from units.modules.utils import set_module_args, exit_json, fail_json, AnsibleFailJson, AnsibleExitJson
+from units.modules.utils import (
+    set_module_args,
+    exit_json,
+    fail_json,
+    AnsibleFailJson,
+    AnsibleExitJson,
+)
 
 from ansible.module_utils import basic
-from ansible_collections.check_point.mgmt.plugins.modules import _checkpoint_access_rule
+from ansible_collections.check_point.mgmt.plugins.modules import (
+    _checkpoint_access_rule,
+)
 
-OBJECT = {'layer': 'foo', 'position': 'bar', 'name': 'baz',
-          'source': [{'name': 'lol'}], 'destination': [{'name': 'Any'}],
-          'action': {'name': 'drop'}, 'enabled': True}
-PAYLOAD = {'layer': 'foo', 'position': 'bar', 'name': 'baz'}
+OBJECT = {
+    "layer": "foo",
+    "position": "bar",
+    "name": "baz",
+    "source": [{"name": "lol"}],
+    "destination": [{"name": "Any"}],
+    "action": {"name": "drop"},
+    "enabled": True,
+}
+PAYLOAD = {"layer": "foo", "position": "bar", "name": "baz"}
 
 
 class TestCheckpointAccessRule(object):
@@ -37,61 +51,69 @@ class TestCheckpointAccessRule(object):
 
     @pytest.fixture(autouse=True)
     def module_mock(self, mocker):
-        return mocker.patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json)
+        return mocker.patch.multiple(
+            basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json
+        )
 
     @pytest.fixture
     def connection_mock(self, mocker):
-        connection_class_mock = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.Connection')
+        connection_class_mock = mocker.patch(
+            "ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.Connection"
+        )
         return connection_class_mock.return_value
 
     @pytest.fixture
     def get_access_rule_200(self, mocker):
-        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule')
+        mock_function = mocker.patch(
+            "ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule"
+        )
         mock_function.return_value = (200, OBJECT)
         return mock_function.return_value
 
     @pytest.fixture
     def get_access_rule_404(self, mocker):
-        mock_function = mocker.patch('ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule')
-        mock_function.return_value = (404, 'Object not found')
+        mock_function = mocker.patch(
+            "ansible_collections.check_point.mgmt.plugins.modules._checkpoint_access_rule.get_access_rule"
+        )
+        mock_function.return_value = (404, "Object not found")
         return mock_function.return_value
 
     def test_create(self, get_access_rule_404, connection_mock):
         connection_mock.send_request.return_value = (200, OBJECT)
         result = self._run_module(PAYLOAD)
 
-        assert result['changed']
-        assert 'checkpoint_access_rules' in result
+        assert result["changed"]
+        assert "checkpoint_access_rules" in result
 
     def test_create_idempotent(self, get_access_rule_200, connection_mock):
         connection_mock.send_request.return_value = (200, PAYLOAD)
         result = self._run_module(PAYLOAD)
 
-        assert not result['changed']
+        assert not result["changed"]
 
     def test_update(self, get_access_rule_200, connection_mock):
-        payload_for_update = {'enabled': False}
+        payload_for_update = {"enabled": False}
         payload_for_update.update(PAYLOAD)
         connection_mock.send_request.return_value = (200, payload_for_update)
         result = self._run_module(payload_for_update)
 
-        assert result['changed']
-        assert not result['checkpoint_access_rules']['enabled']
+        assert result["changed"]
+        assert not result["checkpoint_access_rules"]["enabled"]
 
     def test_delete(self, get_access_rule_200, connection_mock):
         connection_mock.send_request.return_value = (200, OBJECT)
-        payload_for_delete = {'state': 'absent'}
+        payload_for_delete = {"state": "absent"}
         payload_for_delete.update(PAYLOAD)
         result = self._run_module(payload_for_delete)
 
-        assert result['changed']
+        assert result["changed"]
 
     def test_delete_idempotent(self, get_access_rule_404, connection_mock):
-        payload = {'name': 'baz', 'state': 'absent'}
+        payload = {"name": "baz", "state": "absent"}
         connection_mock.send_request.return_value = (200, OBJECT)
         result = self._run_module(payload)
 
-        assert not result['changed']
+        assert not result["changed"]
 
     def _run_module(self, module_args):
         set_module_args(module_args)

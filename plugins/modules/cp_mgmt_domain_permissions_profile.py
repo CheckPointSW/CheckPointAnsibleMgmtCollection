@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -478,121 +480,249 @@ cp_mgmt_domain_permissions_profile:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        permission_type=dict(type='str', choices=['read write all', 'read only all', 'customized']),
-        edit_common_objects=dict(type='bool'),
-        access_control=dict(type='dict', options=dict(
-            show_policy=dict(type='bool'),
-            policy_layers=dict(type='dict', options=dict(
-                edit_layers=dict(type='str', choices=['By Software Blades', 'By Selected Profile In A Layer Editor']),
-                app_control_and_url_filtering=dict(type='bool'),
-                content_awareness=dict(type='bool'),
-                firewall=dict(type='bool'),
-                mobile_access=dict(type='bool')
-            )),
-            dlp_policy=dict(type='str', choices=['read', 'write', 'disabled']),
-            geo_control_policy=dict(type='str', choices=['read', 'write', 'disabled']),
-            nat_policy=dict(type='str', choices=['read', 'write', 'disabled']),
-            qos_policy=dict(type='str', choices=['read', 'write', 'disabled']),
-            access_control_objects_and_settings=dict(type='str', choices=['read', 'write', 'disabled']),
-            app_control_and_url_filtering_update=dict(type='bool'),
-            install_policy=dict(type='bool')
-        )),
-        endpoint=dict(type='dict', options=dict(
-            manage_policies_and_software_deployment=dict(type='bool'),
-            edit_endpoint_policies=dict(type='bool'),
-            policies_installation=dict(type='bool'),
-            edit_software_deployment=dict(type='bool'),
-            software_deployment_installation=dict(type='bool'),
-            allow_executing_push_operations=dict(type='bool'),
-            authorize_preboot_users=dict(type='bool'),
-            recovery_media=dict(type='bool'),
-            remote_help=dict(type='bool'),
-            reset_computer_data=dict(type='bool')
-        )),
-        events_and_reports=dict(type='dict', options=dict(
-            smart_event=dict(type='str', choices=['custom', 'app control and url filtering reports only']),
-            events=dict(type='str', choices=['read', 'write', 'disabled']),
-            policy=dict(type='str', choices=['read', 'write', 'disabled']),
-            reports=dict(type='bool')
-        )),
-        gateways=dict(type='dict', options=dict(
-            smart_update=dict(type='str', choices=['read', 'write', 'disabled']),
-            lsm_gw_db=dict(type='str', choices=['read', 'write', 'disabled']),
-            manage_provisioning_profiles=dict(type='str', choices=['read', 'write', 'disabled']),
-            vsx_provisioning=dict(type='bool'),
-            system_backup=dict(type='bool'),
-            system_restore=dict(type='bool'),
-            open_shell=dict(type='bool'),
-            run_one_time_script=dict(type='bool'),
-            run_repository_script=dict(type='bool'),
-            manage_repository_scripts=dict(type='str', choices=['read', 'write', 'disabled'])
-        )),
-        management=dict(type='dict', options=dict(
-            cme_operations=dict(type='str', choices=['read', 'write', 'disabled']),
-            manage_admins=dict(type='bool'),
-            management_api_login=dict(type='bool'),
-            manage_sessions=dict(type='bool'),
-            high_availability_operations=dict(type='bool'),
-            approve_or_reject_sessions=dict(type='bool'),
-            publish_sessions=dict(type='bool'),
-            manage_integration_with_cloud_services=dict(type='bool')
-        )),
-        monitoring_and_logging=dict(type='dict', options=dict(
-            monitoring=dict(type='str', choices=['read', 'write', 'disabled']),
-            management_logs=dict(type='str', choices=['read', 'write', 'disabled']),
-            track_logs=dict(type='str', choices=['read', 'write', 'disabled']),
-            app_and_url_filtering_logs=dict(type='bool'),
-            https_inspection_logs=dict(type='bool'),
-            packet_capture_and_forensics=dict(type='bool'),
-            show_packet_capture_by_default=dict(type='bool'),
-            identities=dict(type='bool'),
-            show_identities_by_default=dict(type='bool'),
-            dlp_logs_including_confidential_fields=dict(type='bool'),
-            manage_dlp_messages=dict(type='bool')
-        )),
-        threat_prevention=dict(type='dict', options=dict(
-            policy_layers=dict(type='str', choices=['read', 'write', 'disabled']),
-            edit_layers=dict(type='str', choices=['By Selected Profile In A Layer Editor', 'All']),
-            edit_settings=dict(type='bool'),
-            policy_exceptions=dict(type='str', choices=['read', 'write', 'disabled']),
-            profiles=dict(type='str', choices=['read', 'write', 'disabled']),
-            protections=dict(type='str', choices=['read', 'write', 'disabled']),
-            install_policy=dict(type='bool'),
-            ips_update=dict(type='bool')
-        )),
-        others=dict(type='dict', options=dict(
-            client_certificates=dict(type='bool'),
-            edit_cp_users_db=dict(type='bool'),
-            https_inspection=dict(type='str', choices=['read', 'write', 'disabled']),
-            ldap_users_db=dict(type='str', choices=['read', 'write', 'disabled']),
-            user_authority_access=dict(type='str', choices=['read', 'write', 'disabled']),
-            user_device_mgmt_conf=dict(type='str', choices=['read', 'write', 'disabled'])
-        )),
-        tags=dict(type='list', elements='str'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        permission_type=dict(
+            type="str",
+            choices=["read write all", "read only all", "customized"],
+        ),
+        edit_common_objects=dict(type="bool"),
+        access_control=dict(
+            type="dict",
+            options=dict(
+                show_policy=dict(type="bool"),
+                policy_layers=dict(
+                    type="dict",
+                    options=dict(
+                        edit_layers=dict(
+                            type="str",
+                            choices=[
+                                "By Software Blades",
+                                "By Selected Profile In A Layer Editor",
+                            ],
+                        ),
+                        app_control_and_url_filtering=dict(type="bool"),
+                        content_awareness=dict(type="bool"),
+                        firewall=dict(type="bool"),
+                        mobile_access=dict(type="bool"),
+                    ),
+                ),
+                dlp_policy=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                geo_control_policy=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                nat_policy=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                qos_policy=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                access_control_objects_and_settings=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                app_control_and_url_filtering_update=dict(type="bool"),
+                install_policy=dict(type="bool"),
+            ),
+        ),
+        endpoint=dict(
+            type="dict",
+            options=dict(
+                manage_policies_and_software_deployment=dict(type="bool"),
+                edit_endpoint_policies=dict(type="bool"),
+                policies_installation=dict(type="bool"),
+                edit_software_deployment=dict(type="bool"),
+                software_deployment_installation=dict(type="bool"),
+                allow_executing_push_operations=dict(type="bool"),
+                authorize_preboot_users=dict(type="bool"),
+                recovery_media=dict(type="bool"),
+                remote_help=dict(type="bool"),
+                reset_computer_data=dict(type="bool"),
+            ),
+        ),
+        events_and_reports=dict(
+            type="dict",
+            options=dict(
+                smart_event=dict(
+                    type="str",
+                    choices=[
+                        "custom",
+                        "app control and url filtering reports only",
+                    ],
+                ),
+                events=dict(type="str", choices=["read", "write", "disabled"]),
+                policy=dict(type="str", choices=["read", "write", "disabled"]),
+                reports=dict(type="bool"),
+            ),
+        ),
+        gateways=dict(
+            type="dict",
+            options=dict(
+                smart_update=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                lsm_gw_db=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                manage_provisioning_profiles=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                vsx_provisioning=dict(type="bool"),
+                system_backup=dict(type="bool"),
+                system_restore=dict(type="bool"),
+                open_shell=dict(type="bool"),
+                run_one_time_script=dict(type="bool"),
+                run_repository_script=dict(type="bool"),
+                manage_repository_scripts=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+            ),
+        ),
+        management=dict(
+            type="dict",
+            options=dict(
+                cme_operations=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                manage_admins=dict(type="bool"),
+                management_api_login=dict(type="bool"),
+                manage_sessions=dict(type="bool"),
+                high_availability_operations=dict(type="bool"),
+                approve_or_reject_sessions=dict(type="bool"),
+                publish_sessions=dict(type="bool"),
+                manage_integration_with_cloud_services=dict(type="bool"),
+            ),
+        ),
+        monitoring_and_logging=dict(
+            type="dict",
+            options=dict(
+                monitoring=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                management_logs=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                track_logs=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                app_and_url_filtering_logs=dict(type="bool"),
+                https_inspection_logs=dict(type="bool"),
+                packet_capture_and_forensics=dict(type="bool"),
+                show_packet_capture_by_default=dict(type="bool"),
+                identities=dict(type="bool"),
+                show_identities_by_default=dict(type="bool"),
+                dlp_logs_including_confidential_fields=dict(type="bool"),
+                manage_dlp_messages=dict(type="bool"),
+            ),
+        ),
+        threat_prevention=dict(
+            type="dict",
+            options=dict(
+                policy_layers=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                edit_layers=dict(
+                    type="str",
+                    choices=["By Selected Profile In A Layer Editor", "All"],
+                ),
+                edit_settings=dict(type="bool"),
+                policy_exceptions=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                profiles=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                protections=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                install_policy=dict(type="bool"),
+                ips_update=dict(type="bool"),
+            ),
+        ),
+        others=dict(
+            type="dict",
+            options=dict(
+                client_certificates=dict(type="bool"),
+                edit_cp_users_db=dict(type="bool"),
+                https_inspection=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                ldap_users_db=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                user_authority_access=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+                user_device_mgmt_conf=dict(
+                    type="str", choices=["read", "write", "disabled"]
+                ),
+            ),
+        ),
+        tags=dict(type="list", elements="str"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'domain-permissions-profile'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "domain-permissions-profile"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

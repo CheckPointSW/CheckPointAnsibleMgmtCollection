@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -173,41 +175,47 @@ cp_mgmt_threat_exception:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call, api_call_for_rule
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+    api_call_for_rule,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        position=dict(type='str'),
-        exception_group_uid=dict(type='str'),
-        exception_group_name=dict(type='str'),
-        layer=dict(type='str'),
-        rule_name=dict(type='str'),
-        action=dict(type='str'),
-        destination=dict(type='list', elements='str'),
-        destination_negate=dict(type='bool'),
-        enabled=dict(type='bool'),
-        install_on=dict(type='list', elements='str'),
-        protected_scope=dict(type='list', elements='str'),
-        protected_scope_negate=dict(type='bool'),
-        protection_or_site=dict(type='list', elements='str'),
-        service=dict(type='list', elements='str'),
-        service_negate=dict(type='bool'),
-        source=dict(type='list', elements='str'),
-        source_negate=dict(type='bool'),
-        track=dict(type='str'),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        position=dict(type="str"),
+        exception_group_uid=dict(type="str"),
+        exception_group_name=dict(type="str"),
+        layer=dict(type="str"),
+        rule_name=dict(type="str"),
+        action=dict(type="str"),
+        destination=dict(type="list", elements="str"),
+        destination_negate=dict(type="bool"),
+        enabled=dict(type="bool"),
+        install_on=dict(type="list", elements="str"),
+        protected_scope=dict(type="list", elements="str"),
+        protected_scope_negate=dict(type="bool"),
+        protection_or_site=dict(type="list", elements="str"),
+        service=dict(type="list", elements="str"),
+        service_negate=dict(type="bool"),
+        source=dict(type="list", elements="str"),
+        source_negate=dict(type="bool"),
+        track=dict(type="str"),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'threat-exception'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "threat-exception"
 
-    if module.params['position'] is None:
+    if module.params["position"] is None:
         result = api_call(module, api_call_object)
     else:
         result = api_call_for_rule(module, api_call_object)
@@ -215,5 +223,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

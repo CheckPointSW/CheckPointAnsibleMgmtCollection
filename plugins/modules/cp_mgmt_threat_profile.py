@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -326,81 +328,191 @@ cp_mgmt_threat_profile:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        active_protections_performance_impact=dict(type='str', choices=['high', 'medium', 'low', 'very_low']),
-        active_protections_severity=dict(type='str', choices=['Critical', 'High', 'Medium or above', 'Low or above']),
-        confidence_level_high=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-        confidence_level_low=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-        confidence_level_medium=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-        indicator_overrides=dict(type='list', elements='dict', options=dict(
-            action=dict(type='str', choices=['Inactive', 'Ask', 'Prevent', 'Detect']),
-            indicator=dict(type='str')
-        )),
-        ips_settings=dict(type='dict', options=dict(
-            exclude_protection_with_performance_impact=dict(type='bool'),
-            exclude_protection_with_performance_impact_mode=dict(type='str', choices=['very low', 'low or lower', 'medium or lower', 'high or lower']),
-            exclude_protection_with_severity=dict(type='bool'),
-            exclude_protection_with_severity_mode=dict(type='str', choices=['low or above', 'medium or above', 'high or above', 'critical']),
-            newly_updated_protections=dict(type='str', choices=['active', 'inactive', 'staging'])
-        )),
-        malicious_mail_policy_settings=dict(type='dict', options=dict(
-            add_customized_text_to_email_body=dict(type='bool'),
-            add_email_subject_prefix=dict(type='bool'),
-            add_x_header_to_email=dict(type='bool'),
-            email_action=dict(type='str', choices=['allow', 'block']),
-            email_body_customized_text=dict(type='str'),
-            email_subject_prefix_text=dict(type='str'),
-            failed_to_scan_attachments_text=dict(type='str'),
-            malicious_attachments_text=dict(type='str'),
-            malicious_links_text=dict(type='str'),
-            remove_attachments_and_links=dict(type='bool'),
-            send_copy=dict(type='bool'),
-            send_copy_list=dict(type='list', elements='str')
-        )),
-        overrides=dict(type='list', elements='dict', options=dict(
-            action=dict(type='str', choices=['Threat Cloud: Inactive', 'Detect', 'Prevent <br> Core: Drop', 'Inactive', 'Accept']),
-            protection=dict(type='str'),
-            capture_packets=dict(type='bool'),
-            track=dict(type='str', choices=['none', 'log', 'alert', 'mail', 'snmp trap', 'user alert', 'user alert 1', 'user alert 2'])
-        )),
-        tags=dict(type='list', elements='str'),
-        use_indicators=dict(type='bool'),
-        anti_bot=dict(type='bool'),
-        anti_virus=dict(type='bool'),
-        ips=dict(type='bool'),
-        threat_emulation=dict(type='bool'),
-        activate_protections_by_extended_attributes=dict(type='list', elements='dict', options=dict(
-            name=dict(type='str'),
-            category=dict(type='str')
-        )),
-        deactivate_protections_by_extended_attributes=dict(type='list', elements='dict', options=dict(
-            name=dict(type='str'),
-            category=dict(type='str')
-        )),
-        use_extended_attributes=dict(type='bool'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        active_protections_performance_impact=dict(
+            type="str", choices=["high", "medium", "low", "very_low"]
+        ),
+        active_protections_severity=dict(
+            type="str",
+            choices=["Critical", "High", "Medium or above", "Low or above"],
+        ),
+        confidence_level_high=dict(
+            type="str", choices=["Inactive", "Ask", "Prevent", "Detect"]
+        ),
+        confidence_level_low=dict(
+            type="str", choices=["Inactive", "Ask", "Prevent", "Detect"]
+        ),
+        confidence_level_medium=dict(
+            type="str", choices=["Inactive", "Ask", "Prevent", "Detect"]
+        ),
+        indicator_overrides=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                action=dict(
+                    type="str",
+                    choices=["Inactive", "Ask", "Prevent", "Detect"],
+                ),
+                indicator=dict(type="str"),
+            ),
+        ),
+        ips_settings=dict(
+            type="dict",
+            options=dict(
+                exclude_protection_with_performance_impact=dict(type="bool"),
+                exclude_protection_with_performance_impact_mode=dict(
+                    type="str",
+                    choices=[
+                        "very low",
+                        "low or lower",
+                        "medium or lower",
+                        "high or lower",
+                    ],
+                ),
+                exclude_protection_with_severity=dict(type="bool"),
+                exclude_protection_with_severity_mode=dict(
+                    type="str",
+                    choices=[
+                        "low or above",
+                        "medium or above",
+                        "high or above",
+                        "critical",
+                    ],
+                ),
+                newly_updated_protections=dict(
+                    type="str", choices=["active", "inactive", "staging"]
+                ),
+            ),
+        ),
+        malicious_mail_policy_settings=dict(
+            type="dict",
+            options=dict(
+                add_customized_text_to_email_body=dict(type="bool"),
+                add_email_subject_prefix=dict(type="bool"),
+                add_x_header_to_email=dict(type="bool"),
+                email_action=dict(type="str", choices=["allow", "block"]),
+                email_body_customized_text=dict(type="str"),
+                email_subject_prefix_text=dict(type="str"),
+                failed_to_scan_attachments_text=dict(type="str"),
+                malicious_attachments_text=dict(type="str"),
+                malicious_links_text=dict(type="str"),
+                remove_attachments_and_links=dict(type="bool"),
+                send_copy=dict(type="bool"),
+                send_copy_list=dict(type="list", elements="str"),
+            ),
+        ),
+        overrides=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                action=dict(
+                    type="str",
+                    choices=[
+                        "Threat Cloud: Inactive",
+                        "Detect",
+                        "Prevent <br> Core: Drop",
+                        "Inactive",
+                        "Accept",
+                    ],
+                ),
+                protection=dict(type="str"),
+                capture_packets=dict(type="bool"),
+                track=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "alert",
+                        "mail",
+                        "snmp trap",
+                        "user alert",
+                        "user alert 1",
+                        "user alert 2",
+                    ],
+                ),
+            ),
+        ),
+        tags=dict(type="list", elements="str"),
+        use_indicators=dict(type="bool"),
+        anti_bot=dict(type="bool"),
+        anti_virus=dict(type="bool"),
+        ips=dict(type="bool"),
+        threat_emulation=dict(type="bool"),
+        activate_protections_by_extended_attributes=dict(
+            type="list",
+            elements="dict",
+            options=dict(name=dict(type="str"), category=dict(type="str")),
+        ),
+        deactivate_protections_by_extended_attributes=dict(
+            type="list",
+            elements="dict",
+            options=dict(name=dict(type="str"), category=dict(type="str")),
+        ),
+        use_extended_attributes=dict(type="bool"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'threat-profile'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "threat-profile"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

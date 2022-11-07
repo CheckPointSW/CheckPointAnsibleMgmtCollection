@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -184,49 +186,149 @@ cp_mgmt_vpn_community_meshed:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        encryption_method=dict(type='str', choices=['prefer ikev2 but support ikev1', 'ikev2 only', 'ikev1 for ipv4 and ikev2 for ipv6 only']),
-        encryption_suite=dict(type='str', choices=['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']),
-        gateways=dict(type='list', elements='str'),
-        ike_phase_1=dict(type='dict', options=dict(
-            data_integrity=dict(type='str', choices=['aes-xcbc', 'sha1', 'sha256', 'sha384', 'md5']),
-            diffie_hellman_group=dict(type='str', choices=['group-1', 'group-2', 'group-5', 'group-14', 'group-19', 'group-20']),
-            encryption_algorithm=dict(type='str', choices=['cast', 'aes-256', 'des', 'aes-128', '3des'])
-        )),
-        ike_phase_2=dict(type='dict', options=dict(
-            data_integrity=dict(type='str', choices=['aes-xcbc', 'sha1', 'sha256', 'sha384', 'md5']),
-            encryption_algorithm=dict(type='str', choices=['cast', 'aes-gcm-256', 'cast-40',
-                                                           'aes-256', 'des', 'aes-128', '3des', 'des-40cp', 'aes-gcm-128', 'none'])
-        )),
-        shared_secrets=dict(type='list', elements='dict', no_log=True, options=dict(
-            external_gateway=dict(type='str'),
-            shared_secret=dict(type='str', no_log=True)
-        )),
-        tags=dict(type='list', elements='str'),
-        use_shared_secret=dict(type='bool'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        encryption_method=dict(
+            type="str",
+            choices=[
+                "prefer ikev2 but support ikev1",
+                "ikev2 only",
+                "ikev1 for ipv4 and ikev2 for ipv6 only",
+            ],
+        ),
+        encryption_suite=dict(
+            type="str",
+            choices=[
+                "suite-b-gcm-256",
+                "custom",
+                "vpn b",
+                "vpn a",
+                "suite-b-gcm-128",
+            ],
+        ),
+        gateways=dict(type="list", elements="str"),
+        ike_phase_1=dict(
+            type="dict",
+            options=dict(
+                data_integrity=dict(
+                    type="str",
+                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "md5"],
+                ),
+                diffie_hellman_group=dict(
+                    type="str",
+                    choices=[
+                        "group-1",
+                        "group-2",
+                        "group-5",
+                        "group-14",
+                        "group-19",
+                        "group-20",
+                    ],
+                ),
+                encryption_algorithm=dict(
+                    type="str",
+                    choices=["cast", "aes-256", "des", "aes-128", "3des"],
+                ),
+            ),
+        ),
+        ike_phase_2=dict(
+            type="dict",
+            options=dict(
+                data_integrity=dict(
+                    type="str",
+                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "md5"],
+                ),
+                encryption_algorithm=dict(
+                    type="str",
+                    choices=[
+                        "cast",
+                        "aes-gcm-256",
+                        "cast-40",
+                        "aes-256",
+                        "des",
+                        "aes-128",
+                        "3des",
+                        "des-40cp",
+                        "aes-gcm-128",
+                        "none",
+                    ],
+                ),
+            ),
+        ),
+        shared_secrets=dict(
+            type="list",
+            elements="dict",
+            no_log=True,
+            options=dict(
+                external_gateway=dict(type="str"),
+                shared_secret=dict(type="str", no_log=True),
+            ),
+        ),
+        tags=dict(type="list", elements="str"),
+        use_shared_secret=dict(type="bool"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'vpn-community-meshed'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "vpn-community-meshed"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

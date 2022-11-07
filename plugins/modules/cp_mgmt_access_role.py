@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -161,51 +163,104 @@ cp_mgmt_access_role:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        machines_list=dict(type='list', elements='dict', options=dict(
-            source=dict(type='str'),
-            selection=dict(type='list', elements='str'),
-            base_dn=dict(type='str')
-        )),
-        machines=dict(type='str', choices=['any', 'all identified']),
-        networks=dict(type='list', elements='str'),
-        remote_access_clients=dict(type='str'),
-        tags=dict(type='list', elements='str'),
-        users_list=dict(type='list', elements='dict', options=dict(
-            source=dict(type='str'),
-            selection=dict(type='list', elements='str'),
-            base_dn=dict(type='str')
-        )),
-        users=dict(type='str', choices=['any', 'all identified']),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        machines_list=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                source=dict(type="str"),
+                selection=dict(type="list", elements="str"),
+                base_dn=dict(type="str"),
+            ),
+        ),
+        machines=dict(type="str", choices=["any", "all identified"]),
+        networks=dict(type="list", elements="str"),
+        remote_access_clients=dict(type="str"),
+        tags=dict(type="list", elements="str"),
+        users_list=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                source=dict(type="str"),
+                selection=dict(type="list", elements="str"),
+                base_dn=dict(type="str"),
+            ),
+        ),
+        users=dict(type="str", choices=["any", "all identified"]),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'access-role'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "access-role"
 
     if module.params["machines_list"] is not None:
         if module.params["machines"] is not None:
-            raise AssertionError("The use of both 'machines_list' and 'machines' arguments isn't allowed")
+            raise AssertionError(
+                "The use of both 'machines_list' and 'machines' arguments isn't allowed"
+            )
         module.params["machines"] = module.params["machines_list"]
     module.params.pop("machines_list")
 
     if module.params["users_list"] is not None:
         if module.params["users"] is not None:
-            raise AssertionError("The use of both 'users_list' and 'users' arguments isn't allowed")
+            raise AssertionError(
+                "The use of both 'users_list' and 'users' arguments isn't allowed"
+            )
         module.params["users"] = module.params["users_list"]
     module.params.pop("users_list")
 
@@ -213,5 +268,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

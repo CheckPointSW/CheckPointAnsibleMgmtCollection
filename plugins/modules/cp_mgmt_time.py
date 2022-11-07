@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -228,58 +230,112 @@ cp_mgmt_time:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        end=dict(type='dict', options=dict(
-            date=dict(type='str'),
-            iso_8601=dict(type='str'),
-            posix=dict(type='int'),
-            time=dict(type='str')
-        )),
-        end_never=dict(type='bool'),
-        hours_ranges=dict(type='list', elements='dict', options=dict(
-            enabled=dict(type='bool'),
-            index=dict(type='int'),
-            to=dict(type='str')
-        )),
-        start=dict(type='dict', options=dict(
-            date=dict(type='str'),
-            iso_8601=dict(type='str'),
-            posix=dict(type='int'),
-            time=dict(type='str')
-        )),
-        start_now=dict(type='bool'),
-        tags=dict(type='list', elements='str'),
-        recurrence=dict(type='dict', options=dict(
-            days=dict(type='list', elements='str'),
-            month=dict(type='str'),
-            pattern=dict(type='str'),
-            weekdays=dict(type='list', elements='str')
-        )),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        groups=dict(type='list', elements='str'),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        end=dict(
+            type="dict",
+            options=dict(
+                date=dict(type="str"),
+                iso_8601=dict(type="str"),
+                posix=dict(type="int"),
+                time=dict(type="str"),
+            ),
+        ),
+        end_never=dict(type="bool"),
+        hours_ranges=dict(
+            type="list",
+            elements="dict",
+            options=dict(
+                enabled=dict(type="bool"),
+                index=dict(type="int"),
+                to=dict(type="str"),
+            ),
+        ),
+        start=dict(
+            type="dict",
+            options=dict(
+                date=dict(type="str"),
+                iso_8601=dict(type="str"),
+                posix=dict(type="int"),
+                time=dict(type="str"),
+            ),
+        ),
+        start_now=dict(type="bool"),
+        tags=dict(type="list", elements="str"),
+        recurrence=dict(
+            type="dict",
+            options=dict(
+                days=dict(type="list", elements="str"),
+                month=dict(type="str"),
+                pattern=dict(type="str"),
+                weekdays=dict(type="list", elements="str"),
+            ),
+        ),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        groups=dict(type="list", elements="str"),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
-    argument_spec['hours_ranges']['options']['from'] = dict(type='str')
+    argument_spec["hours_ranges"]["options"]["from"] = dict(type="str")
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'time'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "time"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
