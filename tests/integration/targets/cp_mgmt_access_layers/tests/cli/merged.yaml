@@ -1,0 +1,56 @@
+---
+- debug:
+    msg: START Merged cp_mgmt_access_layers state for integration tests on connection={{
+      ansible_connection }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Merge and Create CP Mgmt Access layers
+      tags: merged
+      register: result
+      ibm.qradar.cp_mgmt_access_layers: &id001
+        state: merged
+        config:
+          name: New Layer 1
+          add_default_rule: true
+          applications_and_url_filtering: true
+          content_awareness: true
+          detect_using_x_forward_for: false
+          firewall: true
+          implicit_cleanup_action: drop
+          mobile_access: true
+          shared: false
+          tags:
+            - test_layer        
+          color: aquamarine
+          comments: test description
+          details_level: full
+          ignore_warnings: false
+          ignore_errors: false
+
+    - name: Assert that task reports change and after dict is correctly generated
+      assert:
+        that:
+          - result['changed'] == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_access_layers']['after']) |\
+            \ length == 4 }}"
+
+    - name: Assert that before dicts are correctly generated
+      assert:
+        that:
+          - merged['before'] == result['cp_mgmt_access_layers']['before']
+
+    - name: Merge provided configuration with Log Sources Management (IDEMPOTENT)
+      register: result
+      ibm.qradar.cp_mgmt_access_layers: *id001
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml
