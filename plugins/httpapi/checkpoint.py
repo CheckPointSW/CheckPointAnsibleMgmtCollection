@@ -1,7 +1,7 @@
 # (c) 2018 Red Hat Inc.
 # GNU General Public License v3.0+ (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -44,39 +44,43 @@ from ansible.plugins.httpapi import HttpApiBase
 from ansible.module_utils.connection import ConnectionError
 
 BASE_HEADERS = {
-    'Content-Type': 'application/json',
-    'User-Agent': 'Ansible',
+    "Content-Type": "application/json",
+    "User-Agent": "Ansible",
 }
 
 
 class HttpApi(HttpApiBase):
     def login(self, username, password):
         payload = {}
-        cp_domain = self.get_option('domain')
-        cp_api_key = self.get_option('api_key')
+        cp_domain = self.get_option("domain")
+        cp_api_key = self.get_option("api_key")
         if cp_domain:
-            payload['domain'] = cp_domain
+            payload["domain"] = cp_domain
         if username and password and not cp_api_key:
-            payload['user'] = username
-            payload['password'] = password
+            payload["user"] = username
+            payload["password"] = password
         elif cp_api_key and not username and not password:
-            payload['api-key'] = cp_api_key
+            payload["api-key"] = cp_api_key
         else:
-            raise AnsibleConnectionFailure('[Username and password] or api_key are required for login')
-        url = '/web_api/login'
+            raise AnsibleConnectionFailure(
+                "[Username and password] or api_key are required for login"
+            )
+        url = "/web_api/login"
         response, response_data = self.send_request(url, payload)
 
         try:
-            self.connection._auth = {'X-chkp-sid': response_data['sid']}
+            self.connection._auth = {"X-chkp-sid": response_data["sid"]}
         except KeyError:
             raise ConnectionError(
-                'Server returned response without token info during connection authentication: %s' % response)
+                "Server returned response without token info during connection authentication: %s"
+                % response
+            )
         # Case of read-only
-        if 'uid' in response_data.keys():
-            self.connection._session_uid = response_data['uid']
+        if "uid" in response_data.keys():
+            self.connection._session_uid = response_data["uid"]
 
     def logout(self):
-        url = '/web_api/logout'
+        url = "/web_api/logout"
 
         response, dummy = self.send_request(url, None)
 
@@ -84,13 +88,15 @@ class HttpApi(HttpApiBase):
         return self.connection._session_uid
 
     def send_request(self, path, body_params):
-        data = json.dumps(body_params) if body_params else '{}'
-        cp_cloud_mgmt_id = self.get_option('cloud_mgmt_id')
+        data = json.dumps(body_params) if body_params else "{}"
+        cp_cloud_mgmt_id = self.get_option("cloud_mgmt_id")
         if cp_cloud_mgmt_id:
-            path = '/' + cp_cloud_mgmt_id + path
+            path = "/" + cp_cloud_mgmt_id + path
         try:
             self._display_request()
-            response, response_data = self.connection.send(path, data, method='POST', headers=BASE_HEADERS)
+            response, response_data = self.connection.send(
+                path, data, method="POST", headers=BASE_HEADERS
+            )
             value = self._get_response_value(response_data)
 
             return response.getcode(), self._response_to_json(value)
@@ -101,7 +107,9 @@ class HttpApi(HttpApiBase):
             return e.code, error
 
     def _display_request(self):
-        self.connection.queue_message('vvvv', 'Web Services: %s %s' % ('POST', self.connection._url))
+        self.connection.queue_message(
+            "vvvv", "Web Services: %s %s" % ("POST", self.connection._url)
+        )
 
     def _get_response_value(self, response_data):
         return to_text(response_data.getvalue())
@@ -111,4 +119,4 @@ class HttpApi(HttpApiBase):
             return json.loads(response_text) if response_text else {}
         # JSONDecodeError only available on Python 3.5+
         except ValueError:
-            raise ConnectionError('Invalid JSON response: %s' % response_text)
+            raise ConnectionError("Invalid JSON response: %s" % response_text)

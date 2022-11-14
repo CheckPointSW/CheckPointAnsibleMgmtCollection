@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -179,53 +181,110 @@ cp_mgmt_administrator:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        authentication_method=dict(type='str', choices=['undefined', 'check point password',
-                                                        'os password', 'securid', 'radius', 'tacacs', 'ad authentication', 'api key']),
-        email=dict(type='str'),
-        expiration_date=dict(type='str'),
-        multi_domain_profile=dict(type='str'),
-        must_change_password=dict(type='bool'),
-        password=dict(type='str', no_log=True),
-        password_hash=dict(type='str', no_log=True),
-        permissions_profile=dict(type='str'),
-        permissions_profile_list=dict(type='list', elements='dict', options=dict(
-            profile=dict(type='str'),
-            domain=dict(type='str')
-        )),
-        phone_number=dict(type='str'),
-        radius_server=dict(type='str'),
-        tacacs_server=dict(type='str'),
-        tags=dict(type='list', elements='str'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        authentication_method=dict(
+            type="str",
+            choices=[
+                "undefined",
+                "check point password",
+                "os password",
+                "securid",
+                "radius",
+                "tacacs",
+                "ad authentication",
+                "api key",
+            ],
+        ),
+        email=dict(type="str"),
+        expiration_date=dict(type="str"),
+        multi_domain_profile=dict(type="str"),
+        must_change_password=dict(type="bool"),
+        password=dict(type="str", no_log=True),
+        password_hash=dict(type="str", no_log=True),
+        permissions_profile=dict(type="str"),
+        permissions_profile_list=dict(
+            type="list",
+            elements="dict",
+            options=dict(profile=dict(type="str"), domain=dict(type="str")),
+        ),
+        phone_number=dict(type="str"),
+        radius_server=dict(type="str"),
+        tacacs_server=dict(type="str"),
+        tags=dict(type="list", elements="str"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'administrator'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "administrator"
 
     if module.params["permissions_profile_list"] is not None:
         if module.params["permissions_profile"] is not None:
-            raise AssertionError("The use of both 'permissions_profile_list' and 'permissions_profile' arguments isn't allowed")
-        module.params["permissions_profile"] = module.params["permissions_profile_list"]
+            raise AssertionError(
+                "The use of both 'permissions_profile_list' and 'permissions_profile' arguments isn't allowed"
+            )
+        module.params["permissions_profile"] = module.params[
+            "permissions_profile_list"
+        ]
     module.params.pop("permissions_profile_list")
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

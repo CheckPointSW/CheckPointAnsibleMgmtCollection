@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -166,45 +168,88 @@ cp_mgmt_md_permissions_profile:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_objects, api_call
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_objects,
+    api_call,
+)
 
 
 def main():
     argument_spec = dict(
-        name=dict(type='str', required=True),
-        permission_level=dict(type='str', choices=['super user', 'manager', 'domain level only']),
-        mds_provisioning=dict(type='bool'),
-        manage_admins=dict(type='bool'),
-        manage_sessions=dict(type='bool'),
-        management_api_login=dict(type='bool'),
-        cme_operations=dict(type='str', choices=['read', 'write', 'disabled']),
-        global_vpn_management=dict(type='bool'),
-        manage_global_assignments=dict(type='bool'),
-        enable_default_profile_for_global_domains=dict(type='bool'),
-        default_profile_global_domains=dict(type='str'),
-        view_global_objects_in_domain=dict(type='bool'),
-        enable_default_profile_for_local_domains=dict(type='bool'),
-        default_profile_local_domains=dict(type='str'),
-        tags=dict(type='list', elements='str'),
-        color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
-                                        'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
-                                        'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',
-                                        'sky blue', 'magenta', 'purple', 'slate blue', 'violet red', 'navy blue', 'olive', 'orange', 'red', 'sienna',
-                                        'yellow']),
-        comments=dict(type='str'),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list', elements='str'),
-        ignore_warnings=dict(type='bool'),
-        ignore_errors=dict(type='bool')
+        name=dict(type="str", required=True),
+        permission_level=dict(
+            type="str", choices=["super user", "manager", "domain level only"]
+        ),
+        mds_provisioning=dict(type="bool"),
+        manage_admins=dict(type="bool"),
+        manage_sessions=dict(type="bool"),
+        management_api_login=dict(type="bool"),
+        cme_operations=dict(type="str", choices=["read", "write", "disabled"]),
+        global_vpn_management=dict(type="bool"),
+        manage_global_assignments=dict(type="bool"),
+        enable_default_profile_for_global_domains=dict(type="bool"),
+        default_profile_global_domains=dict(type="str"),
+        view_global_objects_in_domain=dict(type="bool"),
+        enable_default_profile_for_local_domains=dict(type="bool"),
+        default_profile_local_domains=dict(type="str"),
+        tags=dict(type="list", elements="str"),
+        color=dict(
+            type="str",
+            choices=[
+                "aquamarine",
+                "black",
+                "blue",
+                "crete blue",
+                "burlywood",
+                "cyan",
+                "dark green",
+                "khaki",
+                "orchid",
+                "dark orange",
+                "dark sea green",
+                "pink",
+                "turquoise",
+                "dark blue",
+                "firebrick",
+                "brown",
+                "forest green",
+                "gold",
+                "dark gold",
+                "gray",
+                "dark gray",
+                "light green",
+                "lemon chiffon",
+                "coral",
+                "sea green",
+                "sky blue",
+                "magenta",
+                "purple",
+                "slate blue",
+                "violet red",
+                "navy blue",
+                "olive",
+                "orange",
+                "red",
+                "sienna",
+                "yellow",
+            ],
+        ),
+        comments=dict(type="str"),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        domains_to_process=dict(type="list", elements="str"),
+        ignore_warnings=dict(type="bool"),
+        ignore_errors=dict(type="bool"),
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
-    api_call_object = 'md-permissions-profile'
+    module = AnsibleModule(
+        argument_spec=argument_spec, supports_check_mode=True
+    )
+    api_call_object = "md-permissions-profile"
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -294,74 +296,143 @@ cp_mgmt_access_rules:
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import \
-    checkpoint_argument_spec_for_action_module
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_action_module,
+)
 
 
 def main():
     argument_spec = dict(
-        rules=dict(type='list', required=True, elements='dict', options=dict(
-            name=dict(type='str', required=True),
-            action=dict(type='str'),
-            action_settings=dict(type='dict', options=dict(
-                enable_identity_captive_portal=dict(type='bool'),
-                limit=dict(type='str')
-            )),
-            content=dict(type='list', elements='dict'),
-            content_direction=dict(type='str', choices=['any', 'up', 'down']),
-            content_negate=dict(type='bool'),
-            custom_fields=dict(type='dict', options=dict(
-                field_1=dict(type='str'),
-                field_2=dict(type='str'),
-                field_3=dict(type='str')
-            )),
-            destination=dict(type='list', elements='str'),
-            destination_negate=dict(type='bool'),
-            enabled=dict(type='bool'),
-            inline_layer=dict(type='str'),
-            install_on=dict(type='list', elements='str'),
-            service=dict(type='list', elements='str'),
-            service_negate=dict(type='bool'),
-            source=dict(type='list', elements='str'),
-            source_negate=dict(type='bool'),
-            time=dict(type='list', elements='str'),
-            track=dict(type='dict', options=dict(
-                accounting=dict(type='bool'),
-                alert=dict(type='str',
-                           choices=['none', 'alert', 'snmp', 'mail', 'user alert 1', 'user alert 2', 'user alert 3']),
-                enable_firewall_session=dict(type='bool'),
-                per_connection=dict(type='bool'),
-                per_session=dict(type='bool'),
-                type=dict(type='str')
-            )),
-            user_check=dict(type='dict', options=dict(
-                confirm=dict(type='str', choices=['per rule', 'per category', 'per application/site', 'per data type']),
-                custom_frequency=dict(type='dict', options=dict(
-                    every=dict(type='int'),
-                    unit=dict(type='str', choices=['hours', 'days', 'weeks', 'months'])
-                )),
-                frequency=dict(type='str',
-                               choices=['once a day', 'once a week', 'once a month', 'custom frequency...']),
-                interaction=dict(type='str')
-            )),
-            vpn=dict(type='list', elements='dict', options=dict(
-                community=dict(type='list', elements='dict'),
-                directional=dict(type='list', elements='dict', options=dict(
-                    to=dict(type='str')
-                ))
-            )),
-            comments=dict(type='str'),
-            details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-            ignore_warnings=dict(type='bool'),
-            ignore_errors=dict(type='bool'),
-            state=dict(type='str', choices=['present', 'absent'], default='present')
-
-        )),
-        layer=dict(type='str', required=True),
-        details_level=dict(type='str', choices=['uid', 'standard', 'full'])
+        rules=dict(
+            type="list",
+            required=True,
+            elements="dict",
+            options=dict(
+                name=dict(type="str", required=True),
+                action=dict(type="str"),
+                action_settings=dict(
+                    type="dict",
+                    options=dict(
+                        enable_identity_captive_portal=dict(type="bool"),
+                        limit=dict(type="str"),
+                    ),
+                ),
+                content=dict(type="list", elements="dict"),
+                content_direction=dict(
+                    type="str", choices=["any", "up", "down"]
+                ),
+                content_negate=dict(type="bool"),
+                custom_fields=dict(
+                    type="dict",
+                    options=dict(
+                        field_1=dict(type="str"),
+                        field_2=dict(type="str"),
+                        field_3=dict(type="str"),
+                    ),
+                ),
+                destination=dict(type="list", elements="str"),
+                destination_negate=dict(type="bool"),
+                enabled=dict(type="bool"),
+                inline_layer=dict(type="str"),
+                install_on=dict(type="list", elements="str"),
+                service=dict(type="list", elements="str"),
+                service_negate=dict(type="bool"),
+                source=dict(type="list", elements="str"),
+                source_negate=dict(type="bool"),
+                time=dict(type="list", elements="str"),
+                track=dict(
+                    type="dict",
+                    options=dict(
+                        accounting=dict(type="bool"),
+                        alert=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "alert",
+                                "snmp",
+                                "mail",
+                                "user alert 1",
+                                "user alert 2",
+                                "user alert 3",
+                            ],
+                        ),
+                        enable_firewall_session=dict(type="bool"),
+                        per_connection=dict(type="bool"),
+                        per_session=dict(type="bool"),
+                        type=dict(type="str"),
+                    ),
+                ),
+                user_check=dict(
+                    type="dict",
+                    options=dict(
+                        confirm=dict(
+                            type="str",
+                            choices=[
+                                "per rule",
+                                "per category",
+                                "per application/site",
+                                "per data type",
+                            ],
+                        ),
+                        custom_frequency=dict(
+                            type="dict",
+                            options=dict(
+                                every=dict(type="int"),
+                                unit=dict(
+                                    type="str",
+                                    choices=[
+                                        "hours",
+                                        "days",
+                                        "weeks",
+                                        "months",
+                                    ],
+                                ),
+                            ),
+                        ),
+                        frequency=dict(
+                            type="str",
+                            choices=[
+                                "once a day",
+                                "once a week",
+                                "once a month",
+                                "custom frequency...",
+                            ],
+                        ),
+                        interaction=dict(type="str"),
+                    ),
+                ),
+                vpn=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        community=dict(type="list", elements="dict"),
+                        directional=dict(
+                            type="list",
+                            elements="dict",
+                            options=dict(to=dict(type="str")),
+                        ),
+                    ),
+                ),
+                comments=dict(type="str"),
+                details_level=dict(
+                    type="str", choices=["uid", "standard", "full"]
+                ),
+                ignore_warnings=dict(type="bool"),
+                ignore_errors=dict(type="bool"),
+                state=dict(
+                    type="str",
+                    choices=["present", "absent"],
+                    default="present",
+                ),
+            ),
+        ),
+        layer=dict(type="str", required=True),
+        details_level=dict(type="str", choices=["uid", "standard", "full"]),
     )
 
-    argument_spec['rules']['options']['vpn']['options']['directional']['options']['from'] = dict(type='str')
+    argument_spec["rules"]["options"]["vpn"]["options"]["directional"][
+        "options"
+    ]["from"] = dict(type="str")
     argument_spec.update(checkpoint_argument_spec_for_action_module)
 
     module = AnsibleModule(argument_spec=argument_spec)
@@ -369,5 +440,5 @@ def main():
     module.exit_json()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

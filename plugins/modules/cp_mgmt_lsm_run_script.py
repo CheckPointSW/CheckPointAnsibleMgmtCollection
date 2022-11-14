@@ -17,13 +17,15 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.1',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
 
 DOCUMENTATION = """
 ---
@@ -67,14 +69,17 @@ cp_mgmt_lsm_run_script:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_commands, api_command
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
+    checkpoint_argument_spec_for_commands,
+    api_command,
+)
 
 
 def main():
     argument_spec = dict(
-        script_base64=dict(type='str'),
-        script=dict(type='str'),
-        targets=dict(type='list', elements='str')
+        script_base64=dict(type="str"),
+        script=dict(type="str"),
+        targets=dict(type="list", elements="str"),
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
@@ -86,5 +91,5 @@ def main():
     module.exit_json(**result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

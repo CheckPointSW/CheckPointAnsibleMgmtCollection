@@ -15,30 +15,28 @@
 #
 
 from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 import pytest
-from units.modules.utils import set_module_args, exit_json, fail_json, AnsibleExitJson
+from units.modules.utils import (
+    set_module_args,
+    exit_json,
+    fail_json,
+    AnsibleExitJson,
+)
 
 from ansible.module_utils import basic
-from ansible_collections.check_point.mgmt.plugins.modules import cp_mgmt_access_rule
+from ansible_collections.check_point.mgmt.plugins.modules import (
+    cp_mgmt_access_rule,
+)
 
-OBJECT = {
-    "layer": "Network",
-    "name": "Rule 1",
-    "service": [
-        "SMTP",
-        "AOL"
-    ]
-}
+OBJECT = {"layer": "Network", "name": "Rule 1", "service": ["SMTP", "AOL"]}
 
 CREATE_PAYLOAD = {
     "layer": "Network",
     "name": "Rule 1",
-    "service": [
-        "SMTP",
-        "AOL"
-    ]
+    "service": ["SMTP", "AOL"],
 }
 
 UPDATE_PAYLOAD = {
@@ -46,19 +44,16 @@ UPDATE_PAYLOAD = {
     "layer": "Network",
     "action_settings": {
         "limit": "Upload_1Gbps",
-        "enable_identity_captive_portal": True
-    }
+        "enable_identity_captive_portal": True,
+    },
 }
 
 OBJECT_AFTER_UPDATE = UPDATE_PAYLOAD
 
-DELETE_PAYLOAD = {
-    "name": "Rule 1",
-    "state": "absent"
-}
+DELETE_PAYLOAD = {"name": "Rule 1", "state": "absent"}
 
-function_path = 'ansible_collections.check_point.mgmt.plugins.modules.cp_mgmt_access_rule.api_call'
-api_call_object = 'access-rule'
+function_path = "ansible_collections.check_point.mgmt.plugins.modules.cp_mgmt_access_rule.api_call"
+api_call_object = "access-rule"
 
 
 class TestCheckpointAccessRule(object):
@@ -66,56 +61,69 @@ class TestCheckpointAccessRule(object):
 
     @pytest.fixture(autouse=True)
     def module_mock(self, mocker):
-        return mocker.patch.multiple(basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json)
+        return mocker.patch.multiple(
+            basic.AnsibleModule, exit_json=exit_json, fail_json=fail_json
+        )
 
     @pytest.fixture
     def connection_mock(self, mocker):
-        connection_class_mock = mocker.patch('ansible.module_utils.network.checkpoint.checkpoint.Connection')
+        connection_class_mock = mocker.patch(
+            "ansible.module_utils.network.checkpoint.checkpoint.Connection"
+        )
         return connection_class_mock.return_value
 
     def test_create(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': True, api_call_object: OBJECT}
+        mock_function.return_value = {"changed": True, api_call_object: OBJECT}
         result = self._run_module(CREATE_PAYLOAD)
 
-        assert result['changed']
+        assert result["changed"]
         assert OBJECT.items() == result[api_call_object].items()
 
     def test_create_idempotent(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': False, api_call_object: OBJECT}
+        mock_function.return_value = {
+            "changed": False,
+            api_call_object: OBJECT,
+        }
         result = self._run_module(CREATE_PAYLOAD)
 
-        assert not result['changed']
+        assert not result["changed"]
 
     def test_update(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': True, api_call_object: OBJECT_AFTER_UPDATE}
+        mock_function.return_value = {
+            "changed": True,
+            api_call_object: OBJECT_AFTER_UPDATE,
+        }
         result = self._run_module(UPDATE_PAYLOAD)
 
-        assert result['changed']
+        assert result["changed"]
         assert OBJECT_AFTER_UPDATE.items() == result[api_call_object].items()
 
     def test_update_idempotent(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': False, api_call_object: OBJECT_AFTER_UPDATE}
+        mock_function.return_value = {
+            "changed": False,
+            api_call_object: OBJECT_AFTER_UPDATE,
+        }
         result = self._run_module(UPDATE_PAYLOAD)
 
-        assert not result['changed']
+        assert not result["changed"]
 
     def test_delete(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': True}
+        mock_function.return_value = {"changed": True}
         result = self._run_module(DELETE_PAYLOAD)
 
-        assert result['changed']
+        assert result["changed"]
 
     def test_delete_idempotent(self, mocker, connection_mock):
         mock_function = mocker.patch(function_path)
-        mock_function.return_value = {'changed': False}
+        mock_function.return_value = {"changed": False}
         result = self._run_module(DELETE_PAYLOAD)
 
-        assert not result['changed']
+        assert not result["changed"]
 
     def _run_module(self, module_args):
         set_module_args(module_args)
