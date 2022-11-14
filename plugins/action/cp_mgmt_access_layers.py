@@ -73,7 +73,7 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         search_payload = utils.remove_empties(payload)
-        if search_payload and search_payload.get("name") not in ["Network"]:
+        if search_payload:
             search_result = self.search_for_existing_rules(
                 conn_request, self.api_call_object, search_payload, "gathered"
             )
