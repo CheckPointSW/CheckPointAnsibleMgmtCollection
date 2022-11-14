@@ -219,6 +219,7 @@ def sync_show_params_with_add_params(search_result, key_transform):
     temp = map_obj_to_params(temp, key_transform, "")
     return temp
 
+
 # parse failure message with code and response
 def parse_fail_message(code, response):
     return "Checkpoint device returned error {0} with message {1}".format(
@@ -1439,10 +1440,8 @@ class CheckPointRequest(object):
         headers=None,
         not_rest_data_keys=None,
         task_vars=None,
-        fail_json=None,
     ):
         self.module = module
-        self.fail_json = fail_json
         if module:
             # This will be removed, once all of the available modules
             # are moved to use action plugin design, as otherwise test
@@ -1467,7 +1466,7 @@ class CheckPointRequest(object):
         self.headers = headers if headers else BASE_HEADERS
 
     # wait for task
-    def wait_for_task(self, fail_json, version, connection, task_id):
+    def wait_for_task(self, version, connection, task_id):
         task_id_payload = {"task-id": task_id, "details-level": "full"}
         task_complete = False
         minutes_until_timeout = 30
@@ -1497,13 +1496,13 @@ class CheckPointRequest(object):
                         "ERROR: Failed to handle asynchronous tasks as synchronous, tasks result is"
                         " undefined. " + response["message"]
                     )
-                    fail_json(parse_fail_message(code, response))
+                    _fail_json(parse_fail_message(code, response))
 
             # Count the number of tasks that are not in-progress
             completed_tasks = 0
             for task in response["tasks"]:
                 if task["status"] == "failed":
-                    fail_json(
+                    _fail_json(
                         "Task {0} with task id {1} failed. Look at the logs for more details".format(
                             task["task-name"], task["task-id"]
                         )
@@ -1518,7 +1517,7 @@ class CheckPointRequest(object):
             else:
                 time.sleep(2)  # Wait for two seconds
         if not task_complete:
-            fail_json(
+            _fail_json(
                 "ERROR: Timeout. Task-id: {0}.".format(
                     task_id_payload["task-id"]
                 )
@@ -1528,21 +1527,37 @@ class CheckPointRequest(object):
 
     # if failed occurred, in some cases we want to discard changes before exiting. We also notify the user about the `discard`
     def discard_and_fail(self, code, response, connection, version):
-        discard_code, discard_response = send_request(connection, version, 'discard')
+        discard_code, discard_response = send_request(
+            connection, version, "discard"
+        )
         if discard_code != 200:
             try:
-                _fail_json(parse_fail_message(code, response) + ' Failed to discard session {0}'
-                                                                        ' with error {1} with message {2}'.format(connection.get_session_uid(),
-                                                                                                                    discard_code, discard_response))
+                _fail_json(
+                    parse_fail_message(code, response)
+                    + " Failed to discard session {0}"
+                    " with error {1} with message {2}".format(
+                        connection.get_session_uid(),
+                        discard_code,
+                        discard_response,
+                    )
+                )
             except Exception:
                 # Read-only mode without UID
-                _fail_json(parse_fail_message(code, response) + ' Failed to discard session'
-                                                                        ' with error {0} with message {1}'.format(discard_code, discard_response))
+                _fail_json(
+                    parse_fail_message(code, response)
+                    + " Failed to discard session"
+                    " with error {0} with message {1}".format(
+                        discard_code, discard_response
+                    )
+                )
 
-        _fail_json(parse_fail_message(code, response) + ' Unpublished changes were discarded')
+        _fail_json(
+            parse_fail_message(code, response)
+            + " Unpublished changes were discarded"
+        )
 
     # handle publish command, and wait for it to end if the user asked so
-    def handle_publish(self, fail_json, connection, version):
+    def handle_publish(self, connection, version, payload):
         publish_code, publish_response = send_request(
             connection, version, "publish"
         )
@@ -1550,87 +1565,99 @@ class CheckPointRequest(object):
             self.discard_and_fail(
                 publish_code, publish_response, connection, version
             )
-        self.wait_for_task(
-            fail_json, version, connection, publish_response["task-id"]
-        )
+        if payload.get("wait_for_task"):
+            self.wait_for_task(
+                version, connection, publish_response["task-id"]
+            )
 
     # handle call
     def handle_call(
         self,
         connection,
-        fail_json,
         version,
         api_url,
         payload,
         to_discard_on_failure,
-        to_publish=False
+        to_publish=False,
     ):
         code, response = send_request(connection, version, api_url, payload)
         if code != 200:
             if to_discard_on_failure:
-                self.discard_and_fail(
-                    code, response, connection, version
-                )
+                self.discard_and_fail(code, response, connection, version)
             elif "object_not_found" not in response.get(
                 "code"
             ) and "not found" not in response.get("message"):
                 raise _fail_json(parse_fail_message(code, response))
+        else:
+            if "wait_for_task" in payload and payload["wait_for_task"]:
+                if "task-id" in response:
+                    response = self.wait_for_task(
+                        version, connection, response["task-id"]
+                    )
+                elif "tasks" in response:
+                    for task in response["tasks"]:
+                        if "task-id" in task:
+                            task_id = task["task-id"]
+                            response[task_id] = self.wait_for_task(
+                                version, connection, task["task-id"]
+                            )
+                    del response["tasks"]
 
         if to_publish:
-            self.handle_publish(fail_json, connection, version)
+            self.handle_publish(connection, version, payload)
         return code, response
 
     # handle the call and set the result with 'changed' and teh response
     def handle_add_and_set_result(
-        self, connection, fail_json, version, api_url, payload, auto_publish_session=False
+        self,
+        connection,
+        version,
+        api_url,
+        payload,
+        auto_publish_session=False,
     ):
         code, response = self.handle_call(
-            connection, fail_json, version, api_url, payload, True, auto_publish_session
+            connection,
+            version,
+            api_url,
+            payload,
+            True,
+            auto_publish_session,
         )
         result = {"code": code, "response": response, "changed": True}
         return result
 
     # handle delete
-    def handle_delete(
-        self, connection, payload, api_call_object, fail_json, version=""
-    ):
+    def handle_delete(self, connection, payload, api_call_object, version):
         auto_publish = False
-        # else equals_code is 404 and no need to delete because object doesn't exist
         payload_for_equals = {"type": api_call_object, "params": payload}
         equals_code, equals_response = send_request(
             connection, version, "equals", payload_for_equals
         )
         if equals_code == 200:
-            if payload.get('auto_publish_session'):
-                auto_publish = payload['auto_publish_session']
-                del payload['auto_publish_session']
+            if payload.get("auto_publish_session"):
+                auto_publish = payload["auto_publish_session"]
+                del payload["auto_publish_session"]
             code, response = self.handle_call(
                 connection,
-                fail_json,
                 "",
                 "delete-" + api_call_object,
                 payload,
                 True,
-                auto_publish
+                auto_publish,
             )
             result = {"code": code, "response": response, "changed": True}
         else:
+            # else equals_code is 404 and no need to delete because object doesn't exist
             result = {"changed": False}
         return result
 
     # handle api call facts
-    def api_call_facts(self, connection, fail_json, payload, api_call_object):
-        payload = payload
-        version = ""
-        if payload.get('auto_publish_session'):
-            del payload['auto_publish_session']
+    def api_call_facts(self, connection, payload, api_call_object, version):
+        if payload.get("auto_publish_session"):
+            del payload["auto_publish_session"]
         code, response = self.handle_call(
-            connection,
-            fail_json,
-            version,
-            api_call_object,
-            payload,
-            False
+            connection, version, api_call_object, payload, False
         )
         result = {"code": code, "response": response}
         return result
@@ -1643,65 +1670,61 @@ class CheckPointRequest(object):
         remove_keys,
         api_call_object,
         state,
-        fail_json,
         equals_response,
-        version="",
+        version,
+        delete_params,
     ):
         result = {}
         auto_publish_session = False
-        if payload.get('auto_publish_session'):
-            auto_publish_session = payload['auto_publish_session']
-            del payload['auto_publish_session']
+        if payload.get("auto_publish_session"):
+            auto_publish_session = payload["auto_publish_session"]
+            del payload["auto_publish_session"]
         if state == "merged":
-            if equals_response.get("equals") and not equals_response.get("equals"):
+            if equals_response.get("equals") and not equals_response.get(
+                "equals"
+            ):
                 payload = remove_unwanted_key(payload, remove_keys)
                 result = self.handle_add_and_set_result(
                     connection,
-                    fail_json,
                     version,
                     "set-" + api_call_object,
                     payload,
-                    auto_publish_session
+                    auto_publish_session,
                 )
             elif equals_response.get("code") or equals_response.get("message"):
                 result = self.handle_add_and_set_result(
                     connection,
-                    fail_json,
                     version,
                     "add-" + api_call_object,
                     payload,
-                    auto_publish_session
+                    auto_publish_session,
                 )
         elif state == "replaced":
-            if equals_response.get("equals") and not equals_response.get("equals"):
-                delete_params = {
-                    "name": payload["name"],
-                }
+            if equals_response.get(
+                "equals"
+            ) == False and not equals_response.get("equals"):
                 code, response = self.handle_call(
                     connection,
-                    fail_json,
                     version,
                     "delete-" + api_call_object,
                     delete_params,
                     True,
-                    auto_publish_session
+                    auto_publish_session,
                 )
                 result = self.handle_add_and_set_result(
                     connection,
-                    fail_json,
                     version,
                     "add-" + api_call_object,
                     payload,
-                    auto_publish_session
+                    auto_publish_session,
                 )
             elif equals_response.get("code") or equals_response.get("message"):
                 result = self.handle_add_and_set_result(
                     connection,
-                    fail_json,
                     version,
                     "add-" + api_call_object,
                     payload,
-                    auto_publish_session
+                    auto_publish_session,
                 )
         return result
 
@@ -1710,23 +1733,32 @@ class CheckPointRequest(object):
         #   https://docs.ansible.com/ansible/latest/network/dev_guide/developing_plugins_network.html#developing-plugins-httpapi
         try:
             result = {}
+            version = ""
+            if kwargs["data"].get("version"):
+                version = kwargs["data"]["version"]
             if state == "gathered":
                 result = self.api_call_facts(
-                    self.connection,
-                    self.fail_json,
-                    kwargs["data"],
-                    "show-" + api_obj,
+                    self.connection, kwargs["data"], "show-" + api_obj, version
                 )
             elif state == "deleted":
                 result = self.handle_delete(
-                    self.connection, kwargs["data"], api_obj, self.fail_json
+                    self.connection, kwargs["data"], api_obj, version
                 )
             elif state == "merged" or state == "replaced":
-                version = ''
-                payload_for_equals = {'type': api_obj, 'params': kwargs["data"]}
-                equals_code, equals_response = send_request(self.connection, version, 'equals', payload_for_equals)
-                if equals_response.get('equals'):
-                    result = {"code": equals_code, "response": equals_response, "changed": False}
+                version = ""
+                payload_for_equals = {
+                    "type": api_obj,
+                    "params": kwargs["data"],
+                }
+                equals_code, equals_response = send_request(
+                    self.connection, version, "equals", payload_for_equals
+                )
+                if equals_response.get("equals"):
+                    result = {
+                        "code": equals_code,
+                        "response": equals_response,
+                        "changed": False,
+                    }
                 else:
                     result = self.api_call(
                         self.connection,
@@ -1734,8 +1766,9 @@ class CheckPointRequest(object):
                         kwargs["remove_keys"],
                         api_obj,
                         state,
-                        self.fail_json,
-                        equals_response
+                        equals_response,
+                        version,
+                        kwargs["delete_params"],
                     )
         except ConnectionError as e:
             raise _fail_json("connection error occurred: {0}".format(e))

@@ -131,9 +131,7 @@ class ActionModule(ActionBase):
         # from HAVE params when compared to WANT param like 'ID' can be
         # part of HAVE param but may not be part of your WANT param
         remove_from_response = ["uid", "read-only", "domain"]
-        remove_from_set = [
-            "add-default-rule"
-        ]
+        remove_from_set = ["add-default-rule"]
         payload = utils.remove_empties(module_config_params)
         if payload.get("name"):
             search_payload = {"name": payload["name"]}
@@ -146,8 +144,15 @@ class ActionModule(ActionBase):
                 )
                 before = search_result
         payload = map_params_to_obj(payload, self.key_transform)
+        delete_params = {
+            "name": payload["name"],
+        }
         result = conn_request.post(
-            self.api_call_object, self._task.args["state"], data=payload, remove_keys=remove_from_set
+            self.api_call_object,
+            self._task.args["state"],
+            data=payload,
+            remove_keys=remove_from_set,
+            delete_params=delete_params,
         )
         if result.get("changed"):
             search_result = sync_show_params_with_add_params(
@@ -169,9 +174,7 @@ class ActionModule(ActionBase):
         if self._result.get("failed"):
             return self._result
         conn = Connection(self._connection.socket_path)
-        conn_request = CheckPointRequest(
-            connection=conn, task_vars=task_vars, fail_json=AnsibleActionFail
-        )
+        conn_request = CheckPointRequest(connection=conn, task_vars=task_vars)
         if self._task.args["state"] == "gathered":
             if self._task.args.get("config"):
                 self._result["gathered"] = self.search_for_resource_name(

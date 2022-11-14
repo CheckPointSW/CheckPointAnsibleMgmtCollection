@@ -125,6 +125,10 @@ options:
           - Publish the current session if changes have been performed
             after task completes.
         type: bool
+      version:
+        description:
+          - Version of checkpoint. If not given one, the latest version taken.
+        type: str
   state:
     description:
     - The state the configuration should be left in
