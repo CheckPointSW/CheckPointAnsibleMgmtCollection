@@ -1640,7 +1640,7 @@ class CheckPointRequest(object):
                 del payload["auto_publish_session"]
             code, response = self.handle_call(
                 connection,
-                "",
+                version,
                 "delete-" + api_call_object,
                 payload,
                 True,
@@ -1680,9 +1680,9 @@ class CheckPointRequest(object):
             auto_publish_session = payload["auto_publish_session"]
             del payload["auto_publish_session"]
         if state == "merged":
-            if equals_response.get("equals") and not equals_response.get(
+            if equals_response.get(
                 "equals"
-            ):
+            ) == False and not equals_response.get("equals"):
                 payload = remove_unwanted_key(payload, remove_keys)
                 result = self.handle_add_and_set_result(
                     connection,
@@ -1728,14 +1728,18 @@ class CheckPointRequest(object):
                 )
         return result
 
+    # if user insert a specific version, we add it to the url
+    def get_version(self, payload):
+        return (
+            ("v" + payload["version"] + "/") if payload.get("version") else ""
+        )
+
     def _httpapi_error_handle(self, api_obj, state, **kwargs):
         # FIXME - make use of handle_httperror(self, exception) where applicable
         #   https://docs.ansible.com/ansible/latest/network/dev_guide/developing_plugins_network.html#developing-plugins-httpapi
         try:
             result = {}
-            version = ""
-            if kwargs["data"].get("version"):
-                version = kwargs["data"]["version"]
+            version = self.get_version(kwargs["data"])
             if state == "gathered":
                 result = self.api_call_facts(
                     self.connection, kwargs["data"], "show-" + api_obj, version
@@ -1745,7 +1749,6 @@ class CheckPointRequest(object):
                     self.connection, kwargs["data"], api_obj, version
                 )
             elif state == "merged" or state == "replaced":
-                version = ""
                 payload_for_equals = {
                     "type": api_obj,
                     "params": kwargs["data"],
