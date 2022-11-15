@@ -20,8 +20,7 @@ version_added: 3.3.0
 options:
   config:
     description: A dictionary of ACCESS RULES options
-    type: list
-    elements: dict
+    type: dict
     suboptions:
       layer:
         description: Layer that the rule belongs to identified by the name or UID.
@@ -209,6 +208,15 @@ options:
         description: Apply changes ignoring errors. You won't be able to publish such
           a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
         type: bool
+      auto_publish_session:
+        description:
+          - Publish the current session if changes have been performed
+            after task completes.
+        type: bool
+      version:
+        description:
+          - Version of checkpoint. If not given one, the latest version taken.
+        type: str
   state:
     description:
     - The state the configuration should be left in
