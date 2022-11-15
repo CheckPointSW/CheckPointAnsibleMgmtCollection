@@ -1680,10 +1680,7 @@ class CheckPointRequest(object):
             auto_publish_session = payload["auto_publish_session"]
             del payload["auto_publish_session"]
         if state == "merged":
-            if (
-                not equals_response.get("equals")
-                and equals_response["equals"] == False
-            ):
+            if equals_response and equals_response["equals"] == False:
                 payload = remove_unwanted_key(payload, remove_keys)
                 result = self.handle_add_and_set_result(
                     connection,
@@ -1701,10 +1698,7 @@ class CheckPointRequest(object):
                     auto_publish_session,
                 )
         elif state == "replaced":
-            if (
-                not equals_response.get("equals")
-                and equals_response["equals"] == False
-            ):
+            if equals_response and equals_response["equals"] == False:
                 code, response = self.handle_call(
                     connection,
                     version,
