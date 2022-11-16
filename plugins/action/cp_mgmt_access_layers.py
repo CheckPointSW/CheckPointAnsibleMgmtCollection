@@ -11,7 +11,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleActionFail
 from ansible.module_utils.connection import Connection
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
@@ -38,7 +37,7 @@ class ActionModule(ActionBase):
         super(ActionModule, self).__init__(*args, **kwargs)
         self._result = None
         self.api_call_object = "access-layer"
-        self.api_call_object_plural_version = "api/defaultbase"
+        self.api_call_object_plural_version = "access-layers"
         self.module_return = "mgmt_access_layers"
         self.key_transform = {
             "add_default_rule": "add-default-rule",
@@ -81,7 +80,7 @@ class ActionModule(ActionBase):
             search_result = self.search_for_existing_rules(
                 conn_request,
                 self.api_call_object_plural_version,
-                search_payload,
+                {"offset": 0},
                 "gathered",
             )
         search_result = sync_show_params_with_add_params(
@@ -125,7 +124,6 @@ class ActionModule(ActionBase):
         before = {}
         after = {}
         changed = False
-        diff = False
         result = {}
         # Add to the THIS list for the value which needs to be excluded
         # from HAVE params when compared to WANT param like 'ID' can be
