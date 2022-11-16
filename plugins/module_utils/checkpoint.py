@@ -39,7 +39,7 @@ from ansible.module_utils.connection import Connection
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
     utils,
 )
-import q
+
 
 BASE_HEADERS = {
     "Content-Type": "application/json",
@@ -1581,14 +1581,12 @@ class CheckPointRequest(object):
         to_publish=False,
     ):
         code, response = send_request(connection, version, api_url, payload)
-        q(code, response)
         if code != 200:
             if to_discard_on_failure:
                 self.discard_and_fail(code, response, connection, version)
-            elif response and "object_not_found" not in response.get(
+            elif "object_not_found" not in response.get(
                 "code"
             ) and "not found" not in response.get("message"):
-                q("Inside!!")
                 raise _fail_json(parse_fail_message(code, response))
         else:
             if "wait_for_task" in payload and payload["wait_for_task"]:
@@ -1662,7 +1660,6 @@ class CheckPointRequest(object):
             connection, version, api_call_object, payload, False
         )
         result = {"code": code, "response": response}
-        q(result)
         return result
 
     # handle api call
@@ -1683,9 +1680,7 @@ class CheckPointRequest(object):
             auto_publish_session = payload["auto_publish_session"]
             del payload["auto_publish_session"]
         if state == "merged":
-            if equals_response.get("equals") and not equals_response.get(
-                "equals"
-            ):
+            if equals_response and equals_response.get("equals") == False:
                 payload = remove_unwanted_key(payload, remove_keys)
                 result = self.handle_add_and_set_result(
                     connection,
@@ -1703,9 +1698,7 @@ class CheckPointRequest(object):
                     auto_publish_session,
                 )
         elif state == "replaced":
-            if equals_response.get(
-                "equals"
-            ) == False and not equals_response.get("equals"):
+            if equals_response and equals_response.get("equals") == False:
                 code, response = self.handle_call(
                     connection,
                     version,
@@ -1731,14 +1724,18 @@ class CheckPointRequest(object):
                 )
         return result
 
+    # if user insert a specific version, we add it to the url
+    def get_version(self, payload):
+        return (
+            ("v" + payload["version"] + "/") if payload.get("version") else ""
+        )
+
     def _httpapi_error_handle(self, api_obj, state, **kwargs):
         # FIXME - make use of handle_httperror(self, exception) where applicable
         #   https://docs.ansible.com/ansible/latest/network/dev_guide/developing_plugins_network.html#developing-plugins-httpapi
         try:
             result = {}
-            version = ""
-            if kwargs["data"].get("version"):
-                version = kwargs["data"]["version"]
+            version = self.get_version(kwargs["data"])
             if state == "gathered":
                 result = self.api_call_facts(
                     self.connection, kwargs["data"], "show-" + api_obj, version
@@ -1748,7 +1745,6 @@ class CheckPointRequest(object):
                     self.connection, kwargs["data"], api_obj, version
                 )
             elif state == "merged" or state == "replaced":
-                version = ""
                 payload_for_equals = {
                     "type": api_obj,
                     "params": kwargs["data"],
@@ -1756,7 +1752,6 @@ class CheckPointRequest(object):
                 equals_code, equals_response = send_request(
                     self.connection, version, "equals", payload_for_equals
                 )
-                q(equals_code, equals_response)
                 if equals_response.get("equals"):
                     result = {
                         "code": equals_code,

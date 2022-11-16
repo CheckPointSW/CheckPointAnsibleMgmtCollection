@@ -11,7 +11,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleActionFail
 from ansible.module_utils.connection import Connection
 
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
@@ -259,10 +258,7 @@ class ActionModule(ActionBase):
                 )
                 before = search_result
         payload = map_params_to_obj(payload, self.key_transform)
-        delete_params = {
-            "layer": payload["layer"],
-            "name": payload["name"]
-        }
+        delete_params = {"layer": payload["layer"], "name": payload["name"]}
         result = conn_request.post(
             self.api_call_object,
             self._task.args["state"],
