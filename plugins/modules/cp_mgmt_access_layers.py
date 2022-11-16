@@ -132,6 +132,23 @@ options:
           - NOTE, this parameter is a valid parameter only for the GATHERED state, for config states
             like, MERGED, REPLACED, and DELETED state it won't be applicable.
         type: int
+      order:
+        description:
+          - Sorts results by the given field. By default the results are sorted in the ascending order by name.
+            This parameter is relevant only for getting few objects.
+          - NOTE, this parameter is a valid parameter only for the GATHERED state, for config states
+            like, MERGED, REPLACED, and DELETED state it won't be applicable.
+        type: list
+        elements: dict
+        suboptions:
+          ASC:
+            description:
+              - Sorts results by the given field in ascending order.
+            type: str
+          DESC:
+            description:
+              - Sorts results by the given field in descending order.
+            type: str
       auto_publish_session:
         description:
           - Publish the current session if changes have been performed
