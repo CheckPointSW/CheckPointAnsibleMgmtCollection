@@ -21,6 +21,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
     map_params_to_obj,
     sync_show_params_with_add_params,
     remove_unwanted_key,
+    contains_show_identifier_param,
 )
 from ansible_collections.ansible.utils.plugins.module_utils.common.argspec_validate import (
     AnsibleArgSpecValidator,
@@ -72,16 +73,16 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         search_payload = utils.remove_empties(payload)
-        if search_payload:
-            search_result = self.search_for_existing_rules(
-                conn_request, self.api_call_object, search_payload, "gathered"
-            )
-        else:
+        if not contains_show_identifier_param(search_payload):
             search_result = self.search_for_existing_rules(
                 conn_request,
                 self.api_call_object_plural_version,
-                {"offset": 0},
+                search_payload,
                 "gathered",
+            )
+        else:
+            search_result = self.search_for_existing_rules(
+                conn_request, self.api_call_object, search_payload, "gathered"
             )
         search_result = sync_show_params_with_add_params(
             search_result["response"], self.key_transform

@@ -120,6 +120,18 @@ options:
         description: Apply changes ignoring errors. You won't be able to publish such
           a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
         type: bool
+      limit:
+        description:
+          - The maximal number of returned results.
+          - NOTE, this parameter is a valid parameter only for the GATHERED state, for config states
+            like, MERGED, REPLACED, and DELETED state it won't be applicable.
+        type: int
+      offset:
+        description:
+          - Number of the results to initially skip.
+          - NOTE, this parameter is a valid parameter only for the GATHERED state, for config states
+            like, MERGED, REPLACED, and DELETED state it won't be applicable.
+        type: int
       auto_publish_session:
         description:
           - Publish the current session if changes have been performed
