@@ -1,0 +1,6 @@
+---
+- name: Remove already configured CP MGMT access layer by Name
+  ibm.qradar.cp_mgmt_access_layers:
+    state: deleted
+    config:
+      name: "New Layer 1"

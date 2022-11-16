@@ -1,0 +1,22 @@
+---
+- name: Populate CP MGMT access layer for tests
+  tags: merged
+  ibm.qradar.cp_mgmt_access_layers: &id001
+    state: merged
+    config:
+      name: New Layer 1
+      add_default_rule: true
+      applications_and_url_filtering: true
+      content_awareness: true
+      detect_using_x_forward_for: false
+      firewall: true
+      implicit_cleanup_action: drop
+      mobile_access: true
+      shared: false
+      tags:
+      - test_layer        
+      color: aquamarine
+      comments: test description
+      details_level: full
+      ignore_warnings: false
+      ignore_errors: false
