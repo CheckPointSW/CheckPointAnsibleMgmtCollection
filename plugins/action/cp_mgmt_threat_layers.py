@@ -68,9 +68,7 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         search_payload = utils.remove_empties(payload)
-        search_payload = map_params_to_obj(
-            search_payload, self.key_transform
-        )
+        search_payload = map_params_to_obj(search_payload, self.key_transform)
         if not contains_show_identifier_param(search_payload):
             search_result = self.search_for_existing_rules(
                 conn_request,
@@ -78,19 +76,24 @@ class ActionModule(ActionBase):
                 search_payload,
                 "gathered",
             )
+            if search_result.get("code") == 200:
+                search_result = search_result["response"][
+                    self.api_call_object_plural_version
+                ]
+                return search_result
         else:
             search_result = self.search_for_existing_rules(
                 conn_request, self.api_call_object, search_payload, "gathered"
             )
-        search_result = sync_show_params_with_add_params(
-            search_result["response"], self.key_transform
-        )
-        if (
-            search_result.get("code")
-            and "object_not_found" in search_result.get("code")
-            and "not found" in search_result.get("message")
-        ):
-            search_result = {}
+            search_result = sync_show_params_with_add_params(
+                search_result["response"], self.key_transform
+            )
+
+        if search_result.get("code") and search_result["code"] != 200:
+            if "object_not_found" in search_result.get(
+                "code"
+            ) and "not found" in search_result.get("message"):
+                search_result = {}
         return search_result
 
     def delete_module_api_config(self, conn_request, module_config_params):
