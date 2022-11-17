@@ -1,0 +1,14 @@
+---
+- name: Populate CP MGMT Threat rules for tests
+  tags: merged
+  check_point.mgmt.cp_mgmt_threat_rules:
+    state: merged
+    config:
+      comments: This is the THREAT RULE
+      install_on: Policy Targets
+      layer: IPS
+      name: First threat rule
+      position: 1
+      protected_scope: All_Internet
+      track: None
+      auto_publish_session: true

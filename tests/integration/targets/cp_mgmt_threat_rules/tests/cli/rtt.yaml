@@ -1,0 +1,68 @@
+---
+- debug:
+    msg: START cp_mgmt_threat_rules round trip integration tests on connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Apply the provided configuration (base config)
+      register: base_config
+      check_point.mgmt.cp_mgmt_threat_rules: &id001
+        state: merged
+        config:
+          comments: This is the THREAT RULE
+          install_on: Policy Targets
+          layer: IPS
+          name: First threat rule
+          position: 1
+          protected_scope: All_Internet
+          track: None
+          auto_publish_session: true
+
+    - name: Gather CP Mgmt Threat Rules facts
+      register: gather_result
+      check_point.mgmt.cp_mgmt_threat_rules:
+        config:
+          layer: IPS
+          name: "First threat rule"
+        state: gathered
+
+    - name: Apply the configuration which need to be reverted
+      register: result
+      check_point.mgmt.cp_mgmt_threat_rules:
+        state: replaced
+        config:
+          comments: This is the REPLACED THREAT RULE
+          install_on: Policy Targets
+          layer: IPS
+          name: First threat rule
+          position: 1
+          protected_scope: All_Internet
+          track: None
+          track_settings:
+            packet_capture: false
+          auto_publish_session: true
+
+    # - assert:
+    #     that:
+    #       - result.changed == true
+    #       - "{{ merged['before'] | symmetric_difference(result['cp_mgmt_threat_rules']['before']) |\
+    #         \ length == 1 }}"
+    #       - "{{ replaced['after'] | symmetric_difference(result['cp_mgmt_threat_rules']['after']) |\
+    #         \ length == 3 }}"
+
+    - name: Revert back to base config using facts round trip
+      register: revert
+      check_point.mgmt.cp_mgmt_threat_rules:
+        config: "{{ gather_result['gathered'] }}"
+        state: replaced
+
+    - assert:
+        that:
+          - revert['changed'] == true
+
+  always:
+
+    - include_tasks: _remove_config.yaml

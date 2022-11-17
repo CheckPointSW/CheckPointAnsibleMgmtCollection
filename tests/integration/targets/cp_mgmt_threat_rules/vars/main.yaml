@@ -1,0 +1,136 @@
+---
+merged:
+  before: []
+
+  after:
+    - auto_discovered: false
+      average_eps: 0
+      coalesce_events: true
+      credibility: 5
+      description: Snort IDS remote logs from rsyslog
+      enabled: true
+      gateway: false
+      group_ids:
+      - 0
+      internal: false
+      language_id: 1
+      last_event_time: 0
+      log_source_extension_id: null
+      name: Snort logs
+      protocol_parameters:
+      - id: 1
+        name: incomingPayloadEncoding
+        value: UTF-8
+      - id: 0
+        name: identifier
+        value: 192.0.2.1
+      protocol_type_id: 0
+      requires_deploy: true
+      status:
+        last_updated: 0
+        messages: null
+        status: NA
+      store_event_payload: true
+      target_event_collector_id: 7
+      type_id: 2
+      wincollect_external_destination_ids: null
+      wincollect_internal_destination_id: null
+    - auto_discovered: false
+      average_eps: 0
+      coalesce_events: true
+      credibility: 5
+      description: Apache HTTP Server remote logs from rsyslog
+      enabled: true
+      gateway: false
+      group_ids:
+      - 0
+      internal: false
+      language_id: 1
+      last_event_time: 0
+      log_source_extension_id: null
+      name: Apache HTTP Server logs
+      protocol_parameters:
+      - id: 1
+        name: incomingPayloadEncoding
+        value: UTF-8
+      - id: 0
+        name: identifier
+        value: 198.51.100.1
+      protocol_type_id: 0
+      requires_deploy: true
+      status:
+        last_updated: 0
+        messages: null
+        status: NA
+      store_event_payload: true
+      target_event_collector_id: 7
+      type_id: 10
+      wincollect_external_destination_ids: null
+      wincollect_internal_destination_id: null
+
+replaced:
+  after:
+    - auto_discovered: false
+      average_eps: 0
+      coalesce_events: true
+      credibility: 5
+      description: REPLACED Snort IDS remote logs from rsyslog
+      enabled: true
+      gateway: false
+      group_ids:
+      - 0
+      internal: false
+      language_id: 1
+      last_event_time: 0
+      log_source_extension_id: null
+      name: Snort logs
+      protocol_parameters:
+      - id: 1
+        name: incomingPayloadEncoding
+        value: UTF-8
+      - id: 0
+        name: identifier
+        value: 198.51.100.1
+      protocol_type_id: 0
+      requires_deploy: true
+      status:
+        last_updated: 0
+        messages: null
+        status: NA
+      store_event_payload: true
+      target_event_collector_id: 7
+      type_id: 2
+      wincollect_external_destination_ids: null
+      wincollect_internal_destination_id: null
+    - auto_discovered: false
+      average_eps: 0
+      coalesce_events: true
+      credibility: 5
+      description: REPLACED Apache HTTP Server remote logs from rsyslog
+      enabled: true
+      gateway: false
+      group_ids:
+      - 0
+      internal: false
+      language_id: 1
+      last_event_time: 0
+      log_source_extension_id: null
+      name: Apache HTTP Server logs
+      protocol_parameters:
+      - id: 1
+        name: incomingPayloadEncoding
+        value: UTF-8
+      - id: 0
+        name: identifier
+        value: 192.0.2.1
+      protocol_type_id: 0
+      requires_deploy: true
+      status:
+        last_updated: 0
+        messages: null
+        status: NA
+      store_event_payload: true
+      target_event_collector_id: 7
+      type_id: 10
+      wincollect_external_destination_ids: null
+      wincollect_internal_destination_id: null
