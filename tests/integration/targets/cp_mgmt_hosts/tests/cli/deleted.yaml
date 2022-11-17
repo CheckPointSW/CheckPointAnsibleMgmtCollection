@@ -1,0 +1,36 @@
+---
+- debug:
+    msg: Start Deleted integration state for cp_mgmt_hosts ansible_connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+- include_tasks: _populate_config.yaml
+
+- block:
+
+    - name: Delete attributes of provided configured CP Mgmt Hosts
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: &id001
+        config:
+          name: New Host 1
+        state: deleted
+
+    - assert:
+        that:
+          - result.changed == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_hosts']['before']) |\
+            \ length == 4 }}"
+          - merged['before'] == result['cp_mgmt_hosts']['after']
+
+    - name: Delete attributes of all configured CP Mgmt Hosts (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: *id001
+
+    - name: Assert that the previous delete task was idempotent
+      assert:
+        that:
+          - result.changed == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml
