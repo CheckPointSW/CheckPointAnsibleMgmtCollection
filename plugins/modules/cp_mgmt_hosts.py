@@ -22,8 +22,7 @@ version_added: 4.1.0
 options:
   config:
     description: A dictionary of HOSTS options
-    type: list
-    elements: dict
+    type: dict
     suboptions:
       name:
         description: Object name. Must be unique in the domain.
@@ -354,151 +353,156 @@ EXAMPLES = """
   cp_mgmt_hosts:
     state: merged
     config:
-      color: green
+      color: cyan
       ip_address: 192.0.2.1
       name: New Host 1
-      state: present
+      auto_publish_session: true
+      tags:
+        - New Host
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# mgmt_hosts:
 #   after:
-#     applications_and_url_filtering: true
-#     color: aquamarine
-#     comments: test description
-#     content_awareness: true
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
-#     icon: ApplicationFirewall/rulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: false
+#     color: cyan
+#     comments: ''
+#     groups: []
+#     icon: Objects/host
+#     interfaces: []
+#     ipv4-address: 192.0.2.1
+#     name: New Host 1
+#     nat_settings: {}
 #     tags:
-#     - test_layer
-#     uid: eb74d7fe-81a6-4e6c-aedb-d2d6599f965e
+#     - New Host
 #   before: {}
 
 # Using REPLACED state
 # --------------------
 
-- name: Replace Access-layer config
+- name: Replace MGMT Host config
   cp_mgmt_hosts:
     state: replaced
     config:
-      name: New Layer 1
-      add_default_rule: true
-      applications_and_url_filtering: true
-      content_awareness: false
-      detect_using_x_forward_for: false
-      firewall: true
-      implicit_cleanup_action: drop
-      mobile_access: true
-      shared: true
+      name: New Host 1
       tags:
-      - test_layer_replaced       
-      color: cyan
-      comments: test REPLACE description
-      details_level: full
-      ignore_warnings: false
+        - New Replaced Host
+      color: aquamarine
+      ip_address: 198.51.110.0
+      comments: REPLACED description
+      ignore_warnings: true
       ignore_errors: false
+      auto_publish_session: true
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# mgmt_hosts:
 #   after:
-#     applications_and_url_filtering: true
-#     color: cyan
-#     comments: test REPLACE description
-#     content_awareness: false
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
-#     icon: ApplicationFirewall/sharedrulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: true
-#     tags:
-#     - test_layer_replaced
-#     uid: a4e2bbc1-ec94-4b85-9b00-07ad1279ac12
-#   before:
-#     applications_and_url_filtering: true
 #     color: aquamarine
-#     comments: test description
-#     content_awareness: true
-#     detect_using_x_forward_for: false
-#     firewall: true
-#     icon: ApplicationFirewall/rulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: false
+#     comments: REPLACED description
+#     groups: []
+#     icon: Objects/host
+#     interfaces: []
+#     ipv4-address: 198.51.110.0
+#     name: New Host 1
+#     nat_settings: {}
 #     tags:
-#     - test_layer
+#     - New Replaced Host
+#   before:
+#     color: cyan
+#     comments: ''
+#     groups: []
+#     icon: Objects/host
+#     interfaces: []
+#     ipv4-address: 192.0.2.1
+#     name: New Host 1
+#     nat_settings: {}
+#     tags:
+#     - New Host
 
 # Using GATHERED state
 # --------------------
 
-- name: Gather Access-layers config by Name
+# 1.
+- name: Gather MGMT Host config by Name
   cp_mgmt_hosts:
     state: gathered
     config:
-      name: New Layer 1
+      name: New Host 1
 
 # RUN output:
 # -----------
 
 # gathered:
-#   applications_and_url_filtering: true
-#   color: aquamarine
-#   comments: test description
-#   content_awareness: true
-#   detect_using_x_forward_for: false
+#   color: cyan
+#   comments: REPLACED description
 #   domain: SMC User
-#   firewall: true
-#   icon: ApplicationFirewall/rulebase
-#   implicit_cleanup_action: drop
-#   mobile_access: true
-#   name: New Layer 1
-#   shared: false
+#   groups: []
+#   icon: Objects/host
+#   interfaces: []
+#   ipv4-address: 192.0.2.1
+#   name: New Host 1
+#   nat_settings: {}
+#   read-only: false
 #   tags:
-#   - test_layer
-#   uid: eb74d7fe-81a6-4e6c-aedb-d2d6599f965e
+#   - New Host
+#   uid: 63b868bb-d300-47f4-b97a-c465a56fe9c7
 
-# Using DELETED state
-# -------------------
+# 2.
 
-- name: Delete Access-layer config by Name
+- name: Gather All hosts on the MGMT instance
   cp_mgmt_hosts:
-    state: deleted
     config:
-      name: New Layer 1
+      details_level: full
+    state: gathered
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# gathered:
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     ipv4-address: 172.17.178.237
+#     name: asa-172.17.178.237
+#     type: host
+#     uid: d1f94d7d-fbba-4852-8827-2bdb6aabc9a5
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     ipv4-address: 192.0.2.1
+#     name: New Host 1
+#     type: host
+#     uid: 63b868bb-d300-47f4-b97a-c465a56fe9c7
+
+# Using DELETED state
+# -------------------
+
+- name: Delete MGMT Host config by Name
+  cp_mgmt_hosts:
+    state: deleted
+    config:
+      name: New Host 1
+
+# RUN output:
+# -----------
+
+# mgmt_hosts:
 #   after: {}
 #   before:
-#     applications_and_url_filtering: true
 #     color: cyan
-#     comments: test REPLACE description
-#     content_awareness: false
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
-#     icon: ApplicationFirewall/sharedrulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: true
+#     comments: REPLACED description
+#     groups: []
+#     icon: Objects/host
+#     interfaces: []
+#     ipv4-address: 192.0.2.1
+#     name: New Host 1
+#     nat_settings: {}
 #     tags:
-#     - test_layer_replaced
-#     uid: a4e2bbc1-ec94-4b85-9b00-07ad1279ac12
+#     - New Host
 
 """
 

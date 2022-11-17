@@ -37,9 +37,9 @@ class ActionModule(ActionBase):
     def __init__(self, *args, **kwargs):
         super(ActionModule, self).__init__(*args, **kwargs)
         self._result = None
-        self.api_call_object = "api/default"
-        self.api_call_object_plural_version = "api/defaultbase"
-        self.module_return = "hosts"
+        self.api_call_object = "host"
+        self.api_call_object_plural_version = "hosts"
+        self.module_return = "mgmt_hosts"
         self.key_transform = {
             "ip_address": "ip-address",
             "interfaces": "interfaces",
@@ -83,6 +83,7 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         search_payload = utils.remove_empties(payload)
+        search_payload = map_params_to_obj(search_payload, self.key_transform)
         if not contains_show_identifier_param(search_payload):
             search_result = self.search_for_existing_rules(
                 conn_request,
@@ -90,13 +91,16 @@ class ActionModule(ActionBase):
                 search_payload,
                 "gathered",
             )
+            if search_result.get("code") == 200:
+                search_result = search_result["response"]["objects"]
+                return search_result
         else:
             search_result = self.search_for_existing_rules(
                 conn_request, self.api_call_object, search_payload, "gathered"
             )
-        search_result = sync_show_params_with_add_params(
-            search_result["response"], self.key_transform
-        )
+            search_result = sync_show_params_with_add_params(
+                search_result["response"], self.key_transform
+            )
         if (
             search_result.get("code")
             and "object_not_found" in search_result.get("code")
@@ -140,7 +144,7 @@ class ActionModule(ActionBase):
         # from HAVE params when compared to WANT param like 'ID' can be
         # part of HAVE param but may not be part of your WANT param
         remove_from_response = ["uid", "read-only", "domain"]
-        remove_from_set = ["add-default-rule"]
+        remove_from_set = []
         payload = utils.remove_empties(module_config_params)
         if payload.get("name"):
             search_payload = {"name": payload["name"]}

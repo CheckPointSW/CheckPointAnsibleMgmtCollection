@@ -4,7 +4,10 @@
   check_point.mgmt.cp_mgmt_hosts: &id001
     state: merged
     config:
-      color: green
+      color: cyan
       ip_address: 192.0.2.1
       name: New Host 1
+      tags:
+        - New Host
+      comments: Host description
       auto_publish_session: true

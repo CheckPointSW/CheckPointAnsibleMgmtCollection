@@ -12,9 +12,12 @@
       check_point.mgmt.cp_mgmt_hosts: &id001
         state: merged
         config:
-          color: green
+          color: cyan
           ip_address: 192.0.2.1
           name: New Host 1
+          tags:
+            - New Host
+          comments: Host description
           auto_publish_session: true
 
     - name: Gather CP Mgmt Hosts facts
@@ -29,10 +32,14 @@
       check_point.mgmt.cp_mgmt_hosts:
         state: replaced
         config:
-          color: cyan
-          ipv4_address: 192.0.2.1
           name: New Host 1
-          comments: Replaced Host
+          tags:
+            - New Replaced Host
+          color: aquamarine
+          ip_address: 198.51.110.0
+          comments: Host Replaced description
+          ignore_warnings: true
+          ignore_errors: false
           auto_publish_session: true
 
     - assert:
