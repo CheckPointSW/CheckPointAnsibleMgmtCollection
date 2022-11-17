@@ -1,0 +1,49 @@
+---
+- debug:
+    msg: START Merged cp_mgmt_threat_layers state for integration tests on connection={{
+      ansible_connection }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Merge and Create CP Mgmt Threat layers
+      tags: merged
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: &id001
+        state: merged
+        config:
+          name: New Layer 1
+          add_default_rule: true
+          tags:
+            - test_threat_layer
+          color: blue
+          comments: Initial description
+          ignore_warnings: false
+          ignore_errors: false
+          auto_publish_session: true
+
+    - name: Assert that task reports change and after dict is correctly generated
+      assert:
+        that:
+          - result['changed'] == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_threat_layers']['after']) |\
+            \ length == 4 }}"
+
+    - name: Assert that before dicts are correctly generated
+      assert:
+        that:
+          - merged['before'] == result['cp_mgmt_threat_layers']['before']
+
+    - name: Merge provided configuration with CP Mgmt Threat layers (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: *id001
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml

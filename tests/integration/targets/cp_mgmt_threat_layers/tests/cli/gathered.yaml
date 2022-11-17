@@ -1,0 +1,25 @@
+---
+- debug:
+    msg: START cp_mgmt_threat_layers gathered integration tests on connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+- include_tasks: _populate_config.yaml
+
+- block:
+
+    - name: Gather the provided configuration with the exisiting running configuration
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers:
+        config:
+          name: "New Layer 1"
+        state: gathered
+
+    - assert:
+        that:
+          - "{{ merged['after'] | symmetric_difference(result['gathered']) |\
+            \ length == 4 }}"
+          - result['changed'] == false
+  always:
+
+    - include_tasks: _remove_config.yaml

@@ -5,7 +5,7 @@
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 
 """
-The module file for cp_mgmt_add_access_layers
+The module file for cp_mgmt_threat_layers
 """
 
 from __future__ import absolute_import, division, print_function
@@ -13,49 +13,22 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = """
-module: cp_mgmt_access_layers
-short_description: Manages ACCESS LAYERS resource module
+module: cp_mgmt_threat_layers
+short_description: Manages THREAT LAYERS resource module
 description:
-  - This resource module allows for addition, deletion, or modification of CP Access Layers.
-  - This resource module also takes care of gathering Access layer config facts
-version_added: 3.3.0
-author: Ansible Security Automation Team (@justjais) <https://github.com/ansible-security>
+  - This resource module allows for addition, deletion, or modification of CP Threat Layers.
+  - This resource module also takes care of gathering Threat Layers config facts
+version_added: 4.1.0
 options:
   config:
-    description: A dictionary of ACCESS LAYERS options
+    description: A dictionary of THREAT LAYERS options
     type: dict
     suboptions:
       name:
         description: Object name. Must be unique in the domain.
         type: str
       add_default_rule:
-        description: Indicates whether to include a cleanup rule in the new layer.
-        type: bool
-      applications_and_url_filtering:
-        description: Whether to enable Applications & URL Filtering blade on the layer.
-        type: bool
-      content_awareness:
-        description: Whether to enable Content Awareness blade on the layer.
-        type: bool
-      detect_using_x_forward_for:
-        description: Whether to use X-Forward-For HTTP header, which is added by the  proxy
-          server to keep track of the original source IP.
-        type: bool
-      firewall:
-        description: Whether to enable Firewall blade on the layer.
-        type: bool
-      implicit_cleanup_action:
-        description: The default "catch-all" action for traffic that does not match
-          any explicit or implied rules in the layer.
-        type: str
-        choices:
-        - drop
-        - accept
-      mobile_access:
-        description: Whether to enable Mobile Access blade on the layer.
-        type: bool
-      shared:
-        description: Whether this layer is shared.
+        description: Indicates whether to include a default rule in the new layer.
         type: bool
       tags:
         description: Collection of tag identifiers.
@@ -170,6 +143,7 @@ options:
     - replaced
     - gathered
     - deleted
+author: Ansible Team
 """
 
 EXAMPLES = """
@@ -177,141 +151,98 @@ EXAMPLES = """
 # Using MERGED state
 # -------------------
 
-- name: Merge Access-layer config
-  cp_mgmt_access_layers:
+- name: To Add Merge Threat-Layers config
+  cp_mgmt_threat_layers:
     state: merged
     config:
       name: New Layer 1
       add_default_rule: true
-      applications_and_url_filtering: true
-      content_awareness: true
-      detect_using_x_forward_for: false
-      firewall: true
-      implicit_cleanup_action: drop
-      mobile_access: true
-      shared: false
       tags:
-      - test_layer        
-      color: aquamarine
+        - test_threat_layer
+      color: turquoise
       comments: test description
-      details_level: full
       ignore_warnings: false
       ignore_errors: false
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# mgmt_threat_layers:
 #   after:
-#     applications_and_url_filtering: true
-#     color: aquamarine
+#     color: turquoise
 #     comments: test description
-#     content_awareness: true
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
 #     icon: ApplicationFirewall/rulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
+#     ips-layer: false
 #     name: New Layer 1
-#     shared: false
 #     tags:
-#     - test_layer
-#     uid: eb74d7fe-81a6-4e6c-aedb-d2d6599f965e
+#     - test_threat_layer
 #   before: {}
 
 # Using REPLACED state
 # --------------------
 
-- name: Replace Access-layer config
-  cp_mgmt_access_layers:
+- name: Replace Threat-layer config
+  cp_mgmt_threat_layers:
     state: replaced
     config:
       name: New Layer 1
       add_default_rule: true
-      applications_and_url_filtering: true
-      content_awareness: false
-      detect_using_x_forward_for: false
-      firewall: true
-      implicit_cleanup_action: drop
-      mobile_access: true
-      shared: true
       tags:
-      - test_layer_replaced       
+        - test_threat_layer_replaced
       color: cyan
-      comments: test REPLACE description
-      details_level: full
+      comments: REPLACED description
       ignore_warnings: false
       ignore_errors: false
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# mgmt_threat_layers:
 #   after:
-#     applications_and_url_filtering: true
 #     color: cyan
-#     comments: test REPLACE description
-#     content_awareness: false
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
-#     icon: ApplicationFirewall/sharedrulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: true
-#     tags:
-#     - test_layer_replaced
-#     uid: a4e2bbc1-ec94-4b85-9b00-07ad1279ac12
-#   before:
-#     applications_and_url_filtering: true
-#     color: aquamarine
-#     comments: test description
-#     content_awareness: true
-#     detect_using_x_forward_for: false
-#     firewall: true
+#     comments: REPLACED description
 #     icon: ApplicationFirewall/rulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
+#     ips-layer: false
 #     name: New Layer 1
-#     shared: false
 #     tags:
-#     - test_layer
+#     - test_threat_layer_replaced
+#   before:
+#     color: turquoise
+#     comments: test description
+#     icon: ApplicationFirewall/rulebase
+#     ips-layer: false
+#     name: New Layer 1
+#     tags:
+#     - test_threat_layer
 
 # Using GATHERED state
 # --------------------
 
 # 1.
-- name: Gather Access-layers config by Name
-  cp_mgmt_access_layers:
-    state: gathered
+- name: To Gather threat-layer by Name
+  cp_mgmt_threat_layers:
     config:
       name: New Layer 1
+    state: gathered
 
 # RUN output:
 # -----------
 
 # gathered:
-#   applications_and_url_filtering: true
-#   color: aquamarine
+#   color: turquoise
 #   comments: test description
-#   content_awareness: true
-#   detect_using_x_forward_for: false
 #   domain: SMC User
-#   firewall: true
 #   icon: ApplicationFirewall/rulebase
-#   implicit_cleanup_action: drop
-#   mobile_access: true
+#   ips-layer: false
 #   name: New Layer 1
-#   shared: false
+#   read-only: false
 #   tags:
-#   - test_layer
-#   uid: eb74d7fe-81a6-4e6c-aedb-d2d6599f965e
+#   - test_threat_layer
+#   uid: 4dc060e2-0ed6-48c5-9b0f-3d2fbeb552ba
 
 # 2.
-- name: To Gather ALL access-layer and order by Name
-  cp_mgmt_access_layers:
+- name: To Gather ALL threat-layer and order by Name
+  cp_mgmt_threat_layers:
     config:
       order:
         - DESC: name
@@ -321,44 +252,52 @@ EXAMPLES = """
 # -----------
 
 # gathered:
-#   access-layers:
-#   - New Layer 1
-#   - Network
 #   from: 1
-#   to: 2
-#   total: 2
+#   threat-layers:
+#   - Standard Threat Prevention
+#   - New Layer 1
+#   - IPS
+#   to: 3
+#   total: 3
 
 # Using DELETED state
 # -------------------
 
-- name: Delete Access-layer config by Name
-  cp_mgmt_access_layers:
-    state: deleted
+- name: Delete Threat-layer config by Name and Layer
+  cp_mgmt_threat_layers:
     config:
-      name: New Layer 1
+      layer: IPS
+      name: First threat layer
+    state: deleted
 
 # RUN output:
 # -----------
 
-# mgmt_access_layers:
+# mgmt_threat_layers:
 #   after: {}
 #   before:
-#     applications_and_url_filtering: true
-#     color: cyan
-#     comments: test REPLACE description
-#     content_awareness: false
-#     detect_using_x_forward_for: false
-#     domain: SMC User
-#     firewall: true
-#     icon: ApplicationFirewall/sharedrulebase
-#     implicit_cleanup_action: drop
-#     mobile_access: true
-#     name: New Layer 1
-#     shared: true
-#     tags:
-#     - test_layer_replaced
-#     uid: a4e2bbc1-ec94-4b85-9b00-07ad1279ac12
-
+#     action: Optimized
+#     comments: This is the THREAT RULE
+#     destination:
+#     - Any
+#     destination_negate: false
+#     enabled: true
+#     install_on:
+#     - Policy Targets
+#     layer: 90678011-1bcb-4296-8154-fa58c23ecf3b
+#     name: First threat layer
+#     protected_scope:
+#     - All_Internet
+#     protected_scope_negate: false
+#     service:
+#     - Any
+#     service_negate: false
+#     source:
+#     - Any
+#     source_negate: false
+#     track: None
+#     track_settings:
+#       packet_capture: true
 """
 
 RETURN = """

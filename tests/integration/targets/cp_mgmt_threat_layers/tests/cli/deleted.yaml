@@ -1,0 +1,37 @@
+---
+- debug:
+    msg: Start Deleted integration state for cp_mgmt_threat_layers ansible_connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+- include_tasks: _populate_config.yaml
+
+- block:
+
+    - name: Delete attributes of provided configured CP Mgmt Threat layers
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: &id001
+        config:
+          name: New Layer 1
+          auto_publish_session: true
+        state: deleted
+
+    - assert:
+        that:
+          - result.changed == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_threat_layers']['before']) |\
+            \ length == 4 }}"
+          - merged['before'] == result['cp_mgmt_threat_layers']['after']
+
+    - name: Delete attributes of all configured CP Mgmt Threat layers (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: *id001
+
+    - name: Assert that the previous delete task was idempotent
+      assert:
+        that:
+          - result.changed == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml

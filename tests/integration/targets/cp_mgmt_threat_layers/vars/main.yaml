@@ -1,0 +1,21 @@
+---
+merged:
+  before: []
+  after:
+    color: blue
+    comments: Initial description
+    icon: ApplicationFirewall/rulebase
+    ips-layer: false
+    name: New Layer 1
+    tags:
+    - test_threat_layer
+
+replaced:
+  after:
+    color: cyan
+    comments: REPLACED description
+    icon: ApplicationFirewall/rulebase
+    ips-layer: false
+    name: New Layer 1
+    tags:
+    - test_threat_layer_replaced
