@@ -69,6 +69,9 @@ class ActionModule(ActionBase):
         search_result = []
         search_payload = utils.remove_empties(payload)
         if not contains_show_identifier_param(search_payload):
+            search_payload = map_params_to_obj(
+                search_payload, self.key_transform
+            )
             search_result = self.search_for_existing_rules(
                 conn_request,
                 self.api_call_object_plural_version,
