@@ -68,10 +68,10 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         search_payload = utils.remove_empties(payload)
+        search_payload = map_params_to_obj(
+            search_payload, self.key_transform
+        )
         if not contains_show_identifier_param(search_payload):
-            search_payload = map_params_to_obj(
-                search_payload, self.key_transform
-            )
             search_result = self.search_for_existing_rules(
                 conn_request,
                 self.api_call_object_plural_version,
