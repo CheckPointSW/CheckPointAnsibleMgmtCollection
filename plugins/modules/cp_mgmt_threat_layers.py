@@ -122,6 +122,13 @@ options:
             description:
               - Sorts results by the given field in descending order.
             type: str
+      round_trip:
+        description:
+          - If set to True, the round trip will filter out the response param in the gathered result,
+            and that will enable a user to fire the module config using the structured gathered data.
+          - NOTE, this parameter makes sense only with the GATHERED state, as for config states like,
+            MERGED, REPLACED, and DELETED state it won't be applicable as it's not a module config
+            parameter.
       auto_publish_session:
         description:
           - Publish the current session if changes have been performed

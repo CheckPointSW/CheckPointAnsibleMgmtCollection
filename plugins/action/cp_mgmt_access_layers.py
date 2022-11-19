@@ -19,6 +19,7 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
 from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
     CheckPointRequest,
     map_params_to_obj,
+    map_obj_to_params,
     sync_show_params_with_add_params,
     remove_unwanted_key,
     contains_show_identifier_param,
@@ -72,7 +73,13 @@ class ActionModule(ActionBase):
 
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
+        round_trip = False
         search_payload = utils.remove_empties(payload)
+        if search_payload.get("round_trip"):
+            round_trip = True
+        if search_payload.get("round_trip") is not None:
+            del search_payload["round_trip"]
+
         search_payload = map_params_to_obj(search_payload, self.key_transform)
         if not contains_show_identifier_param(search_payload):
             search_result = self.search_for_existing_rules(
@@ -90,11 +97,25 @@ class ActionModule(ActionBase):
             search_result = self.search_for_existing_rules(
                 conn_request, self.api_call_object, search_payload, "gathered"
             )
-            search_result = sync_show_params_with_add_params(
-                search_result["response"], self.key_transform
+            if round_trip:
+                search_result = sync_show_params_with_add_params(
+                    search_result["response"], self.key_transform
+                )
+            elif search_result.get("code") and search_result["code"] == 200:
+                search_result = search_result["response"]
+            search_result = map_obj_to_params(
+                search_result,
+                self.key_transform,
+                self.module_return,
             )
         if search_result.get("code") and search_result["code"] != 200:
-            if "object_not_found" in search_result.get(
+            if (
+                search_result.get("response")
+                and "object_not_found" in search_result["response"]["code"]
+                and "not found" in search_result["response"]["message"]
+            ):
+                search_result = {}
+            elif "object_not_found" in search_result.get(
                 "code"
             ) and "not found" in search_result.get("message"):
                 search_result = {}
@@ -104,11 +125,21 @@ class ActionModule(ActionBase):
         config = {}
         before = {}
         after = {}
-        changed = False
         result = {}
+        changed = False
+        round_trip = False
         payload = utils.remove_empties(module_config_params)
+        if payload.get("round_trip"):
+            round_trip = True
+            del payload["round_trip"]
         remove_from_response = ["uid", "read-only", "domain"]
-        search_result = self.search_for_resource_name(conn_request, payload)
+        if round_trip:
+            search_payload = {"name": payload["name"], "round_trip": True}
+        else:
+            search_payload = {"name": payload["name"]}
+        search_result = self.search_for_resource_name(
+            conn_request, search_payload
+        )
         if search_result:
             search_result = remove_unwanted_key(
                 search_result, remove_from_response
@@ -129,16 +160,23 @@ class ActionModule(ActionBase):
         config = {}
         before = {}
         after = {}
-        changed = False
         result = {}
+        changed = False
+        round_trip = False
         # Add to the THIS list for the value which needs to be excluded
         # from HAVE params when compared to WANT param like 'ID' can be
         # part of HAVE param but may not be part of your WANT param
         remove_from_response = ["uid", "read-only", "domain"]
         remove_from_set = ["add-default-rule"]
         payload = utils.remove_empties(module_config_params)
+        if payload.get("round_trip"):
+            round_trip = True
+            del payload["round_trip"]
         if payload.get("name"):
-            search_payload = {"name": payload["name"]}
+            if round_trip:
+                search_payload = {"name": payload["name"], "round_trip": True}
+            else:
+                search_payload = {"name": payload["name"]}
             search_result = self.search_for_resource_name(
                 conn_request, search_payload
             )
@@ -159,9 +197,17 @@ class ActionModule(ActionBase):
             delete_params=delete_params,
         )
         if result.get("changed"):
-            search_result = sync_show_params_with_add_params(
-                result["response"], self.key_transform
-            )
+            if round_trip:
+                search_result = sync_show_params_with_add_params(
+                    result["response"], self.key_transform
+                )
+            else:
+                search_result = map_obj_to_params(
+                    result["response"],
+                    self.key_transform,
+                    self.module_return,
+                )
+                search_result = result["response"]
             search_result = remove_unwanted_key(
                 search_result, remove_from_response
             )
