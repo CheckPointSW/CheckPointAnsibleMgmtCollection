@@ -322,11 +322,11 @@ options:
             type: str
       round_trip:
         description:
-          - If set to True, the round trip will filter out the response param in the gathered result,
-            and that will enable a user to fire the module config using the structured gathered data.
-          - NOTE, this parameter makes sense only with the GATHERED state, as for config states like,
-            MERGED, REPLACED, and DELETED state it won't be applicable as it's not a module config
-            parameter.
+          - If set to True, the round trip will filter out the module parameters from the response param,
+            which will enable the user to fire the config request using the structured gathered data.
+          - NOTE, this parameter makes relevance only with the GATHERED state, as for config states like,
+            MERGED, REPLACED, and DELETED state it won't make any config updates,
+            as it's not a module config parameter.
         type: bool
       auto_publish_session:
         description:
@@ -367,6 +367,7 @@ EXAMPLES = """
       auto_publish_session: true
       tags:
         - New Host
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -401,6 +402,7 @@ EXAMPLES = """
       ignore_warnings: true
       ignore_errors: false
       auto_publish_session: true
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -432,7 +434,8 @@ EXAMPLES = """
 # Using GATHERED state
 # --------------------
 
-# 1.
+# 1. With Round Trip set to True
+
 - name: Gather MGMT Host config by Name
   cp_mgmt_hosts:
     state: gathered
@@ -457,7 +460,54 @@ EXAMPLES = """
 #   - New Host
 #   uid: 63b868bb-d300-47f4-b97a-c465a56fe9c7
 
-# 2.
+# 2. With Round Trip set to False which is the default behaviour
+
+- name: Gather MGMT Host config by Name
+  cp_mgmt_hosts:
+    state: gathered
+    config:
+      name: New Host 1
+
+# RUN output:
+# -----------
+
+# gathered:
+#   color: cyan
+#   comments: ''
+#   domain:
+#     domain-type: domain
+#     name: SMC User
+#     uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#   groups: []
+#   icon: Objects/host
+#   interfaces: []
+#   ipv4-address: 192.0.2.1
+#   meta-info:
+#     creation-time:
+#       iso-8601: 2022-11-21T08:31+0000
+#       posix: 1669019480328
+#     creator: admin
+#     last-modifier: admin
+#     last-modify-time:
+#       iso-8601: 2022-11-21T08:31+0000
+#       posix: 1669019480328
+#     lock: unlocked
+#     validation-state: ok
+#   name: New Host 1
+#   nat_settings: {}
+#   read-only: false
+#   tags:
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     name: New Host
+#     type: tag
+#     uid: 94d53896-3cee-4e1f-a83b-3abac80bf512
+#   type: host
+#   uid: 8f23a44b-d9d2-4242-8a9e-2a4cbb6723ff
+
+# 3. Gather ALL threat-layer config with DESC order filter
 
 - name: Gather All hosts on the MGMT instance
   cp_mgmt_hosts:
@@ -473,18 +523,10 @@ EXAMPLES = """
 #       domain-type: domain
 #       name: SMC User
 #       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
-#     ipv4-address: 172.17.178.237
-#     name: asa-172.17.178.237
-#     type: host
-#     uid: d1f94d7d-fbba-4852-8827-2bdb6aabc9a5
-#   - domain:
-#       domain-type: domain
-#       name: SMC User
-#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
 #     ipv4-address: 192.0.2.1
 #     name: New Host 1
 #     type: host
-#     uid: 63b868bb-d300-47f4-b97a-c465a56fe9c7
+#     uid: 8f23a44b-d9d2-4242-8a9e-2a4cbb6723ff
 
 # Using DELETED state
 # -------------------
@@ -494,6 +536,7 @@ EXAMPLES = """
     state: deleted
     config:
       name: New Host 1
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -511,7 +554,6 @@ EXAMPLES = """
 #     nat_settings: {}
 #     tags:
 #     - New Host
-
 """
 
 RETURN = """
