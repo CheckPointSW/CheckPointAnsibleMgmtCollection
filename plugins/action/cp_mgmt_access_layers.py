@@ -141,9 +141,10 @@ class ActionModule(ActionBase):
             conn_request, search_payload
         )
         if search_result:
-            search_result = remove_unwanted_key(
-                search_result, remove_from_response
-            )
+            if round_trip:
+                search_result = remove_unwanted_key(
+                    search_result, remove_from_response
+                )
             before = search_result
         result = conn_request.post(
             self.api_call_object, self._task.args["state"], data=payload
@@ -181,9 +182,10 @@ class ActionModule(ActionBase):
                 conn_request, search_payload
             )
             if search_result:
-                search_result = remove_unwanted_key(
-                    search_result, remove_from_response
-                )
+                if round_trip:
+                    search_result = remove_unwanted_key(
+                        search_result, remove_from_response
+                    )
                 before = search_result
         payload = map_params_to_obj(payload, self.key_transform)
         delete_params = {
@@ -208,9 +210,10 @@ class ActionModule(ActionBase):
                     self.module_return,
                 )
                 search_result = result["response"]
-            search_result = remove_unwanted_key(
-                search_result, remove_from_response
-            )
+            if round_trip:
+                search_result = remove_unwanted_key(
+                    search_result, remove_from_response
+                )
             after = search_result
             changed = True
         config.update({"before": before, "after": after})

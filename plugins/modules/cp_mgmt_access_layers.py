@@ -151,11 +151,11 @@ options:
             type: str
       round_trip:
         description:
-          - If set to True, the round trip will filter out the response param in the gathered result,
-            and that will enable a user to fire the module config using the structured gathered data.
-          - NOTE, this parameter makes sense only with the GATHERED state, as for config states like,
-            MERGED, REPLACED, and DELETED state it won't be applicable as it's not a module config
-            parameter.
+          - If set to True, the round trip will filter out the module parameters from the response param,
+            which will enable the user to fire the config request using the structured gathered data.
+          - NOTE, this parameter makes relevance only with the GATHERED state, as for config states like,
+            MERGED, REPLACED, and DELETED state it won't make any config updates,
+            as it's not a module config parameter.
         type: bool
       auto_publish_session:
         description:
@@ -205,6 +205,7 @@ EXAMPLES = """
       details_level: full
       ignore_warnings: false
       ignore_errors: false
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -251,6 +252,7 @@ EXAMPLES = """
       details_level: full
       ignore_warnings: false
       ignore_errors: false
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -290,12 +292,14 @@ EXAMPLES = """
 # Using GATHERED state
 # --------------------
 
-# 1.
+# 1. With Round Trip set to True
+
 - name: Gather Access-layers config by Name
   cp_mgmt_access_layers:
     state: gathered
     config:
       name: New Layer 1
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -317,7 +321,58 @@ EXAMPLES = """
 #   - test_layer
 #   uid: eb74d7fe-81a6-4e6c-aedb-d2d6599f965e
 
-# 2.
+# 2. With Round Trip set to False which is the default behaviour
+
+- name: Gather Access-layers config by Name
+  cp_mgmt_access_layers:
+    state: gathered
+    config:
+      name: New Layer 1
+
+# RUN output:
+# -----------
+
+# gathered:
+#   applications_and_url_filtering: true
+#   color: turquoise
+#   comments: test description
+#   content_awareness: true
+#   detect_using_x_forward_for: false
+#   domain:
+#     domain-type: domain
+#     name: SMC User
+#     uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#   firewall: true
+#   icon: ApplicationFirewall/rulebase
+#   implicit_cleanup_action: drop
+#   meta-info:
+#     creation-time:
+#       iso-8601: 2022-11-21T07:34+0000
+#       posix: 1669016073937
+#     creator: admin
+#     last-modifier: admin
+#     last-modify-time:
+#       iso-8601: 2022-11-21T07:34+0000
+#       posix: 1669016074765
+#     lock: unlocked
+#     validation-state: ok
+#   mobile_access: true
+#   name: New Layer 1
+#   read-only: false
+#   shared: false
+#   tags:
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     name: test_layer
+#     type: tag
+#     uid: 22cc8b0d-984f-47de-b1f6-276b3377eb0c
+#   type: access-layer
+#   uid: a54e47d3-22fc-4aff-90d9-f644aa4a1522
+
+# 3. Gather ALL threat-layer config with DESC order filter
+
 - name: To Gather ALL access-layer and order by Name
   cp_mgmt_access_layers:
     config:
@@ -329,12 +384,20 @@ EXAMPLES = """
 # -----------
 
 # gathered:
-#   access-layers:
-#   - New Layer 1
-#   - Network
-#   from: 1
-#   to: 2
-#   total: 2
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     name: New Layer 1
+#     type: access-layer
+#     uid: a54e47d3-22fc-4aff-90d9-f644aa4a1522
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     name: Network
+#     type: access-layer
+#     uid: 63b7fe60-76d2-4287-bca5-21af87337b0a
 
 # Using DELETED state
 # -------------------
@@ -366,7 +429,6 @@ EXAMPLES = """
 #     tags:
 #     - test_layer_replaced
 #     uid: a4e2bbc1-ec94-4b85-9b00-07ad1279ac12
-
 """
 
 RETURN = """

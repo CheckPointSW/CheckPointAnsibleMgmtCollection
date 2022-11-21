@@ -124,11 +124,11 @@ options:
             type: str
       round_trip:
         description:
-          - If set to True, the round trip will filter out the response param in the gathered result,
-            and that will enable a user to fire the module config using the structured gathered data.
-          - NOTE, this parameter makes sense only with the GATHERED state, as for config states like,
-            MERGED, REPLACED, and DELETED state it won't be applicable as it's not a module config
-            parameter.
+          - If set to True, the round trip will filter out the module parameters from the response param,
+            which will enable the user to fire the config request using the structured gathered data.
+          - NOTE, this parameter makes relevance only with the GATHERED state, as for config states like,
+            MERGED, REPLACED, and DELETED state it won't make any config updates,
+            as it's not a module config parameter.
       auto_publish_session:
         description:
           - Publish the current session if changes have been performed
@@ -170,6 +170,7 @@ EXAMPLES = """
       comments: test description
       ignore_warnings: false
       ignore_errors: false
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -200,6 +201,7 @@ EXAMPLES = """
       comments: REPLACED description
       ignore_warnings: false
       ignore_errors: false
+      round_trip: true
 
 # RUN output:
 # -----------
@@ -225,11 +227,13 @@ EXAMPLES = """
 # Using GATHERED state
 # --------------------
 
-# 1.
+# 1. With Round Trip set to True
+
 - name: To Gather threat-layer by Name
   cp_mgmt_threat_layers:
     config:
       name: New Layer 1
+      round_trip: true
     state: gathered
 
 # RUN output:
@@ -247,7 +251,52 @@ EXAMPLES = """
 #   - test_threat_layer
 #   uid: 4dc060e2-0ed6-48c5-9b0f-3d2fbeb552ba
 
-# 2.
+# 2. With Round Trip set to False which is the default behaviour
+
+- name: To Gather threat-layer by Name
+  cp_mgmt_threat_layers:
+    config:
+      name: New Layer 1
+    state: gathered
+
+# RUN output:
+# -----------
+
+# gathered:
+#   color: turquoise
+#   comments: test description
+#   domain:
+#     domain-type: domain
+#     name: SMC User
+#     uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#   icon: ApplicationFirewall/rulebase
+#   ips-layer: false
+#   meta-info:
+#     creation-time:
+#       iso-8601: 2022-11-21T07:30+0000
+#       posix: 1669015820472
+#     creator: admin
+#     last-modifier: admin
+#     last-modify-time:
+#       iso-8601: 2022-11-21T07:30+0000
+#       posix: 1669015821024
+#     lock: unlocked
+#     validation-state: ok
+#   name: New Layer 1
+#   read-only: false
+#   tags:
+#   - domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     name: test_threat_layer
+#     type: tag
+#     uid: 59f23149-ed5e-439f-9012-0cdf222a1c97
+#   type: threat-layer
+#   uid: ca196a80-fdc4-4e7b-8b25-e3eed125a25f
+
+# 3. Gather ALL threat-layer config with DESC order filter
+
 - name: To Gather ALL threat-layer and order by Name
   cp_mgmt_threat_layers:
     config:
@@ -259,13 +308,54 @@ EXAMPLES = """
 # -----------
 
 # gathered:
-#   from: 1
-#   threat-layers:
-#   - Standard Threat Prevention
-#   - New Layer 1
-#   - IPS
-#   to: 3
-#   total: 3
+#   - color: black
+#     comments: ''
+#     domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     icon: ApplicationFirewall/sharedrulebase
+#     ips-layer: true
+#     meta-info:
+#       creation-time:
+#         iso-8601: 2020-01-20T09:43+0000
+#         posix: 1579513387322
+#       creator: System
+#       last-modifier: System
+#       last-modify-time:
+#         iso-8601: 2020-01-20T09:43+0000
+#         posix: 1579513387377
+#       lock: unlocked
+#       validation-state: ok
+#     name: IPS
+#     read-only: false
+#     tags: []
+#     type: threat-layer
+#     uid: 90678011-1bcb-4296-8154-fa58c23ecf3b
+#   - color: black
+#     comments: ''
+#     domain:
+#       domain-type: domain
+#       name: SMC User
+#       uid: 41e821a0-3720-11e3-aa6e-0800200c9fde
+#     icon: ApplicationFirewall/rulebase
+#     ips-layer: false
+#     meta-info:
+#       creation-time:
+#         iso-8601: 2020-01-20T09:43+0000
+#         posix: 1579513386848
+#       creator: System
+#       last-modifier: System
+#       last-modify-time:
+#         iso-8601: 2020-01-20T09:43+0000
+#         posix: 1579513387396
+#       lock: unlocked
+#       validation-state: ok
+#     name: Standard Threat Prevention
+#     read-only: false
+#     tags: []
+#     type: threat-layer
+#     uid: 0dbe7c44-6d3f-4f28-8f2b-0e6790e57f8a
 
 # Using DELETED state
 # -------------------
@@ -275,6 +365,7 @@ EXAMPLES = """
     config:
       layer: IPS
       name: First threat layer
+      round_trip: true
     state: deleted
 
 # RUN output:
