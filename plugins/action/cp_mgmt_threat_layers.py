@@ -219,6 +219,10 @@ class ActionModule(ActionBase):
                     search_result, remove_from_response
                 )
             after = search_result
+            if before:
+                before.update(
+                    {"checkpoint_session_uid": after["checkpoint_session_uid"]}
+                )
             changed = True
         config.update({"before": before, "after": after})
 
