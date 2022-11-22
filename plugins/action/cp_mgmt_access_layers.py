@@ -150,6 +150,14 @@ class ActionModule(ActionBase):
             self.api_call_object, self._task.args["state"], data=payload
         )
         if before:
+            if result["response"].get("checkpoint_session_uid"):
+                before.update(
+                    {
+                        "checkpoint_session_uid": result["response"][
+                            "checkpoint_session_uid"
+                        ]
+                    }
+                )
             config.update({"before": before, "after": after})
         else:
             config.update({"before": before})
@@ -209,7 +217,6 @@ class ActionModule(ActionBase):
                     self.key_transform,
                     self.module_return,
                 )
-                search_result = result["response"]
             if round_trip:
                 search_result = remove_unwanted_key(
                     search_result, remove_from_response

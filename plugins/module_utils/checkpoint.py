@@ -1650,6 +1650,9 @@ class CheckPointRequest(object):
         else:
             # else equals_code is 404 and no need to delete because object doesn't exist
             result = {"changed": False}
+        if result.get("response"):
+            session_uid = connection.get_session_uid()
+            result["response"].update({"checkpoint_session_uid": session_uid})
         return result
 
     # handle api call facts
@@ -1722,6 +1725,9 @@ class CheckPointRequest(object):
                     payload,
                     auto_publish_session,
                 )
+        if result.get("response"):
+            session_uid = connection.get_session_uid()
+            result["response"].update({"checkpoint_session_uid": session_uid})
         return result
 
     # if user insert a specific version, we add it to the url
