@@ -128,6 +128,7 @@ class ActionModule(ActionBase):
         result = {}
         changed = False
         round_trip = False
+        ckp_session_uid = None
         payload = utils.remove_empties(module_config_params)
         if payload.get("round_trip"):
             round_trip = True
@@ -150,20 +151,13 @@ class ActionModule(ActionBase):
             self.api_call_object, self._task.args["state"], data=payload
         )
         if before:
-            if result["response"].get("checkpoint_session_uid"):
-                before.update(
-                    {
-                        "checkpoint_session_uid": result["response"][
-                            "checkpoint_session_uid"
-                        ]
-                    }
-                )
             config.update({"before": before, "after": after})
         else:
             config.update({"before": before})
         if result.get("changed"):
             changed = True
-        return config, changed
+            ckp_session_uid = result["checkpoint_session_uid"]
+        return config, changed, ckp_session_uid
 
     def configure_module_api(self, conn_request, module_config_params):
         config = {}
@@ -172,6 +166,7 @@ class ActionModule(ActionBase):
         result = {}
         changed = False
         round_trip = False
+        ckp_session_uid = None
         # Add to the THIS list for the value which needs to be excluded
         # from HAVE params when compared to WANT param like 'ID' can be
         # part of HAVE param but may not be part of your WANT param
@@ -222,19 +217,17 @@ class ActionModule(ActionBase):
                     search_result, remove_from_response
                 )
             after = search_result
-            if before:
-                before.update(
-                    {"checkpoint_session_uid": after["checkpoint_session_uid"]}
-                )
+            ckp_session_uid = result["checkpoint_session_uid"]
             changed = True
         config.update({"before": before, "after": after})
 
-        return config, changed
+        return config, changed, ckp_session_uid
 
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
         self._result = super(ActionModule, self).run(tmp, task_vars)
         self._check_argspec()
+        self._result["checkpoint_session_uid"] = None
         if self._result.get("failed"):
             return self._result
         conn = Connection(self._connection.socket_path)
@@ -256,6 +249,7 @@ class ActionModule(ActionBase):
                 (
                     self._result[self.module_return],
                     self._result["changed"],
+                    self._result["checkpoint_session_uid"],
                 ) = self.configure_module_api(
                     conn_request, self._task.args["config"]
                 )
@@ -264,8 +258,11 @@ class ActionModule(ActionBase):
                 (
                     self._result[self.module_return],
                     self._result["changed"],
+                    self._result["checkpoint_session_uid"],
                 ) = self.delete_module_api_config(
                     conn_request, self._task.args["config"]
                 )
+        if self._result.get("checkpoint_session_uid") is None:
+            del self._result["checkpoint_session_uid"]
 
         return self._result
