@@ -3,7 +3,7 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 """
-The module file for cp_mgmt_add_access_layers
+The module file for cp_mgmt_threat_layers
 """
 
 from __future__ import absolute_import, division, print_function
@@ -27,7 +27,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 from ansible_collections.ansible.utils.plugins.module_utils.common.argspec_validate import (
     AnsibleArgSpecValidator,
 )
-from ansible_collections.check_point.mgmt.plugins.modules.cp_mgmt_access_layers import (
+from ansible_collections.check_point.mgmt.plugins.modules.cp_mgmt_threat_layers import (
     DOCUMENTATION,
 )
 
@@ -38,16 +38,11 @@ class ActionModule(ActionBase):
     def __init__(self, *args, **kwargs):
         super(ActionModule, self).__init__(*args, **kwargs)
         self._result = None
-        self.api_call_object = "access-layer"
-        self.api_call_object_plural_version = "access-layers"
-        self.module_return = "mgmt_access_layers"
+        self.api_call_object = "threat-layer"
+        self.api_call_object_plural_version = "threat-layers"
+        self.module_return = "mgmt_threat_layers"
         self.key_transform = {
             "add_default_rule": "add-default-rule",
-            "applications_and_url_filtering": "applications-and-url-filtering",
-            "content_awareness": "content-awareness",
-            "detect_using_x_forward_for": "detect-using-x-forward-for",
-            "implicit_cleanup_action": "implicit-cleanup-action",
-            "mobile_access": "mobile-access",
             "details_level": "details-level",
             "ignore_warnings": "ignore-warnings",
             "ignore_errors": "ignore-errors",
@@ -74,12 +69,12 @@ class ActionModule(ActionBase):
     def search_for_resource_name(self, conn_request, payload):
         search_result = []
         round_trip = False
+
         search_payload = utils.remove_empties(payload)
         if search_payload.get("round_trip"):
             round_trip = True
         if search_payload.get("round_trip") is not None:
             del search_payload["round_trip"]
-
         search_payload = map_params_to_obj(search_payload, self.key_transform)
         if not contains_show_identifier_param(search_payload):
             search_result = self.search_for_existing_rules(
@@ -157,6 +152,7 @@ class ActionModule(ActionBase):
         if result.get("changed"):
             changed = True
             ckp_session_uid = result["checkpoint_session_uid"]
+
         return config, changed, ckp_session_uid
 
     def configure_module_api(self, conn_request, module_config_params):

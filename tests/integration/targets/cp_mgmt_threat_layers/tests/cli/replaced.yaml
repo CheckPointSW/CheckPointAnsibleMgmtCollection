@@ -1,0 +1,46 @@
+---
+- debug:
+    msg: START Replaced cp_mgmt_threat_layers state for integration tests on connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+- include_tasks: _populate_config.yaml
+
+- block:
+
+    - name: Replace existing CP Mgmt Threat layers
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: &id001
+        state: replaced
+        config:
+          name: New Layer 1
+          add_default_rule: true
+          tags:
+            - test_threat_layer_replaced
+          color: cyan
+          comments: REPLACED description
+          ignore_warnings: true
+          ignore_errors: false
+          auto_publish_session: true
+
+    - assert:
+        that:
+          - result.changed == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_threat_layers']['before']) |\
+            \ length == 4 }}"
+          - "{{ replaced['after'] | symmetric_difference(result['cp_mgmt_threat_layers']['after']) |\
+            \ length == 4 }}"
+
+    - name: Replaces device configuration of listed CP Mgmt Threat layers with provided configuration
+        (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_threat_layers: *id001
+
+    - name: Assert that task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml

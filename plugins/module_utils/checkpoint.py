@@ -1526,7 +1526,9 @@ class CheckPointRequest(object):
             return response
 
     # if failed occurred, in some cases we want to discard changes before exiting. We also notify the user about the `discard`
-    def discard_and_fail(self, code, response, connection, version):
+    def discard_and_fail(
+        self, code, response, connection, version, session_uid
+    ):
         discard_code, discard_response = send_request(
             connection, version, "discard"
         )
@@ -1536,7 +1538,7 @@ class CheckPointRequest(object):
                     parse_fail_message(code, response)
                     + " Failed to discard session {0}"
                     " with error {1} with message {2}".format(
-                        connection.get_session_uid(),
+                        session_uid,
                         discard_code,
                         discard_response,
                     )
@@ -1552,7 +1554,9 @@ class CheckPointRequest(object):
                 )
 
         _fail_json(
-            parse_fail_message(code, response)
+            "Checkpoint session with ID: {0}".format(session_uid)
+            + ", "
+            + parse_fail_message(code, response)
             + " Unpublished changes were discarded"
         )
 
@@ -1578,16 +1582,23 @@ class CheckPointRequest(object):
         api_url,
         payload,
         to_discard_on_failure,
+        session_uid=None,
         to_publish=False,
     ):
         code, response = send_request(connection, version, api_url, payload)
         if code != 200:
             if to_discard_on_failure:
-                self.discard_and_fail(code, response, connection, version)
+                self.discard_and_fail(
+                    code, response, connection, version, session_uid
+                )
             elif "object_not_found" not in response.get(
                 "code"
             ) and "not found" not in response.get("message"):
-                raise _fail_json(parse_fail_message(code, response))
+                raise _fail_json(
+                    "Checkpoint session with ID: {0}".format(session_uid)
+                    + ", "
+                    + parse_fail_message(code, response)
+                )
         else:
             if "wait_for_task" in payload and payload["wait_for_task"]:
                 if "task-id" in response:
@@ -1614,6 +1625,7 @@ class CheckPointRequest(object):
         version,
         api_url,
         payload,
+        session_uid,
         auto_publish_session=False,
     ):
         code, response = self.handle_call(
@@ -1622,6 +1634,7 @@ class CheckPointRequest(object):
             api_url,
             payload,
             True,
+            session_uid,
             auto_publish_session,
         )
         result = {"code": code, "response": response, "changed": True}
@@ -1634,6 +1647,7 @@ class CheckPointRequest(object):
         equals_code, equals_response = send_request(
             connection, version, "equals", payload_for_equals
         )
+        session_uid = connection.get_session_uid()
         if equals_code == 200:
             if payload.get("auto_publish_session"):
                 auto_publish = payload["auto_publish_session"]
@@ -1644,12 +1658,15 @@ class CheckPointRequest(object):
                 "delete-" + api_call_object,
                 payload,
                 True,
+                session_uid,
                 auto_publish,
             )
             result = {"code": code, "response": response, "changed": True}
         else:
             # else equals_code is 404 and no need to delete because object doesn't exist
             result = {"changed": False}
+        if result.get("response"):
+            result["checkpoint_session_uid"] = session_uid
         return result
 
     # handle api call facts
@@ -1679,14 +1696,16 @@ class CheckPointRequest(object):
         if payload.get("auto_publish_session"):
             auto_publish_session = payload["auto_publish_session"]
             del payload["auto_publish_session"]
+        session_uid = connection.get_session_uid()
         if state == "merged":
-            if equals_response and equals_response.get("equals") == False:
+            if equals_response and equals_response.get("equals") is False:
                 payload = remove_unwanted_key(payload, remove_keys)
                 result = self.handle_add_and_set_result(
                     connection,
                     version,
                     "set-" + api_call_object,
                     payload,
+                    session_uid,
                     auto_publish_session,
                 )
             elif equals_response.get("code") or equals_response.get("message"):
@@ -1695,16 +1714,18 @@ class CheckPointRequest(object):
                     version,
                     "add-" + api_call_object,
                     payload,
+                    session_uid,
                     auto_publish_session,
                 )
         elif state == "replaced":
-            if equals_response and equals_response.get("equals") == False:
+            if equals_response and equals_response.get("equals") is False:
                 code, response = self.handle_call(
                     connection,
                     version,
                     "delete-" + api_call_object,
                     delete_params,
                     True,
+                    session_uid,
                     auto_publish_session,
                 )
                 result = self.handle_add_and_set_result(
@@ -1712,6 +1733,7 @@ class CheckPointRequest(object):
                     version,
                     "add-" + api_call_object,
                     payload,
+                    session_uid,
                     auto_publish_session,
                 )
             elif equals_response.get("code") or equals_response.get("message"):
@@ -1720,8 +1742,12 @@ class CheckPointRequest(object):
                     version,
                     "add-" + api_call_object,
                     payload,
+                    session_uid,
                     auto_publish_session,
                 )
+        if result.get("response"):
+            result["checkpoint_session_uid"] = session_uid
+
         return result
 
     # if user insert a specific version, we add it to the url

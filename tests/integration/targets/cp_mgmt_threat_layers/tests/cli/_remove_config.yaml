@@ -1,0 +1,7 @@
+---
+- name: Remove already configured CP MGMT threat layer by Name
+  check_point.mgmt.cp_mgmt_threat_layers:
+    state: deleted
+    config:
+      name: "New Layer 1"
+      auto_publish_session: true

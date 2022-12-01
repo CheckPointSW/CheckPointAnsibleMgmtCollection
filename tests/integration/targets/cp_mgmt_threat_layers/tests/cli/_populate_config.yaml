@@ -1,0 +1,15 @@
+---
+- name: Populate CP MGMT threat layer for tests
+  tags: merged
+  check_point.mgmt.cp_mgmt_threat_layers: &id001
+    state: merged
+    config:
+      name: New Layer 1
+      add_default_rule: true
+      tags:
+        - test_threat_layer
+      color: blue
+      comments: Initial description
+      ignore_warnings: false
+      ignore_errors: false
+      auto_publish_session: true
