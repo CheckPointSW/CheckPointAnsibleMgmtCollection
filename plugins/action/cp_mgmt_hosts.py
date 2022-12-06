@@ -43,6 +43,8 @@ class ActionModule(ActionBase):
         self.module_return = "mgmt_hosts"
         self.key_transform = {
             "ip_address": "ip-address",
+            "ipv4_address": "ipv4-address",
+            "ipv6_address": "ipv6-address",
             "interfaces": "interfaces",
             "nat_settings": "nat-settings",
             "hide_behind": "hide-behind",

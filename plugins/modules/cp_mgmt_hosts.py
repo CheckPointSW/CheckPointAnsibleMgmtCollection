@@ -31,6 +31,12 @@ options:
         description: IPv4 or IPv6 address. If both addresses are required use ipv4-address
           and ipv6-address fields explicitly.
         type: str
+      ipv4_address:
+        description: IPv4 address.
+        type: str
+      ipv6_address:
+        description: IPv4 address.
+        type: str
       interfaces:
         description: Host interfaces.
         type: list
@@ -222,12 +228,6 @@ options:
                 description:
                   - Network object which protects this server identified by the name or UID.
                 type: str
-      set_if_exists:
-        description: If another object with the same identifier already exists, it
-          will be updated. The command behaviour will be the same as if originally
-          a set command was called. Pay attention that original object's fields will
-          be overwritten by the fields provided in the request payload!
-        type: bool
       color:
         description: Color of the object. Should be one of existing colors.
         type: str
