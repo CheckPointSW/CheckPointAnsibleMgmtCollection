@@ -1,0 +1,6 @@
+---
+- name: Remove already configured CP MGMT Host by Name
+  check_point.mgmt.cp_mgmt_hosts:
+    state: deleted
+    config:
+      name: "New Host 1"

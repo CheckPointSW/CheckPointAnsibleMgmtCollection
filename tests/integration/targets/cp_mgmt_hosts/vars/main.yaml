@@ -1,0 +1,28 @@
+---
+merged:
+  before: []
+
+  after:
+    color: cyan
+    comments: Host description
+    groups: []
+    icon: Objects/host
+    interfaces: []
+    ipv4-address: 192.0.2.1
+    name: New Host 1
+    nat_settings: {}
+    tags:
+    - New Host
+
+replaced:
+  after:
+    color: aquamarine
+    comments: Host Replaced description
+    groups: []
+    icon: Objects/host
+    interfaces: []
+    ipv4-address: 198.51.110.0
+    name: New Host 1
+    nat_settings: {}
+    tags:
+    - New Replaced Host

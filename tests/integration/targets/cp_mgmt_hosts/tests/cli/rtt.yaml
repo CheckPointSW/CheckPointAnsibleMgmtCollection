@@ -1,0 +1,65 @@
+---
+- debug:
+    msg: START cp_mgmt_hosts round trip integration tests on connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Apply the provided configuration (base config)
+      register: base_config
+      check_point.mgmt.cp_mgmt_hosts: &id001
+        state: merged
+        config:
+          color: cyan
+          ip_address: 192.0.2.1
+          name: New Host 1
+          tags:
+            - New Host
+          comments: Host description
+          auto_publish_session: true
+
+    - name: Gather CP Mgmt Hosts facts
+      register: gather_result
+      check_point.mgmt.cp_mgmt_hosts:
+        config:
+          name: "New Layer 1"
+        state: gathered
+
+    - name: Apply the configuration which need to be reverted
+      register: result
+      check_point.mgmt.cp_mgmt_hosts:
+        state: replaced
+        config:
+          name: New Host 1
+          tags:
+            - New Replaced Host
+          color: aquamarine
+          ip_address: 198.51.110.0
+          comments: Host Replaced description
+          ignore_warnings: true
+          ignore_errors: false
+          auto_publish_session: true
+
+    - assert:
+        that:
+          - result.changed == true
+          - "{{ merged['before'] | symmetric_difference(result['cp_mgmt_hosts']['before']) |\
+            \ length == 1 }}"
+          - "{{ replaced['after'] | symmetric_difference(result['cp_mgmt_hosts']['after']) |\
+            \ length == 3 }}"
+
+    - name: Revert back to base config using facts round trip
+      register: revert
+      check_point.mgmt.cp_mgmt_hosts:
+        config: "{{ gather_result['gathered'] }}"
+        state: replaced
+
+    - assert:
+        that:
+          - revert['changed'] == true
+
+  always:
+
+    - include_tasks: _remove_config.yaml

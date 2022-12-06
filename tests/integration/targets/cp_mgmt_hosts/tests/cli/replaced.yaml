@@ -1,0 +1,46 @@
+---
+- debug:
+    msg: START Replaced cp_mgmt_hosts state for integration tests on connection={{ ansible_connection
+      }}
+
+- include_tasks: _remove_config.yaml
+- include_tasks: _populate_config.yaml
+
+- block:
+
+    - name: Replace existing CP Mgmt Hosts
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: &id001
+        state: replaced
+        config:
+          name: New Host 1
+          tags:
+            - New Replaced Host
+          color: aquamarine
+          ip_address: 198.51.110.0
+          comments: Host Replaced description
+          ignore_warnings: true
+          ignore_errors: false
+          auto_publish_session: true
+
+    - assert:
+        that:
+          - result.changed == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_hosts']['before']) |\
+            \ length == 4 }}"
+          - "{{ replaced['after'] | symmetric_difference(result['cp_mgmt_hosts']['after']) |\
+            \ length == 4 }}"
+
+    - name: Replaces device configuration of listed CP Mgmt Hosts with provided configuration
+        (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: *id001
+
+    - name: Assert that task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml

@@ -1,0 +1,47 @@
+---
+- debug:
+    msg: START Merged cp_mgmt_hosts state for integration tests on connection={{
+      ansible_connection }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Merge and Create CP Mgmt Hosts
+      tags: merged
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: &id001
+        state: merged
+        config:
+          color: cyan
+          ip_address: 192.0.2.1
+          name: New Host 1
+          tags:
+            - New Host
+          comments: Host description
+          auto_publish_session: true
+
+    - name: Assert that task reports change and after dict is correctly generated
+      assert:
+        that:
+          - result['changed'] == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_hosts']['after']) |\
+            \ length == 4 }}"
+
+    - name: Assert that before dicts are correctly generated
+      assert:
+        that:
+          - merged['before'] == result['cp_mgmt_hosts']['before']
+
+    - name: Merge provided configuration with Hosts (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_hosts: *id001
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml
