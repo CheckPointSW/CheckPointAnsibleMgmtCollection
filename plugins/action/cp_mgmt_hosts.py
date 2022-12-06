@@ -61,6 +61,10 @@ class ActionModule(ActionBase):
             "details_level": "details-level",
             "ignore_warnings": "ignore-warnings",
             "ignore_errors": "ignore-errors",
+            "mask_length": "mask-length",
+            "mask_length4": "mask-length4",
+            "mask_length6": "mask-length4",
+            "subnet_mask": "subnet-mask",
         }
 
     def _check_argspec(self):

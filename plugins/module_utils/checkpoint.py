@@ -113,11 +113,23 @@ def map_params_to_obj(module_params, key_transform):
             or module_params.get(k) is False
         ):
             val = module_params.pop(k)
+            if isinstance(val, list):
+                temp = []
+                for each in val:
+                    if isinstance(each, dict):
+                        temp.append(map_params_to_obj(each, key_transform))
+                if temp:
+                    val = temp
             if isinstance(val, dict):
                 temp_child = {}
                 for each_k, each_v in iteritems(val):
                     if "_" in each_k:
                         temp_param = "-".join(each_k.split("_"))
+                        if isinstance(each_v, dict):
+                            temp_dict = map_params_to_obj(
+                                each_v, key_transform
+                            )
+                            each_v = temp_dict
                         temp_child.update({temp_param: each_v})
                     else:
                         temp_child.update({each_k: each_v})
