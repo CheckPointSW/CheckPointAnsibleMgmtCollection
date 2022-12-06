@@ -59,7 +59,6 @@ class ActionModule(ActionBase):
             "listen_standard_port": "listen-standard-port",
             "operating_system": "operating-system",
             "protected_by": "protected-by",
-            "set_if_exists": "set-if-exists",
             "details_level": "details-level",
             "ignore_warnings": "ignore-warnings",
             "ignore_errors": "ignore-errors",
