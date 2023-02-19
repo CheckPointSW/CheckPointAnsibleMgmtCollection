@@ -461,7 +461,8 @@ EXAMPLES = """
 
 - name: set-domain-permissions-profile
   cp_mgmt_domain_permissions_profile:
-    access_control.policy_layers: By Selected Profile In A Layer Editor
+    access_control:
+      policy_layers: By Selected Profile In A Layer Editor
     name: read profile
     permission_type: customized
     state: present
