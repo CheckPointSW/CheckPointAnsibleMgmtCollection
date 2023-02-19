@@ -206,7 +206,7 @@ def main():
         email=dict(type="str"),
         expiration_date=dict(type="str"),
         multi_domain_profile=dict(type="str"),
-        must_change_password=dict(type="bool"),
+        must_change_password=dict(type="bool", no_log=False),
         password=dict(type="str", no_log=True),
         password_hash=dict(type="str", no_log=True),
         permissions_profile=dict(type="str"),

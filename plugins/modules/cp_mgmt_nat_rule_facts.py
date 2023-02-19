@@ -43,6 +43,11 @@ options:
     description:
       - Rule number.
     type: str
+  name:
+    description:
+      - Rule name.
+        This parameter is relevant only for getting a specific object. Minimum version required is 1.7.1.
+    type: str
   package:
     description:
       - Name of the package.
@@ -143,6 +148,7 @@ EXAMPLES = """
 - name: show-nat-rule
   cp_mgmt_nat_rule_facts:
     package: standard
+    name: nat_rule1
 
 - name: show-nat-rulebase
   cp_mgmt_nat_rule_facts:
@@ -170,6 +176,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         rule_number=dict(type="str"),
+        name=dict(type='str'),
         package=dict(type="str"),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
         filter=dict(type="str"),
