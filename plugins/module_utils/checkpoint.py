@@ -672,13 +672,13 @@ def api_call(module, api_call_object):
 
 # returns a generator of the entire rulebase
 def get_rulebase_generator(
-    connection, version, layer, show_rulebase_command, rules_amount
+    connection, version, show_rulebase_identifier_payload, show_rulebase_command, rules_amount
 ):
     offset = 0
     limit = 100
     while True:
         payload_for_show_rulebase = {
-            "name": layer,
+            **show_rulebase_identifier_payload, # package or layer
             "limit": limit,
             "offset": offset,
         }
@@ -702,15 +702,15 @@ def get_rulebase_generator(
 
 # get 'to' or 'from' of given section
 def get_edge_position_in_section(
-    connection, version, layer, section_name, edge
+    connection, version, identifier, section_name, edge
 ):
     code, response = send_request(
         connection,
         version,
         "show-layer-structure",
-        {"name": layer, "details-level": "uid"},
+        {"name": identifier, "details-level": "uid"},
     )
-    if response["code"] == "generic_err_command_not_found":
+    if 'code' in response and response["code"] == "generic_err_command_not_found":
         raise ValueError(
             "The use of the relative_position field with a section as its value is available only for"
             " version 1.7.1 with JHF take 42 and above"
@@ -724,13 +724,12 @@ def get_edge_position_in_section(
 
 
 # return the total amount of rules in the rulebase of the given layer
-def get_rules_amount(connection, version, layer, show_rulebase_command):
-    payload_for_show_obj_rulebase = {"name": layer, "limit": 0}
+def get_rules_amount(connection, version, show_rulebase_payload, show_rulebase_command):
     code, response = send_request(
         connection,
         version,
         show_rulebase_command,
-        payload_for_show_obj_rulebase,
+        {**show_rulebase_payload, "limit": 0},
     )
     return int(response["total"])
 
@@ -750,17 +749,18 @@ def keep_searching_rulebase(
 
 
 def relative_position_is_section(
-    connection, version, layer, relative_position
+    connection, version, api_call_object, layer_or_package_payload, relative_position
 ):
     if "top" in relative_position or "bottom" in relative_position:
         return True
 
+    show_section_command = "show-access-section" if 'access' in api_call_object else "show-nat-section"
     relative_position_value = list(relative_position.values())[0]
     code, response = send_request(
         connection,
         version,
-        "show-access-section",
-        {"layer": layer, "name": relative_position_value},
+        show_section_command,
+        {**layer_or_package_payload, "name": relative_position_value},
     )
     if code == 200:
         return True
@@ -774,8 +774,11 @@ def get_number_and_section_from_relative_position(
     rulebase,
     above_relative_position,
     pos_before_relative_empty_section,
+    api_call_object,
+    prev_section=None,
+    current_section=None,
 ):
-    section_name = None
+    section_name = current_section
     position = None
     for rules in rulebase:
         if "rulebase" in rules:
@@ -796,7 +799,7 @@ def get_number_and_section_from_relative_position(
                     from_value = get_edge_position_in_section(
                         connection,
                         version,
-                        payload["layer"],
+                        list(get_relevant_layer_or_package_identifier(api_call_object, payload).values())[0],
                         rules["name"],
                         "from",
                     )
@@ -811,10 +814,12 @@ def get_number_and_section_from_relative_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section,
                 )
 
             # we update this only after the 'above' case since the section that should be returned in that case isn't
             # the one we are currently iterating over (but the one beforehand)
+            prev_section = section_name
             section_name = rules["name"]
 
             if (
@@ -833,7 +838,7 @@ def get_number_and_section_from_relative_position(
                     to_value = get_edge_position_in_section(
                         connection,
                         version,
-                        payload["layer"],
+                        list(get_relevant_layer_or_package_identifier(api_call_object, payload).values())[0],
                         section_name,
                         "to",
                     )
@@ -856,6 +861,7 @@ def get_number_and_section_from_relative_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section,
                 )
 
             # setting a rule 'below' a section is equivalent to setting the rule at the top of that section
@@ -885,6 +891,7 @@ def get_number_and_section_from_relative_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section,
                 )
 
             if len(rules["rulebase"]) != 0:
@@ -911,6 +918,7 @@ def get_number_and_section_from_relative_position(
                         section_name,
                         above_relative_position,
                         pos_before_relative_empty_section,
+                        prev_section,
                     )
                 elif (
                     "above" in payload["position"]
@@ -926,6 +934,7 @@ def get_number_and_section_from_relative_position(
                         section_name,
                         above_relative_position,
                         pos_before_relative_empty_section,
+                        prev_section,
                     )
 
         else:  # cases relevant for relative-position=rule
@@ -945,6 +954,7 @@ def get_number_and_section_from_relative_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section,
                 )
             elif (
                 "above" in payload["position"]
@@ -960,6 +970,7 @@ def get_number_and_section_from_relative_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section,
                 )
 
     return (
@@ -967,7 +978,8 @@ def get_number_and_section_from_relative_position(
         section_name,
         above_relative_position,
         pos_before_relative_empty_section,
-    )  # None, None, False/True, x>=1
+        prev_section,
+    )  # None, None, False/True, x>=1, None
 
 
 # get the position in integer format and the section it is.
@@ -983,17 +995,18 @@ def get_number_and_section_from_position(
                 position = 1
                 return position, section_name
             elif position == "bottom":
+                show_rulebase_payload = get_relevant_show_rulebase_identifier_payload(api_call_object, payload)
                 position = get_rules_amount(
                     connection,
                     version,
-                    payload["layer"],
+                    show_rulebase_payload,
                     show_rulebase_command,
                 )
                 code, response = send_request(
                     connection,
                     version,
                     show_rulebase_command,
-                    {"name": payload["layer"], "offset": position - 1},
+                    {**show_rulebase_payload, "offset": position - 1},
                 )
                 rulebase = reversed(response["rulebase"])
             else:  # is a number so we need to get the section (if exists) of the rule in that position
@@ -1038,12 +1051,13 @@ def get_number_and_section_from_position(
             # no from-to in empty sections so can't infer the position from them -> need to keep track of the position
             # before the empty relative section
             pos_before_relative_empty_section = 1
+            show_rulebase_payload = get_relevant_show_rulebase_identifier_payload(api_call_object, payload)
             if not search_entire_rulebase:
                 code, response = send_request(
                     connection,
                     version,
                     show_rulebase_command,
-                    {"name": payload["layer"]},
+                    show_rulebase_payload,
                 )
                 rulebase = response["rulebase"]
                 (
@@ -1058,30 +1072,36 @@ def get_number_and_section_from_position(
                     rulebase,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    api_call_object,
                 )
             else:
+                layer_or_package_payload = get_relevant_layer_or_package_identifier(api_call_object, payload)
                 rules_amount = get_rules_amount(
                     connection,
                     version,
-                    payload["layer"],
+                    show_rulebase_payload,
                     show_rulebase_command,
                 )
                 relative_pos_is_section = relative_position_is_section(
-                    connection, version, payload["layer"], payload["position"]
+                    connection, version, api_call_object, layer_or_package_payload, payload["position"]
                 )
                 rulebase_generator = get_rulebase_generator(
                     connection,
                     version,
-                    payload["layer"],
+                    show_rulebase_payload,
                     show_rulebase_command,
                     rules_amount,
                 )
+                # need to keep track of the previous section in case the iteration starts with a new section and
+                # we want to set the rule above a section - so the section the rule should be at is the previous one
+                prev_section = None
                 for rulebase in rulebase_generator:
                     (
                         position,
                         section_name,
                         above_relative_position,
                         pos_before_relative_empty_section,
+                        prev_section,
                     ) = get_number_and_section_from_relative_position(
                         payload,
                         connection,
@@ -1089,6 +1109,9 @@ def get_number_and_section_from_position(
                         rulebase,
                         above_relative_position,
                         pos_before_relative_empty_section,
+                        api_call_object,
+                        prev_section,
+                        section_name,
                     )
                     if not keep_searching_rulebase(
                         position,
@@ -1104,16 +1127,8 @@ def get_number_and_section_from_position(
 
 # build the show rulebase payload
 def build_rulebase_payload(api_call_object, payload, position_number):
-    rulebase_payload = {
-        "name": payload["layer"],
-        "offset": position_number - 1,
-        "limit": 1,
-    }
-
-    if api_call_object == "threat-exception":
-        rulebase_payload["rule-name"] = payload["rule-name"]
-
-    return rulebase_payload
+    show_rulebase_required_identifiers_payload = get_relevant_show_rulebase_identifier_payload(api_call_object, payload)
+    return {**show_rulebase_required_identifiers_payload, 'offset': position_number - 1, 'limit': 1}
 
 
 def build_rulebase_command(api_call_object):
@@ -1157,13 +1172,36 @@ def get_relevant_show_rulebase_command(api_call_object):
         return "show-threat-rulebase"
     elif api_call_object == "threat-exception":
         return "show-threat-rule-exception-rulebase"
+    elif api_call_object == 'nat-rule':
+        return 'show-nat-rulebase'
+    # uncomment code below when https module is added as a crud module
+    # elif api_call_object == 'https-rule':
+    #     return 'show-https-rulebase'
 
 
-# uncomment code below when https & nat modules are added as crud modules
-# elif api_call_object == 'nat-rule':
-#     return 'show-nat-rulebase'
-# elif api_call_object == 'https-rule':
-#     return 'show-https-rulebase'
+# returns the show rulebase payload with the relevant required identifiers params
+def get_relevant_show_rulebase_identifier_payload(api_call_object, payload):
+    if api_call_object == 'nat-rule':
+        show_rulebase_payload = {'package': payload['package']}
+
+    else:
+        show_rulebase_payload = {'name': payload['layer']}
+
+    if api_call_object == 'threat-exception':
+        show_rulebase_payload['rule-name'] = payload['rule-name']
+
+    return show_rulebase_payload
+
+
+# returns the show section/rule payload with the relevant required identifying package/layer
+def get_relevant_layer_or_package_identifier(api_call_object, payload):
+    if 'nat' in api_call_object:
+        identifier = {'package': payload['package']}
+
+    else:
+        identifier = {'layer': payload['layer']}
+
+    return identifier
 
 
 # is the param position (if the user inserted it) equals between the object and the user input, as well as the section the rule is in
@@ -1345,7 +1383,6 @@ def call_is_plural(api_call_object, payload):
     elif (
         "nat" in api_call_object
         and payload.get("name") is None
-        and payload.get("uid") is None
         and payload.get("rule-number") is None
     ):
         is_plural = True
