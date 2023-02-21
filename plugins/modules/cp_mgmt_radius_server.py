@@ -32,7 +32,7 @@ short_description: Manages radius-server objects on Checkpoint over Web Services
 description:
   - Manages radius-server objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-version_added: "2.9"
+version_added: "6.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:

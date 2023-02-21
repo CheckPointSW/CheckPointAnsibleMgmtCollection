@@ -34,8 +34,8 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
-version_added: "2.9"
-author: "Or Soffer (@chkp-orso)"
+version_added: "6.3.0"
+author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:
     description:

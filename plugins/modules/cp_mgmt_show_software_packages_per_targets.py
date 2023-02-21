@@ -32,8 +32,8 @@ short_description: Shows software packages on targets.
 description:
   - Shows software packages on targets.
   - All operations are performed over Web Services API.
-version_added: "2.9"
-author: "Or Soffer (@chkp-orso)"
+version_added: "6.3.0"
+author: "Shiran Golzar (@chkp-shirango)"
 options:
   display:
     description:
