@@ -75,6 +75,8 @@ delete_params = [
     "exception-group-name",
     "rule-name",
     "package",
+    "ignore-errors",
+    "ignore-warnings"
 ]
 
 remove_from_set_payload = {
@@ -89,6 +91,7 @@ remove_from_set_payload = {
 
 remove_from_add_payload = {"lsm-cluster": ["name"]}
 
+params_to_replace = {"radius-server": {"server-version": "version"}}
 
 def _fail_json(msg):
     """Replace the AnsibleModule fai;_json here
@@ -1145,6 +1148,12 @@ def build_payload(api_call_object, payload, params_to_remove):
     if api_call_object in params_to_remove:
         for param in params_to_remove[api_call_object]:
             del payload[param]
+
+    if api_call_object in params_to_replace:
+        for param in params_to_replace[api_call_object]:
+            if param in payload:
+                payload[params_to_replace[api_call_object][param]] = payload[param]
+                del payload[param]
     return payload
 
 
