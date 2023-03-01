@@ -1,0 +1,6 @@
+---
+- name: collect all cli test cases
+  find:
+    paths: '{{ role_path }}/tests/redirection'
+    patterns: '{{ testcase }}.yaml'
+  register: test_cases

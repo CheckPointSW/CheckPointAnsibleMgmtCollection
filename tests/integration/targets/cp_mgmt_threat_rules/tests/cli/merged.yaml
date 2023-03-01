@@ -1,0 +1,48 @@
+---
+- debug:
+    msg: START Merged cp_mgmt_threat_rules state for integration tests on connection={{
+      ansible_connection }}
+
+- include_tasks: _remove_config.yaml
+
+- block:
+
+    - name: Merge and Create CP Mgmt Threat Rules
+      tags: merged
+      register: result
+      check_point.mgmt.cp_mgmt_threat_rules: &id001
+        state: merged
+        config:
+          comments: This is the MERGED THREAT RULE
+          install_on: Policy Targets
+          layer: IPS
+          name: First threat rule
+          position: 1
+          protected_scope: All_Internet
+          track: None
+          auto_publish_session: true
+
+    - name: Assert that task reports change and after dict is correctly generated
+      assert:
+        that:
+          - result['changed'] == true
+          - "{{ merged['after'] | symmetric_difference(result['cp_mgmt_threat_rules']['after']) |\
+            \ length == 4 }}"
+
+    - name: Assert that before dicts are correctly generated
+      assert:
+        that:
+          - merged['before'] == result['cp_mgmt_threat_rules']['before']
+
+    - name: Merge provided configuration with Log Sources Management (IDEMPOTENT)
+      register: result
+      check_point.mgmt.cp_mgmt_threat_rules: *id001
+
+    - name: Assert that the previous task was idempotent
+      assert:
+        that:
+          - result['changed'] == false
+
+  always:
+
+    - include_tasks: _remove_config.yaml

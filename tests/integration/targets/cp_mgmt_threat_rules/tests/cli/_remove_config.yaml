@@ -1,0 +1,8 @@
+---
+- name: Remove already configured CP MGMT Threat rules by Name
+  check_point.mgmt.cp_mgmt_threat_rules:
+    state: deleted
+    config:
+      layer: IPS
+      name: "First threat rule"
+      auto_publish_session: true
