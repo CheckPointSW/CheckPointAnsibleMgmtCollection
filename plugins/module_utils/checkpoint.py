@@ -75,6 +75,8 @@ delete_params = [
     "exception-group-name",
     "rule-name",
     "package",
+    "ignore-errors",
+    "ignore-warnings"
 ]
 
 remove_from_set_payload = {
@@ -295,6 +297,7 @@ def get_payload_from_parameters(params):
                 if (
                     parameter == "gateway_version"
                     or parameter == "cluster_version"
+                    or parameter == "server_version"
                 ):
                     parameter = "version"
 
@@ -1145,6 +1148,7 @@ def build_payload(api_call_object, payload, params_to_remove):
     if api_call_object in params_to_remove:
         for param in params_to_remove[api_call_object]:
             del payload[param]
+
     return payload
 
 
