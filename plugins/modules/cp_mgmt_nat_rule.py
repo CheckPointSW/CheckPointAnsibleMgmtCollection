@@ -28,12 +28,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_nat_rule
-short_description: Manages nat-rule objects on Checkpoint over Web Services API. Minimum version required is 1.7.1 and
-JHF with PMTR-88097.
+short_description: Manages nat-rule objects on Checkpoint over Web Services API.
 description:
   - Manages nat-rule objects on Checkpoint devices including creating, updating and removing objects.
+  -  Minimum version required is 1.7.1 and JHF with PMTR-88097.
   - All operations are performed over Web Services API.
-version_added: "6.3.0"
+version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
   package:

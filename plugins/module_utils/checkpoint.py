@@ -66,6 +66,7 @@ checkpoint_argument_spec_for_commands = dict(
     wait_for_task=dict(type="bool", default=True),
     wait_for_task_timeout=dict(type="int", default=30),
     version=dict(type="str"),
+    auto_publish_session=dict(type="bool"),
 )
 
 delete_params = [
@@ -264,7 +265,7 @@ def is_checkpoint_param(parameter):
 
 
 def contains_show_identifier_param(payload):
-    identifier_params = ["name", "uid", "assigned-domain"]
+    identifier_params = ["name", "uid", "assigned-domain", "task-id"]
     for param in identifier_params:
         if payload.get(param) is not None:
             return True
@@ -298,6 +299,8 @@ def get_payload_from_parameters(params):
                     parameter == "gateway_version"
                     or parameter == "cluster_version"
                     or parameter == "server_version"
+                    or parameter == "check_point_host_version"
+                    or parameter == "target_version"
                 ):
                     parameter = "version"
 
@@ -605,7 +608,7 @@ def handle_delete(
         result["changed"] = True
 
 
-# handle the call and set the result with 'changed' and teh response
+# handle the call and set the result with 'changed' and the response
 def handle_call_and_set_result(
     connection, version, call, payload, module, result
 ):
@@ -681,7 +684,7 @@ def get_rulebase_generator(
     limit = 100
     while True:
         payload_for_show_rulebase = {
-            **show_rulebase_identifier_payload, # package or layer
+            **show_rulebase_identifier_payload,  # package or layer
             "limit": limit,
             "offset": offset,
         }

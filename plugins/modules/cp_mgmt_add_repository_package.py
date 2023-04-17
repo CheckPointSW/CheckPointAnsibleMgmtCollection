@@ -28,12 +28,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_add_repository_package
-short_description: Add the software package to the central repository.<br>On Multi-Domain Server this command is available only after logging in to the Global
-domain.
+short_description: Add the software package to the central repository.
 description:
-  - Add the software package to the central repository.<br>On Multi-Domain Server this command is available only after logging in to the Global domain.
+  - Add the software package to the central repository.
+  - On Multi-Domain Server this command is available only after logging in to the Global domain.
   - All operations are performed over Web Services API.
-version_added: "6.3.0"
+version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:
