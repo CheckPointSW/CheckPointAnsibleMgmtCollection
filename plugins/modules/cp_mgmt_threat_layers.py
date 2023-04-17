@@ -18,7 +18,7 @@ short_description: Manages THREAT LAYERS resource module
 description:
   - This resource module allows for addition, deletion, or modification of CP Threat Layers.
   - This resource module also takes care of gathering Threat Layers config facts
-version_added: 4.1.0
+version_added: "5.0.0"
 options:
   config:
     description: A dictionary of THREAT LAYERS options

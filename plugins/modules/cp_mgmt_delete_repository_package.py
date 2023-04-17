@@ -28,13 +28,12 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_delete_repository_package
-short_description: Delete the repository software package from the central repository.<br>On Multi-Domain Server this command is available only after logging
-in to the Global domain.
+short_description: Delete the repository software package from the central repository.
 description:
-  - Delete the repository software package from the central repository.<br>On Multi-Domain Server this command is available only after logging in to the
-    Global domain.
+  - Delete the repository software package from the central repository.
+  - On Multi-Domain Server this command is available only after logging in to the Global domain.
   - All operations are performed over Web Services API.
-version_added: "6.3.0"
+version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   name:

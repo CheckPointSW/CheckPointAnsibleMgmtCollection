@@ -5,6 +5,108 @@ Check_Point.Mgmt Release Notes
 .. contents:: Topics
 
 
+v5.0.0
+======
+
+Release Summary
+---------------
+
+This is release 5.0.0 of ``check_point.mgmt``, released on 2023-04-17.
+
+Deprecated Features
+-------------------
+
+- add/set/delete nat-rule modules - will be replaced by the single cp_mgmt_nat_rule module.
+- cp_mgmt_show_task/s modules - will be replaced by the by the single cp_mgmt_task_facts module.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_abort_get_interfaces - Attempt to abort an on-going "get-interfaces" operation.
+- check_point.mgmt.cp_mgmt_access_layers - Manages ACCESS LAYERS resource module
+- check_point.mgmt.cp_mgmt_access_point_name - Manages access-point-name objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_access_point_name_facts - Get access-point-name objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_add_repository_package - Add the software package to the central repository.
+- check_point.mgmt.cp_mgmt_add_updatable_object - Import an updatable object from the repository to the management server.
+- check_point.mgmt.cp_mgmt_checkpoint_host - Manages checkpoint-host objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_checkpoint_host_facts - Get checkpoint-host objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_delete_repository_package - Delete the repository software package from the central repository.
+- check_point.mgmt.cp_mgmt_delete_updatable_object - Delete existing object using object name or uid.
+- check_point.mgmt.cp_mgmt_dynamic_global_network_object - Manages dynamic-global-network-object objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_dynamic_global_network_object_facts - Get dynamic-global-network-object objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_export_management - Export the primary Security Management Server database or the primary Multi-Domain Server database or the single Domain database and the applicable Check Point configuration.
+- check_point.mgmt.cp_mgmt_export_smart_task - Export SmartTask to a file.
+- check_point.mgmt.cp_mgmt_get_attachment - Retrieves a packet capture or blob data, according to the attributes of a log record.
+- check_point.mgmt.cp_mgmt_get_interfaces - Get physical interfaces with or without their topology from a Gaia Security Gateway or Cluster.
+- check_point.mgmt.cp_mgmt_gsn_handover_group - Manages gsn-handover-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_gsn_handover_group_facts - Get gsn-handover-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_ha_full_sync - Perform full sync from active server to standby peer.
+- check_point.mgmt.cp_mgmt_hosts - Manages HOSTS resource module
+- check_point.mgmt.cp_mgmt_https_layer - Manages https-layer objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_https_layer_facts - Get https-layer objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_import_management - Import the primary Security Management Server database or the primary Multi-Domain Server database or the single Domain database and the applicable Check Point configuration.
+- check_point.mgmt.cp_mgmt_import_smart_task - Import SmartTask from a file.
+- check_point.mgmt.cp_mgmt_ips_protection_extended_attribute_facts - Get ips-protection-extended-attribute objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_lock_object - Lock object using uid or {name and type}.
+- check_point.mgmt.cp_mgmt_lsv_profile - Manages lsv-profile objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_lsv_profile_facts - Get lsv-profile objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_nat_rule - Manages nat-rule objects on Checkpoint over Web Services API.
+- check_point.mgmt.cp_mgmt_radius_group - Manages radius-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_radius_group_facts - Get radius-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_radius_server - Manages radius-server objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_radius_server_facts - Get radius-server objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_repository_package_facts - Get repository-package objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_service_citrix_tcp - Manages service-citrix-tcp objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_service_citrix_tcp_facts - Get service-citrix-tcp objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_service_compound_tcp - Manages service-compound-tcp objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_service_compound_tcp_facts - Get service-compound-tcp objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_set_api_settings - Edit API settings, the changes will be applied after publish followed by running 'api restart' command.
+- check_point.mgmt.cp_mgmt_set_cloud_services - Set the connection settings between the Management Server and Check Point's Infinity Portal.
+- check_point.mgmt.cp_mgmt_set_global_domain - Edit Global domain object using domain name or UID.
+- check_point.mgmt.cp_mgmt_set_ha_state - Switch domain server high availability state.
+- check_point.mgmt.cp_mgmt_set_ips_update_schedule - Edit IPS Update Schedule.
+- check_point.mgmt.cp_mgmt_set_login_message - Edit Login message.
+- check_point.mgmt.cp_mgmt_set_policy_settings - Edit Policy settings, the changes will be applied after publish.
+- check_point.mgmt.cp_mgmt_set_vpn_community_remote_access - Edit existing Remote Access object. Using object name or uid is optional.
+- check_point.mgmt.cp_mgmt_show_api_settings - Retrieve API Settings.
+- check_point.mgmt.cp_mgmt_show_api_versions - Shows all supported API versions and current API version (the latest one).
+- check_point.mgmt.cp_mgmt_show_azure_ad_content - Retrieve AzureAD Objects from Azure AD Server.
+- check_point.mgmt.cp_mgmt_show_changes - Show changes between two sessions.
+- check_point.mgmt.cp_mgmt_show_commands - Retrieve all of the supported Management API commands with their description.
+- check_point.mgmt.cp_mgmt_show_gateways_and_servers - Shows list of Gateways & Servers sorted by name.
+- check_point.mgmt.cp_mgmt_show_global_domain - Retrieve existing object using object name or uid.
+- check_point.mgmt.cp_mgmt_show_ha_state - Retrieve domain high availability state.
+- check_point.mgmt.cp_mgmt_show_ips_status - show ips status on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_show_ips_update_schedule - Retrieve IPS Update Schedule.
+- check_point.mgmt.cp_mgmt_show_layer_structure - Shows the entire layer structure.
+- check_point.mgmt.cp_mgmt_show_login_message - Retrieve Login message.
+- check_point.mgmt.cp_mgmt_show_place_holder - Retrieve existing object using object uid.
+- check_point.mgmt.cp_mgmt_show_policy_settings - Show Policy settings.
+- check_point.mgmt.cp_mgmt_show_software_packages_per_targets - Shows software packages on targets.
+- check_point.mgmt.cp_mgmt_show_unused_objects - Retrieve all unused objects.
+- check_point.mgmt.cp_mgmt_show_updatable_objects_repository_content - Shows the content of the available updatable objects from the Check Point User Center.
+- check_point.mgmt.cp_mgmt_show_validations - Show all validation incidents limited to 500.
+- check_point.mgmt.cp_mgmt_smart_task - Manages smart-task objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_smart_task_facts - Get smart-task objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_smart_task_trigger_facts - Get smart-task-trigger objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_tacacs_group - Manages tacacs-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_tacacs_group_facts - Get tacacs-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_tacacs_server - Manages tacacs-server objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_tacacs_server_facts - Get tacacs-server objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_task_facts - Get task objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_threat_layers - Manages THREAT LAYERS resource module
+- check_point.mgmt.cp_mgmt_time_group - Manages time-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_time_group_facts - Get time-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_unlock_administrator - Unlock administrator.
+- check_point.mgmt.cp_mgmt_unlock_object - Unlock object using uid or {name and type}.
+- check_point.mgmt.cp_mgmt_updatable_object_facts - Get updatable-object objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_update_updatable_objects_repository_content - Updates the content of the Updatable Objects repository from the Check Point User Center.
+- check_point.mgmt.cp_mgmt_user_group - Manages user-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_user_group_facts - Get user-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_vpn_community_remote_access_facts - Get vpn-community-remote-access objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_vsx_run_operation - Run the VSX operation by its name and parameters.
+- check_point.mgmt.cp_mgmt_where_used - Searches for usage of the target object in other objects and rules.
+
 v4.0.0
 ======
 
@@ -74,6 +176,7 @@ New Modules
 - check_point.mgmt.cp_mgmt_idp_administrator_group - Manages idp-administrator-group objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_idp_administrator_group_facts - Get idp-administrator-group objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_idp_to_domain_assignment_facts - Get idp-to-domain-assignment objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_import_outbound_inspection_certificate - Import Outbound Inspection certificate for HTTPS inspection.
 - check_point.mgmt.cp_mgmt_install_lsm_policy - Executes the lsm-install-policy on a given list of targets. Install the LSM policy that defined on the attached LSM profile on the targets devices.
 - check_point.mgmt.cp_mgmt_install_lsm_settings - Executes the lsm-install-settings on a given list of targets. Install the provisioning settings that defined on the object on the targets devices.
 - check_point.mgmt.cp_mgmt_interoperable_device - Manages interoperable-device objects on Checkpoint over Web Services API
@@ -94,10 +197,12 @@ New Modules
 - check_point.mgmt.cp_mgmt_set_global_properties - Edit Global Properties.
 - check_point.mgmt.cp_mgmt_set_idp_default_assignment - Set default Identity Provider assignment to be use for Management server administrator access.
 - check_point.mgmt.cp_mgmt_set_idp_to_domain_assignment - Set Identity Provider assignment to domain, to allow administrator login to that domain using that identity provider, if there is no Identity Provider assigned to the domain the 'idp-default-assignment' will be used. This command only available  for Multi-Domain server.
+- check_point.mgmt.cp_mgmt_set_outbound_inspection_certificate - Create or update a certificate to be used as outbound certificate for HTTPS inspection. <br>The outbound CA certificate will be used by the Gateway to inspect SSL traffic.
 - check_point.mgmt.cp_mgmt_set_threat_advanced_settings - Edit Threat Prevention's Blades' Settings.
 - check_point.mgmt.cp_mgmt_show_cloud_services - Show the connection status of the Management Server to Check Point's Infinity Portal.
 - check_point.mgmt.cp_mgmt_show_global_properties - Retrieve Global Properties.
 - check_point.mgmt.cp_mgmt_show_idp_default_assignment - Retrieve default Identity Provider assignment that used for Management server administrator access.
+- check_point.mgmt.cp_mgmt_show_outbound_inspection_certificate - Show outbound inspection certificate.
 - check_point.mgmt.cp_mgmt_show_servers_and_processes - Shows the status of all processes in the current machine (Multi-Domain Server and all Domain Management / Log Servers). <br>This command is available only on Multi-Domain Server.
 - check_point.mgmt.cp_mgmt_show_threat_advanced_settings - Show Threat Prevention's Blades' Settings.
 - check_point.mgmt.cp_mgmt_simple_cluster - Manages simple-cluster objects on Checkpoint over Web Services API

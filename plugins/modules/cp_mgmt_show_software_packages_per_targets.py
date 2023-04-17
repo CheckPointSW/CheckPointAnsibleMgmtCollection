@@ -32,7 +32,7 @@ short_description: Shows software packages on targets.
 description:
   - Shows software packages on targets.
   - All operations are performed over Web Services API.
-version_added: "6.3.0"
+version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
   display:
@@ -70,7 +70,7 @@ EXAMPLES = """
       category: major
       installed: 'no'
       recommended: any
-    targets: 
+    targets:
       - corporate-gateway
 """
 
