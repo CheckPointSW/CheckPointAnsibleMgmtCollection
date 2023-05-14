@@ -536,7 +536,7 @@ def api_command(module, command):
     if command.startswith("show"):
         result['changed'] = False
 
-    if code == 200:
+    if code == 200 and "incidents" not in response:
         if module.params["wait_for_task"]:
             if "task-id" in response:
                 response = wait_for_task(
