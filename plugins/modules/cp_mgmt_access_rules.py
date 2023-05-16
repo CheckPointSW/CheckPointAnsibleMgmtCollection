@@ -210,7 +210,7 @@ options:
             description:
               - N/A
             type: str
-      vpn:
+      vpn_list:
         description:
           - Communities or Directional.
         type: list
@@ -220,7 +220,7 @@ options:
             description:
               - List of community name or UID.
             type: list
-            elements: dict
+            elements: str
           directional:
             description:
               - Communities directional match condition.
@@ -235,6 +235,11 @@ options:
                 description:
                   - To community name or UID.
                 type: str
+      vpn:
+        description:
+          - Any or All_GwToGw.
+        type: str
+        choices: ['Any', 'All_GwToGw']
       comments:
         description:
           - Comments string.
@@ -401,11 +406,11 @@ def main():
                         interaction=dict(type="str"),
                     ),
                 ),
-                vpn=dict(
+                vpn_list=dict(
                     type="list",
                     elements="dict",
                     options=dict(
-                        community=dict(type="list", elements="dict"),
+                        community=dict(type="list", elements="str"),
                         directional=dict(
                             type="list",
                             elements="dict",
@@ -413,6 +418,7 @@ def main():
                         ),
                     ),
                 ),
+                vpn=dict(type="str", choices=["Any", "All_GwToGw"]),
                 comments=dict(type="str"),
                 details_level=dict(
                     type="str", choices=["uid", "standard", "full"]
@@ -430,7 +436,7 @@ def main():
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
     )
 
-    argument_spec["rules"]["options"]["vpn"]["options"]["directional"][
+    argument_spec["rules"]["options"]["vpn_list"]["options"]["directional"][
         "options"
     ]["from"] = dict(type="str")
     argument_spec.update(checkpoint_argument_spec_for_action_module)
