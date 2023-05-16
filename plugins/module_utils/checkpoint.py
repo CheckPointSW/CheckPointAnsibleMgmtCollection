@@ -532,6 +532,9 @@ def api_command(module, command):
 
     code, response = send_request(connection, version, command, payload)
     result = {"changed": True}
+    
+    if command.startswith("show"):
+        result['changed'] = False
 
     if code == 200:
         if module.params["wait_for_task"]:
