@@ -1626,7 +1626,6 @@ EXAMPLES = """
             logical_name: unique logical name
             port: 8080
             reauthentication: post request
-    state: present
 """
 
 RETURN = """

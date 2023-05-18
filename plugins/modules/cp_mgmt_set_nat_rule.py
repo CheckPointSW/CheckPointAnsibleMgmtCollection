@@ -120,7 +120,6 @@ EXAMPLES = """
     original_service: ssh_version_2
     original_source: Any
     package: standard
-    state: present
 """
 
 RETURN = """

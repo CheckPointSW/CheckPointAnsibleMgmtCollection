@@ -76,7 +76,6 @@ EXAMPLES = """
     recurrence:
       minutes: 121
       pattern: interval
-    state: present
 """
 
 RETURN = """

@@ -88,7 +88,6 @@ EXAMPLES = """
   cp_mgmt_set_vpn_community_remote_access:
     gateways:
     - mygateway
-    state: present
     user_groups:
     - myusergroup
 """

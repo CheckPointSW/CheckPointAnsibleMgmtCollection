@@ -1012,3 +1012,16 @@ releases:
       name: cp_mgmt_where_used
       namespace: ''
     release_date: '2022-07-10'
+  5.1.0:
+    changes:
+      bugfixes:
+      - cp_mgmt_access_rules - split vpn param that can accept either a String or
+        list of objects to two
+      minor_changes:
+      - cp_mgmt_vpn_community_star - new fields added.
+      - show command modules  - no longer return result of changed=True.
+      release_summary: This is release 5.1.0 of ``check_point.mgmt``, released on
+        2023-05-18.
+    fragments:
+    - 5.1.0.yml
+    release_date: '2022-07-16'

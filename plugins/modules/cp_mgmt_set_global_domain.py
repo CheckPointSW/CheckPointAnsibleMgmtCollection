@@ -98,7 +98,6 @@ EXAMPLES = """
     tags:
       - tag1
     comments: "This is a Global domain"
-    state: present
 """
 
 RETURN = """

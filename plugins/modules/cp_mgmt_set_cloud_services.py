@@ -77,7 +77,6 @@ EXAMPLES = """
       connection_method: after install policy
       participant_gateways: specific
       specific_gateways: gw1
-    state: present
 """
 
 RETURN = """

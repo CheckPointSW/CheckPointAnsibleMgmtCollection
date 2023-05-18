@@ -66,7 +66,6 @@ EXAMPLES = """
     header: Warning
     message: Unauthorized access of this server is prohibited and punished by law
     show_message: 'true'
-    state: present
     warning: 'true'
 """
 

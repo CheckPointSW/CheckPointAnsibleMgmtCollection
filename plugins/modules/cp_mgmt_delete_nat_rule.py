@@ -62,7 +62,6 @@ EXAMPLES = """
 - name: delete-nat-rule
   cp_mgmt_delete_nat_rule:
     package: standard
-    state: absent
 """
 
 RETURN = """

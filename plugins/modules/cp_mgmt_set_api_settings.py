@@ -47,7 +47,6 @@ EXAMPLES = """
 - name: set-api-settings
   cp_mgmt_set_api_settings:
     accepted_api_calls_from: 'all ip addresses'
-    state: present
 """
 
 RETURN = """

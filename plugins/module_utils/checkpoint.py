@@ -31,7 +31,6 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 import time
-from ansible.errors import AnsibleActionFail
 from ansible.module_utils.six import iteritems
 from ansible.module_utils.urls import CertificateError
 from ansible.module_utils.connection import ConnectionError
@@ -94,11 +93,11 @@ remove_from_add_payload = {"lsm-cluster": ["name"]}
 
 
 def _fail_json(msg):
-    """Replace the AnsibleModule fai;_json here
+    """Replace the AnsibleModule fail_json here
     :param msg: The message for the failure
     :type msg: str
     """
-    raise AnsibleActionFail(msg)
+    raise Exception(msg)
 
 
 def map_params_to_obj(module_params, key_transform):
@@ -532,7 +531,7 @@ def api_command(module, command):
 
     code, response = send_request(connection, version, command, payload)
     result = {"changed": True}
-    
+
     if command.startswith("show"):
         result['changed'] = False
 
@@ -679,7 +678,7 @@ def api_call(module, api_call_object):
     return result
 
 
-# returns a generator of the entire rulebase
+# returns a generator of the entire rulebase. show_rulebase_identifier_payload can be either package or layer
 def get_rulebase_generator(
     connection, version, show_rulebase_identifier_payload, show_rulebase_command, rules_amount
 ):
@@ -687,7 +686,7 @@ def get_rulebase_generator(
     limit = 100
     while True:
         payload_for_show_rulebase = {
-            **show_rulebase_identifier_payload,  # package or layer
+            **show_rulebase_identifier_payload,
             "limit": limit,
             "offset": offset,
         }

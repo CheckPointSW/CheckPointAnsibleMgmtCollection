@@ -207,7 +207,7 @@ def main():
         )),
         reconf_gw_params=dict(type='dict', options=dict(
             ipv4_corexl_number=dict(type='int'),
-            one_time_password=dict(type='str'),
+            one_time_password=dict(type='str', no_log=True),
             vsx_name=dict(type='str'),
             vsx_uid=dict(type='str')
         )),
@@ -215,7 +215,7 @@ def main():
             ipv4_corexl_number=dict(type='int'),
             member_uid=dict(type='str'),
             member_name=dict(type='str'),
-            one_time_password=dict(type='str')
+            one_time_password=dict(type='str', no_log=True)
         )),
         remove_member_params=dict(type='dict', options=dict(
             member_uid=dict(type='str'),
