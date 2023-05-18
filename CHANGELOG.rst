@@ -5,6 +5,25 @@ Check_Point.Mgmt Release Notes
 .. contents:: Topics
 
 
+v5.1.0
+======
+
+Release Summary
+---------------
+
+This is release 5.1.0 of ``check_point.mgmt``, released on 2023-05-18.
+
+Minor Changes
+-------------
+
+- cp_mgmt_vpn_community_star - new fields added.
+- show command modules  - no longer return result of changed=True.
+
+Bugfixes
+--------
+
+- cp_mgmt_access_rules - split vpn param that can accept either a String or list of objects to two
+
 v5.0.0
 ======
 

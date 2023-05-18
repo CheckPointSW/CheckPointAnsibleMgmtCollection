@@ -53,7 +53,6 @@ EXAMPLES = """
 - name: add-api-key
   cp_mgmt_add_api_key:
     admin_name: admin
-    state: present
 """
 
 RETURN = """

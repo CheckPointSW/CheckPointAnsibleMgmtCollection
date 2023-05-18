@@ -82,7 +82,6 @@ EXAMPLES = """
 - name: set-session
   cp_mgmt_set_session:
     description: Session to work on ticket number CR00323665
-    state: present
 """
 
 RETURN = """

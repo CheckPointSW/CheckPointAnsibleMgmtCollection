@@ -52,7 +52,6 @@ EXAMPLES = """
 - name: set-ha-state
   cp_mgmt_set_ha_state:
     new_state: active
-    state: present
 """
 
 RETURN = """

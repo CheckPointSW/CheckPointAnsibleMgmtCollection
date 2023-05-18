@@ -101,7 +101,6 @@ EXAMPLES = """
   cp_mgmt_add_data_center_object:
     data_center_name: vCenter 1
     name: VM1 mgmt name
-    state: present
     uri: /Datacenters/VMs/My VM1
 """
 

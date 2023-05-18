@@ -74,7 +74,6 @@ EXAMPLES = """
       destination: any
       service: any
       source: any
-    state: present
 """
 
 RETURN = """

@@ -113,7 +113,6 @@ EXAMPLES = """
     log_unification_timeout: 600
     resource_classification.mode: hold
     resource_classification.web_service_fail_mode: block connections
-    state: present
 """
 
 RETURN = """

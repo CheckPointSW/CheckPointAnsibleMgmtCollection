@@ -119,7 +119,6 @@ EXAMPLES = """
     original_source: Any
     package: standard
     position: 1
-    state: present
 """
 
 RETURN = """

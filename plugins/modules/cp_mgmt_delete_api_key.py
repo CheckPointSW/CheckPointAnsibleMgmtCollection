@@ -57,7 +57,6 @@ EXAMPLES = """
   cp_mgmt_delete_api_key:
     #sgignore next_line
     api_key: eea3be76f4a8eb740ee872bcedc692748ff256a2d21c9ffd2754facbde046d00
-    state: absent
 """
 
 RETURN = """

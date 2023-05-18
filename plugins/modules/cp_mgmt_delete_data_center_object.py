@@ -62,7 +62,6 @@ EXAMPLES = """
 - name: delete-data-center-object
   cp_mgmt_delete_data_center_object:
     name: VM1 mgmt name
-    state: absent
 """
 
 RETURN = """

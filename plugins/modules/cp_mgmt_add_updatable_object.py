@@ -74,7 +74,6 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 EXAMPLES = """
 - name: add-updatable-object
   cp_mgmt_add_updatable_object:
-    state: present
     uri: '{{uri}}'
 """
 

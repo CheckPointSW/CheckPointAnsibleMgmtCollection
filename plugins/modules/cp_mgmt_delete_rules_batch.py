@@ -88,7 +88,6 @@ EXAMPLES = """
       - rule_number: 1
       - rule_number: 2
       type: https-rule
-    state: absent
 """
 
 RETURN = """
