@@ -5,6 +5,19 @@ Check_Point.Mgmt Release Notes
 .. contents:: Topics
 
 
+v5.1.1
+======
+
+Release Summary
+---------------
+
+This is release 5.1.1 of ``check_point.mgmt``, released on 2023-05-25.
+
+Bugfixes
+--------
+
+- module_utils/checkpoint.py - fixed compile issue (Syntax Error) on python 2.7
+
 v5.1.0
 ======
 

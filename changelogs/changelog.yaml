@@ -1025,3 +1025,13 @@ releases:
     fragments:
     - 5.1.0.yml
     release_date: '2022-07-16'
+  5.1.1:
+    changes:
+      bugfixes:
+      - module_utils/checkpoint.py - fixed compile issue (Syntax Error) on python
+        2.7
+      release_summary: This is release 5.1.1 of ``check_point.mgmt``, released on
+        2023-05-25.
+    fragments:
+    - 5.1.1.yml
+    release_date: '2022-07-17'

@@ -686,10 +686,10 @@ def get_rulebase_generator(
     limit = 100
     while True:
         payload_for_show_rulebase = {
-            **show_rulebase_identifier_payload,
             "limit": limit,
             "offset": offset,
         }
+        payload_for_show_rulebase.update(show_rulebase_identifier_payload)
         # in case there are empty sections after the last rule, we need them to appear in the reply and the limit might
         # cut them out
         if offset + limit >= rules_amount:
@@ -733,11 +733,13 @@ def get_edge_position_in_section(
 
 # return the total amount of rules in the rulebase of the given layer
 def get_rules_amount(connection, version, show_rulebase_payload, show_rulebase_command):
+    payload = {"limit": 0}
+    payload.update(show_rulebase_payload)
     code, response = send_request(
         connection,
         version,
         show_rulebase_command,
-        {**show_rulebase_payload, "limit": 0},
+        payload,
     )
     return int(response["total"])
 
@@ -764,11 +766,13 @@ def relative_position_is_section(
 
     show_section_command = "show-access-section" if 'access' in api_call_object else "show-nat-section"
     relative_position_value = list(relative_position.values())[0]
+    payload = {"name": relative_position_value}
+    payload.update(layer_or_package_payload)
     code, response = send_request(
         connection,
         version,
         show_section_command,
-        {**layer_or_package_payload, "name": relative_position_value},
+        payload,
     )
     if code == 200:
         return True
@@ -1010,11 +1014,12 @@ def get_number_and_section_from_position(
                     show_rulebase_payload,
                     show_rulebase_command,
                 )
+                show_rulebase_payload.update({"offset": position - 1})
                 code, response = send_request(
                     connection,
                     version,
                     show_rulebase_command,
-                    {**show_rulebase_payload, "offset": position - 1},
+                    show_rulebase_payload,
                 )
                 rulebase = reversed(response["rulebase"])
             else:  # is a number so we need to get the section (if exists) of the rule in that position
@@ -1136,7 +1141,8 @@ def get_number_and_section_from_position(
 # build the show rulebase payload
 def build_rulebase_payload(api_call_object, payload, position_number):
     show_rulebase_required_identifiers_payload = get_relevant_show_rulebase_identifier_payload(api_call_object, payload)
-    return {**show_rulebase_required_identifiers_payload, 'offset': position_number - 1, 'limit': 1}
+    show_rulebase_required_identifiers_payload.update({'offset': position_number - 1, 'limit': 1})
+    return show_rulebase_required_identifiers_payload
 
 
 def build_rulebase_command(api_call_object):
