@@ -31,10 +31,9 @@ module: cp_mgmt_get_interfaces
 short_description: Get physical interfaces with or without their topology from a Gaia Security Gateway or Cluster.
 description:
   - Get physical interfaces with or without their topology from a Gaia Security Gateway or Cluster.
-Note: The fetched topology is based on static routes.
-Prerequisites:
-- SIC must be established in the Security Gateway or Cluster Member object.
-- Security Gateway or Cluster Members must be up and running.
+  - The fetched topology is based on static routes.
+  - SIC must be established in the Security Gateway or Cluster Member object.
+  - Security Gateway or Cluster Members must be up and running.
   - All operations are performed over Web Services API.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"

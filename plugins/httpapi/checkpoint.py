@@ -67,7 +67,8 @@ class HttpApi(HttpApiBase):
             )
         url = "/web_api/login"
         response, response_data = self.send_request(url, payload)
-
+        if response != 200:
+            raise ConnectionError("Login to server failed: %s" % response_data)
         try:
             self.connection._auth = {"X-chkp-sid": response_data["sid"]}
         except KeyError:
