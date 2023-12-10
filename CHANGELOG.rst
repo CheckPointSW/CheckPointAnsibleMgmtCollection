@@ -4,6 +4,31 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v5.1.3
+======
+
+Release Summary
+---------------
+
+This is release 5.1.3 of ``check_point.mgmt``, released on 2023-12-13.
+
+Bugfixes
+--------
+
+- httpapi/checkpoint.py - Raise a fatal error if login wasn't successful.
+
+v5.1.2
+======
+
+Release Summary
+---------------
+
+This is release 5.1.2 of ``check_point.mgmt``, released on 2023-12-12.
+
+Minor Changes
+--------
+
+- meta/runtime.yml - update minimum Ansible version required to 2.14.0.
 
 v5.2.0
 ======
