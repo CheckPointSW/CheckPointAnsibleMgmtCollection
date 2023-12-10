@@ -4,21 +4,31 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
-v5.2.2
+v5.1.3
 ======
 
 Release Summary
 ---------------
 
-This is release 5.2.2 of ``check_point.mgmt``, released on 2024-01-28.
+This is release 5.1.3 of ``check_point.mgmt``, released on 2023-12-13.
 
-v5.2.1
+Bugfixes
+--------
+
+- httpapi/checkpoint.py - Raise a fatal error if login wasn't successful.
+
+v5.1.2
 ======
 
 Release Summary
 ---------------
 
-This is release 5.2.1 of ``check_point.mgmt``, released on 2024-01-16
+This is release 5.1.2 of ``check_point.mgmt``, released on 2023-12-12.
+
+Minor Changes
+--------
+
+- meta/runtime.yml - update minimum Ansible version required to 2.14.0.
 
 v5.2.0
 ======
@@ -37,8 +47,8 @@ New Modules
 -----------
 
 - check_point.mgmt.cp_mgmt_add_central_license - Add central license.
-- check_point.mgmt.cp_mgmt_central_license_facts - Get central-license objects facts on Checkpoint over Web Services API.
 - check_point.mgmt.cp_mgmt_delete_central_license - Delete central license.
+- check_point.mgmt.cp_mgmt_central_license_facts - Get central-license objects facts on Checkpoint over Web Services API.
 - check_point.mgmt.cp_mgmt_distribute_cloud_licenses - Distribute licenses to target CloudGuard gateways.
 - check_point.mgmt.cp_mgmt_show_cloud_licenses_usage - Show attached licenses usage.
 - check_point.mgmt.cp_mgmt_show_ha_status - Retrieve domain high availability status.
@@ -65,7 +75,7 @@ Release Summary
 This is release 5.1.2 of ``check_point.mgmt``, released on 2023-12-12.
 
 Minor Changes
--------------
+--------
 
 - meta/runtime.yml - update minimum Ansible version required to 2.14.0.
 
