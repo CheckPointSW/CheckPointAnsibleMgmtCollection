@@ -30,7 +30,8 @@ DOCUMENTATION = """
 module: cp_mgmt_vsx_run_operation
 short_description: Run the VSX operation by its name and parameters.
 description:
-  - Run the VSX operation by its name and parameters. <br><b>Important note:</b> An automatic session publish is part of all the operations in this API.
+  - Run the VSX operation by its name and parameters.
+  - An automatic session publish is part of all the operations in this API.
   - All operations are performed over Web Services API.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
