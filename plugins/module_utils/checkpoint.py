@@ -264,7 +264,7 @@ def is_checkpoint_param(parameter):
 
 
 def contains_show_identifier_param(payload):
-    identifier_params = ["name", "uid", "assigned-domain", "task-id"]
+    identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature"]
     for param in identifier_params:
         if payload.get(param) is not None:
             return True
@@ -300,6 +300,7 @@ def get_payload_from_parameters(params):
                     or parameter == "server_version"
                     or parameter == "check_point_host_version"
                     or parameter == "target_version"
+                    or parameter == "vsx_version"
                 ):
                     parameter = "version"
 
