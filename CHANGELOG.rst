@@ -12,14 +12,6 @@ Release Summary
 
 This is release 5.2.1 of ``check_point.mgmt``, released on 2024-01-16
 
-v5.2.1
-======
-
-Release Summary
----------------
-
-This is release 5.2.1 of ``check_point.mgmt``, released on 2024-01-16
-
 v5.2.0
 ======
 
