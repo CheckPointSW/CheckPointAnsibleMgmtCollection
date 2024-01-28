@@ -15,17 +15,15 @@ class ModuleDocFragment(object):
 options:
   state:
     description:
-      - State of the access rule (present or absent). Defaults to present.
+      - State of the access rule (present or absent).
     type: str
     default: present
-    choices:
-      - 'present'
-      - 'absent'
+    choices: ['present', 'absent']
   auto_publish_session:
     description:
-      - Publish the current session if changes have been performed
-        after task completes.
+      - Publish the current session if changes have been performed after task completes.
     type: bool
+    default: False
   wait_for_task:
     description:
       - Wait for the task to end. Such as publish task.

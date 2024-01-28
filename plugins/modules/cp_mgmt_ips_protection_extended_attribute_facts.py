@@ -111,14 +111,14 @@ def main():
         filter=dict(type='str'),
         limit=dict(type='int'),
         offset=dict(type='int'),
-        order=dict(type='list', elememnts='dict', options=dict(
+        order=dict(type='list', elements='dict', options=dict(
             ASC=dict(type='str', choices=['name']),
             DESC=dict(type='str', choices=['name'])
         ))
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     api_call_object = "ips-protection-extended-attribute"
     api_call_object_plural_version = "ips-protection-extended-attributes"

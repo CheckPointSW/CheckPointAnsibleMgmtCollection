@@ -379,7 +379,7 @@ def main():
                                                                'group-14', 'group-15', 'group-16', 'group-17',
                                                                'group-18', 'group-19', 'group-20',
                                                                'group-24']),
-                ike_p1_rekey_time=dict(type='int'),
+                ike_p1_rekey_time=dict(type='int', no_log=False),
                 ike_p1_rekey_time_unit=dict(type='str', choices=['days', 'hours', 'minutes', 'seconds'])
             )),
             ike_phase_2=dict(type='dict', options=dict(
@@ -391,7 +391,7 @@ def main():
                 ike_p2_pfs_dh_grp=dict(type='str', choices=['group-1', 'group-2', 'group-5',
                                                             'group-14', 'group-15', 'group-16', 'group-17', 'group-18',
                                                             'group-19', 'group-20', 'group-24']),
-                ike_p2_rekey_time=dict(type='int'),
+                ike_p2_rekey_time=dict(type='int', no_log=False),
                 ike_p2_rekey_time_unit=dict(type='str', choices=['days', 'hours', 'minutes', 'seconds']),
             ))
         )),
@@ -417,7 +417,7 @@ def main():
                     type="str",
                     choices=["cast", "aes-256", "des", "aes-128", "3des"],
                 ),
-                ike_p1_rekey_time=dict(type='int'),
+                ike_p1_rekey_time=dict(type='int', no_log=False),
                 ike_p1_rekey_time_unit=dict(type='str', choices=['days', 'hours', 'minutes', 'seconds']),
             ),
         ),
@@ -447,7 +447,7 @@ def main():
                 ike_p2_pfs_dh_grp=dict(type='str', choices=['group-1', 'group-2', 'group-5', 'group-14',
                                                             'group-15', 'group-16', 'group-17', 'group-18', 'group-19',
                                                             'group-20', 'group-24']),
-                ike_p2_rekey_time=dict(type='int'),
+                ike_p2_rekey_time=dict(type='int', no_log=False),
                 ike_p2_rekey_time_unit=dict(type='str', choices=['days', 'hours', 'minutes', 'seconds']),
             ),
         ),

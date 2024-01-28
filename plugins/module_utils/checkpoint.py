@@ -46,13 +46,13 @@ BASE_HEADERS = {
 }
 
 checkpoint_argument_spec_for_action_module = dict(
-    auto_publish_session=dict(type="bool"),
+    auto_publish_session=dict(type="bool", default=False),
     wait_for_task_timeout=dict(type="int", default=30),
     version=dict(type="str"),
 )
 
 checkpoint_argument_spec_for_objects = dict(
-    auto_publish_session=dict(type="bool"),
+    auto_publish_session=dict(type="bool", default=False),
     wait_for_task=dict(type="bool", default=True),
     wait_for_task_timeout=dict(type="int", default=30),
     state=dict(type="str", choices=["present", "absent"], default="present"),
@@ -65,7 +65,7 @@ checkpoint_argument_spec_for_commands = dict(
     wait_for_task=dict(type="bool", default=True),
     wait_for_task_timeout=dict(type="int", default=30),
     version=dict(type="str"),
-    auto_publish_session=dict(type="bool"),
+    auto_publish_session=dict(type="bool", default=False),
 )
 
 delete_params = [
@@ -76,7 +76,8 @@ delete_params = [
     "rule-name",
     "package",
     "ignore-errors",
-    "ignore-warnings"
+    "ignore-warnings",
+    "gateway-uid"
 ]
 
 remove_from_set_payload = {
@@ -303,6 +304,10 @@ def get_payload_from_parameters(params):
                     or parameter == "vsx_version"
                 ):
                     parameter = "version"
+
+                # message & syslog_facility are internally used by Ansible, so need to avoid param duplicity
+                elif parameter == "login_message":
+                    parameter = "message"
 
                 payload[parameter.replace("_", "-")] = parameter_value
 
@@ -579,7 +584,7 @@ def api_call_facts(module, api_call_object, api_call_object_plural_version):
         False,
         False,
     )
-    result = {api_call_object: response}
+    result = {api_call_object.replace("-", "_"): response}
     return result
 
 
@@ -1431,12 +1436,12 @@ def api_call_facts_for_rule(
 
 
 # The code from here till EOF will be deprecated when Rikis' modules will be deprecated
-checkpoint_argument_spec = dict(
-    auto_publish_session=dict(type="bool", default=True),
-    policy_package=dict(type="str", default="standard"),
-    auto_install_policy=dict(type="bool", default=True),
-    targets=dict(type="list"),
-)
+# checkpoint_argument_spec = dict(
+#     auto_publish_session=dict(type="bool", default=True),
+#     policy_package=dict(type="str", default="standard"),
+#     auto_install_policy=dict(type="bool", default=True),
+#     targets=dict(type="list"),
+# )
 
 
 def publish(connection, uid=None):

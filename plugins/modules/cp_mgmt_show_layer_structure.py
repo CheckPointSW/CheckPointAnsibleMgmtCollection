@@ -31,7 +31,7 @@ module: cp_mgmt_show_layer_structure
 short_description: Shows the entire layer structure.
 description:
   - Shows the entire layer structure. The layer structure is divided into sections and each section has its own entities.
-  - Supported layer types: Access Control, NAT, Custom Threat Prevention, Threat Exception and HTTPS Inspection.
+  - Supported layer types include Access Control, NAT, Custom Threat Prevention, Threat Exception and HTTPS Inspection.
   - All operations are performed over Web Services API.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"

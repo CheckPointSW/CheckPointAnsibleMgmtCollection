@@ -19,6 +19,7 @@ description:
   - This resource module allows for addition, deletion, or modification of CP Threat Layers.
   - This resource module also takes care of gathering Threat Layers config facts
 version_added: "5.0.0"
+author: Ansible Security Automation Team (@justjais) <https://github.com/ansible-security>-
 options:
   config:
     description: A dictionary of THREAT LAYERS options
@@ -150,7 +151,6 @@ options:
     - replaced
     - gathered
     - deleted
-author: Ansible Team
 """
 
 EXAMPLES = """

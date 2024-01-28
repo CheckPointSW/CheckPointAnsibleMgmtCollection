@@ -956,3 +956,10 @@ releases:
     fragments:
       - 5.2.1.yml
     release_date: "2024-01-16"
+  5.2.2:
+    changes:
+      release_summary: This is release 5.2.2 of ``check_point.mgmt``, released on
+        2024-01-28.
+    fragments:
+      - 5.2.2.yml
+    release_date: '2024-01-28'

@@ -27,4 +27,9 @@ options:
     description:
       - Version of checkpoint. If not given one, the latest version taken.
     type: str
+  auto_publish_session:
+    description:
+      - Publish the current session if changes have been performed after task completes.
+    type: bool
+    default: False
 """

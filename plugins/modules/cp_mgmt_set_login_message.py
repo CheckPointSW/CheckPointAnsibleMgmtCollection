@@ -39,7 +39,7 @@ options:
     description:
       - Login message header.
     type: str
-  message:
+  login_message:
     description:
       - Login message body.
     type: str
@@ -64,7 +64,7 @@ EXAMPLES = """
 - name: set-login-message
   cp_mgmt_set_login_message:
     header: Warning
-    message: Unauthorized access of this server is prohibited and punished by law
+    login_message: Unauthorized access of this server is prohibited and punished by law
     show_message: 'true'
     warning: 'true'
 """
@@ -83,7 +83,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         header=dict(type='str'),
-        message=dict(type='str'),
+        login_message=dict(type='str'),
         show_message=dict(type='bool'),
         warning=dict(type='bool'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full'])

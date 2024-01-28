@@ -245,7 +245,7 @@ def main():
                 fingerprint=dict(type='str'),
                 override_proxy=dict(type='bool'),
                 proxy_url=dict(type='str'),
-                shared_secret=dict(type='str'),
+                shared_secret=dict(type='str', no_log=True),
                 time_out=dict(type='int')
             )),
             run_script=dict(type='dict', options=dict(
