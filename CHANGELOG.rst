@@ -4,6 +4,14 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v5.2.2
+======
+
+Release Summary
+---------------
+
+This is release 5.2.2 of ``check_point.mgmt``, released on 2024-01-28.
+
 v5.2.1
 ======
 

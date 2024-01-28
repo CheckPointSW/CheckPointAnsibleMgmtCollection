@@ -72,7 +72,6 @@ options:
           - Maximum number of IP addresses in the VPN Domain of each peer. This value will be enforced only when limit-peer-domain-size field is
             set to true. Select a value between 1 and 256. Default value is 256.
         type: int
-        choices: ['1-256']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -148,7 +147,7 @@ def main():
         tags=dict(type='list', elements='str'),
         vpn_domain=dict(type='dict', options=dict(
             limit_peer_domain_size=dict(type='bool'),
-            max_allowed_addresses=dict(type='int', choices=['1-256'])
+            max_allowed_addresses=dict(type='int')
         )),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',

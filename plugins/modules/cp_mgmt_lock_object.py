@@ -28,10 +28,10 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_lock_object
-short_description: Lock object using uid or {name and type}.
+short_description: Lock object using name and type.
 description:
-  - Lock object using uid or {name and type}. Can lock object only if the object is not locked by another session.
-  - The object can be unlocked by the following commands: unlock, publish or discard.
+  - Lock object using name and type. Can lock object only if the object is not locked by another session.
+  - The object can be unlocked by the unlock, publish or discard commands.
   - All operations are performed over Web Services API.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"

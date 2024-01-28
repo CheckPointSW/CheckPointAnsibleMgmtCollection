@@ -112,7 +112,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 
 def main():
     argument_spec = dict(
-        file_path=dict(type='str'),
+        file_path=dict(type='str', required=True),
         domain_name=dict(type='str'),
         domain_ip_address=dict(type='str'),
         domain_server_name=dict(type='str'),

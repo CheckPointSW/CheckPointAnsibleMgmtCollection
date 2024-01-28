@@ -69,6 +69,7 @@ options:
       - Sorts the results by search criteria. Automatically sorts the results by Name, in the ascending order.
         This parameter is relevant only for getting few objects.
     type: list
+    elements: dict
     suboptions:
       ASC:
         description:
@@ -89,6 +90,7 @@ options:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
     type: list
+    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
@@ -132,7 +134,7 @@ def main():
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     api_call_object = "radius-server"
     api_call_object_plural_version = "radius-servers"

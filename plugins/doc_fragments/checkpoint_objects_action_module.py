@@ -18,6 +18,7 @@ options:
       - Publish the current session if changes have been performed
         after task completes.
     type: bool
+    default: False
   wait_for_task_timeout:
     description:
       - How many minutes to wait until throwing a timeout error.
