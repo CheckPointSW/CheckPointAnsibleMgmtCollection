@@ -265,7 +265,7 @@ def is_checkpoint_param(parameter):
 
 
 def contains_show_identifier_param(payload):
-    identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature"]
+    identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature", "url"]
     for param in identifier_params:
         if payload.get(param) is not None:
             return True
