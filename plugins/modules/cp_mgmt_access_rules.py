@@ -300,7 +300,7 @@ cp_mgmt_access_rules:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.connection import Connection
+''' from ansible.module_utils.connection import Connection '''  # Removing this line due to pylint error. this module is not being used.
 from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
     checkpoint_argument_spec_for_action_module,
 )
