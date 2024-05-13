@@ -39,7 +39,6 @@ from ansible_collections.ansible.netcommon.plugins.module_utils.network.common i
     utils,
 )
 
-
 BASE_HEADERS = {
     "Content-Type": "application/json",
     "User-Agent": "Ansible",
@@ -77,7 +76,8 @@ delete_params = [
     "package",
     "ignore-errors",
     "ignore-warnings",
-    "gateway-uid"
+    "gateway-uid",
+    "url"
 ]
 
 remove_from_set_payload = {
@@ -88,6 +88,11 @@ remove_from_set_payload = {
         "main-ip-address",
     ],
     "md-permissions-profile": ["permission-level"],
+    "access-section": ["position"],
+    "nat-section": ["position"],
+    "https-section": ["position"],
+    "mobile-access-section": ["position"],
+    "mobile-access-profile-section": ["position"],
 }
 
 remove_from_add_payload = {"lsm-cluster": ["name"]}
@@ -283,9 +288,9 @@ def get_payload_from_parameters(params):
                     parameter.replace("_", "-")
                 ] = get_payload_from_parameters(parameter_value)
             elif (
-                isinstance(parameter_value, list)
-                and len(parameter_value) != 0
-                and isinstance(parameter_value[0], dict)
+                    isinstance(parameter_value, list)
+                    and len(parameter_value) != 0
+                    and isinstance(parameter_value[0], dict)
             ):
                 payload_list = []
                 for element_dict in parameter_value:
@@ -296,12 +301,12 @@ def get_payload_from_parameters(params):
             else:
                 # special handle for this param in order to avoid two params called "version"
                 if (
-                    parameter == "gateway_version"
-                    or parameter == "cluster_version"
-                    or parameter == "server_version"
-                    or parameter == "check_point_host_version"
-                    or parameter == "target_version"
-                    or parameter == "vsx_version"
+                        parameter == "gateway_version"
+                        or parameter == "cluster_version"
+                        or parameter == "server_version"
+                        or parameter == "check_point_host_version"
+                        or parameter == "target_version"
+                        or parameter == "vsx_version"
                 ):
                     parameter = "version"
 
@@ -320,8 +325,8 @@ def wait_for_task(module, version, connection, task_id):
     task_complete = False
     minutes_until_timeout = 30
     if (
-        module.params["wait_for_task_timeout"] is not None
-        and module.params["wait_for_task_timeout"] >= 0
+            module.params["wait_for_task_timeout"] is not None
+            and module.params["wait_for_task_timeout"] >= 0
     ):
         minutes_until_timeout = module.params["wait_for_task_timeout"]
     max_num_iterations = minutes_until_timeout * 30
@@ -1152,7 +1157,7 @@ def build_rulebase_payload(api_call_object, payload, position_number):
 
 
 def build_rulebase_command(api_call_object):
-    rulebase_command = "show-" + api_call_object.split("-")[0] + "-rulebase"
+    rulebase_command = "show-" + api_call_object + "base"
 
     if api_call_object == "threat-exception":
         rulebase_command = "show-threat-rule-exception-rulebase"
@@ -1195,17 +1200,22 @@ def get_relevant_show_rulebase_command(api_call_object):
         return "show-threat-rule-exception-rulebase"
     elif api_call_object == 'nat-rule':
         return 'show-nat-rulebase'
-    # uncomment code below when https module is added as a crud module
-    # elif api_call_object == 'https-rule':
-    #     return 'show-https-rulebase'
+    elif api_call_object == 'https-rule':
+        return 'show-https-rulebase'
+    elif api_call_object == 'mobile-access-rule':
+        return 'show-mobile-access-rulebase'
+    elif api_call_object == 'mobile-access-profile-rule':
+        return 'show-mobile-access-profile-rulebase'
 
 
 # returns the show rulebase payload with the relevant required identifiers params
 def get_relevant_show_rulebase_identifier_payload(api_call_object, payload):
+    show_rulebase_payload = {}
     if api_call_object == 'nat-rule':
         show_rulebase_payload = {'package': payload['package']}
 
-    else:
+    # mobile-access-x apis don't have an identifier in show rulebase command
+    elif 'mobile-access' not in api_call_object:
         show_rulebase_payload = {'name': payload['layer']}
 
     if api_call_object == 'threat-exception':
@@ -1229,7 +1239,6 @@ def get_relevant_layer_or_package_identifier(api_call_object, payload):
 def is_equals_with_position_param(
     payload, connection, version, api_call_object
 ):
-
     (
         position_number,
         section_according_to_position,
@@ -1396,18 +1405,13 @@ def api_call_for_rule(module, api_call_object):
 
 # check if call is in plural form
 def call_is_plural(api_call_object, payload):
-    is_plural = False
-    if "access" in api_call_object and payload.get("layer") is None:
-        is_plural = True
-    elif "threat" in api_call_object and payload.get("layer") is None:
-        is_plural = True
-    elif (
-        "nat" in api_call_object
-        and payload.get("name") is None
-        and payload.get("rule-number") is None
-    ):
-        is_plural = True
-    return is_plural
+    if payload.get("name") is not None or payload.get("rule-number") is not None and \
+            ("nat" in api_call_object or "mobile-access" in api_call_object):
+        return False
+    if payload.get("layer") is None and \
+            ("access" in api_call_object or "threat" in api_call_object or "https" in api_call_object):
+        return True
+    return False
 
 
 # handle api call facts for rule
@@ -1418,7 +1422,7 @@ def api_call_facts_for_rule(
     connection = Connection(module._socket_path)
     version = get_version(module)
 
-    # if there is no layer, the API command will be in plural version (e.g. show-hosts instead of show-host)
+    # if there is no layer, the API command will be in plural version (e.g. show-https-rulebase instead of show-https-rule)
     if call_is_plural(api_call_object, payload):
         api_call_object = api_call_object_plural_version
 
@@ -1646,14 +1650,14 @@ class CheckPointRequest(object):
 
     # handle call
     def handle_call(
-        self,
-        connection,
-        version,
-        api_url,
-        payload,
-        to_discard_on_failure,
-        session_uid=None,
-        to_publish=False,
+            self,
+            connection,
+            version,
+            api_url,
+            payload,
+            to_discard_on_failure,
+            session_uid=None,
+            to_publish=False,
     ):
         code, response = send_request(connection, version, api_url, payload)
         if code != 200:
@@ -1662,7 +1666,7 @@ class CheckPointRequest(object):
                     code, response, connection, version, session_uid
                 )
             elif "object_not_found" not in response.get(
-                "code"
+                    "code"
             ) and "not found" not in response.get("message"):
                 raise _fail_json(
                     "Checkpoint session with ID: {0}".format(session_uid)
@@ -1690,13 +1694,13 @@ class CheckPointRequest(object):
 
     # handle the call and set the result with 'changed' and teh response
     def handle_add_and_set_result(
-        self,
-        connection,
-        version,
-        api_url,
-        payload,
-        session_uid,
-        auto_publish_session=False,
+            self,
+            connection,
+            version,
+            api_url,
+            payload,
+            session_uid,
+            auto_publish_session=False,
     ):
         code, response = self.handle_call(
             connection,
@@ -1751,15 +1755,15 @@ class CheckPointRequest(object):
 
     # handle api call
     def api_call(
-        self,
-        connection,
-        payload,
-        remove_keys,
-        api_call_object,
-        state,
-        equals_response,
-        version,
-        delete_params,
+            self,
+            connection,
+            payload,
+            remove_keys,
+            api_call_object,
+            state,
+            equals_response,
+            version,
+            delete_params,
     ):
         result = {}
         auto_publish_session = False

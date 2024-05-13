@@ -45,6 +45,29 @@ options:
     description:
       - Position in the rulebase.
     type: str
+  relative_position:
+    description:
+      - Position in the rulebase.
+      - Use of this field is relevant only for "add" operation.
+    type: dict
+    version_added: "6.0.0"
+    suboptions:
+      below:
+        description:
+          - Add section below specific rule/section identified by name.
+        type: str
+      above:
+        description:
+          - Add section above specific rule/section identified by name.
+        type: str
+      top:
+        description:
+          - Add section to the top of a specific section identified by name.
+        type: str
+      bottom:
+        description:
+          - Add section to the bottom of a specific section identified by name.
+        type: str
   name:
     description:
       - Object name.
@@ -106,6 +129,15 @@ def main():
     argument_spec = dict(
         layer=dict(type="str"),
         position=dict(type="str"),
+        relative_position=dict(
+            type="dict",
+            options=dict(
+                below=dict(type="str"),
+                above=dict(type="str"),
+                top=dict(type="str"),
+                bottom=dict(type="str"),
+            ),
+        ),
         name=dict(type="str", required=True),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
         ignore_warnings=dict(type="bool"),
@@ -117,6 +149,14 @@ def main():
         argument_spec=argument_spec, supports_check_mode=True
     )
     api_call_object = "access-section"
+
+    if module.params["relative_position"] is not None:
+        if module.params["position"] is not None:
+            raise AssertionError(
+                "The use of both 'relative_position' and 'position' arguments isn't allowed"
+            )
+        module.params["position"] = module.params["relative_position"]
+    module.params.pop("relative_position")
 
     result = api_call(module, api_call_object)
     module.exit_json(**result)
