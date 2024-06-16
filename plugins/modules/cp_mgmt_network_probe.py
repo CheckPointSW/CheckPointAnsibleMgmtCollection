@@ -82,14 +82,14 @@ options:
     elements: str
   interval:
     description:
-      - The time interval (in seconds) between each probe request.<br>Best Practice - The interval value should be lower than the timeout value.
+      - The time interval in the range of 5-300 (seconds) between each probe request.
+        Best Practice - The interval value should be lower than the timeout value.
     type: int
-    choices: ['5-300']
   timeout:
     description:
-      - The probe expiration timeout (in seconds). If there is not a single reply within this time, the status of the probe changes to "Down".
+      - The probe expiration timeout in the range of 5-300 (seconds).
+        If there is not a single reply within this time, the status of the probe changes to "Down".
     type: int
-    choices: ['5-300']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -172,8 +172,8 @@ def main():
         install_on=dict(type='list', elements='str'),
         protocol=dict(type='str', choices=['http', 'icmp']),
         tags=dict(type='list', elements='str'),
-        interval=dict(type='int', choices=['5-300']),
-        timeout=dict(type='int', choices=['5-300']),
+        interval=dict(type='int'),
+        timeout=dict(type='int'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

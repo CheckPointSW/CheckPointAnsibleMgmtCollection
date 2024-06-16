@@ -68,7 +68,6 @@ options:
     description:
       - Rule inspect level. "Bypass" or "Inspect".
     type: str
-    elements: str
   blade:
     description:
       - Blades for HTTPS Inspection. Identified by Name or UID of the blade.

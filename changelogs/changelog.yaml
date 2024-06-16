@@ -957,5 +957,154 @@ releases:
       release_summary: This is release 5.2.3 of ``check_point.mgmt``, released on
         2024-03-04.
     fragments:
-      - 5.2.2.yml
+      - 5.2.3.yml
     release_date: '2024-03-04'
+  6.0.0:
+    changes:
+      major_changes:
+        - New R82 Resource Modules
+        - Support relative positioning for sections
+      release_summary: This is release 6.0.0 of ``check_point.mgmt``, released on
+        2024-06-16.
+    fragments:
+      - 6.0.0.yml
+    modules:
+      - description: Create new custom trusted CA certificate.
+        name: cp_mgmt_add_custom_trusted_ca_certificate
+        namespace: ''
+      - description: Add outbound-inspection-certificate
+        name: cp_mgmt_add_outbound_inspection_certificate
+        namespace: ''
+      - description: Retrieve existing Check Point trusted CA certificate objects facts
+          on Checkpoint devices..
+        name: cp_mgmt_cp_trusted_ca_certificate_facts
+        namespace: ''
+      - description: Retrieve existing custom trusted CA certificate objects facts on
+          Checkpoint devices.
+        name: cp_mgmt_custom_trusted_ca_certificate_facts
+        namespace: ''
+      - description: Delete existing custom trusted CA certificate using name or uid.
+        name: cp_mgmt_delete_custom_trusted_ca_certificate
+        namespace: ''
+      - description: Delete outbound-inspection-certificate
+        name: cp_mgmt_delete_outbound_inspection_certificate
+        namespace: ''
+      - description: Manages external-trusted-ca objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_external_trusted_ca
+        namespace: ''
+      - description: Get external-trusted-ca objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_external_trusted_ca_facts
+        namespace: ''
+      - description: Manages https-rule objects on Checkpoint over Web Services API
+        name: cp_mgmt_https_rule
+        namespace: ''
+      - description: Get https-rule objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_https_rule_facts
+        namespace: ''
+      - description: Import Outbound Inspection certificate for HTTPS inspection.
+        name: cp_mgmt_import_outbound_inspection_certificate
+        namespace: ''
+      - description: Get Infinity Identity Provider objects facts from the Infinity
+          Portal.
+        name: cp_mgmt_infinity_idp_facts
+        namespace: ''
+      - description: Retrieve users/groups/machines objects facts from the Identity
+          Provider.
+        name: cp_mgmt_infinity_idp_object_facts
+        namespace: ''
+      - description: Manages mobile-access-profile-rule objects on Checkpoint over Web
+          Services API
+        name: cp_mgmt_mobile_access_profile_rule
+        namespace: ''
+      - description: Get mobile-access-profile-rule objects facts on Checkpoint over
+          Web Services API
+        name: cp_mgmt_mobile_access_profile_rule_facts
+        namespace: ''
+      - description: Manages mobile-access-profile-section objects on Checkpoint over
+          Web Services API
+        name: cp_mgmt_mobile_access_profile_section
+        namespace: ''
+      - description: Manages mobile-access-rule objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_mobile_access_rule
+        namespace: ''
+      - description: Get mobile-access-rule objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_mobile_access_rule_facts
+        namespace: ''
+      - description: Manages mobile-access-section objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_mobile_access_section
+        namespace: ''
+      - description: Manages mobile-profile objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_mobile_profile
+        namespace: ''
+      - description: Get mobile-profile objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_mobile_profile_facts
+        namespace: ''
+      - description: Manages multiple-key-exchanges objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_multiple_key_exchanges
+        namespace: ''
+      - description: Get multiple-key-exchanges objects facts on Checkpoint over Web
+          Services API
+        name: cp_mgmt_multiple_key_exchanges_facts
+        namespace: ''
+      - description: Manages network-probe objects on Checkpoint over Web Services API
+        name: cp_mgmt_network_probe
+        namespace: ''
+      - description: Get network-probe objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_network_probe_facts
+        namespace: ''
+      - description: Manages opsec-trusted-ca objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_opsec_trusted_ca
+        namespace: ''
+      - description: Get opsec-trusted-ca objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_opsec_trusted_ca_facts
+        namespace: ''
+      - description: Get outbound-inspection-certificate objects facts on Checkpoint
+          over Web Services API
+        name: cp_mgmt_outbound_inspection_certificate_facts
+        namespace: ''
+      - description: Manages passcode-profile objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_passcode_profile
+        namespace: ''
+      - description: Get passcode-profile objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_passcode_profile_facts
+        namespace: ''
+      - description: Edit existing Check Point trusted CA certificate using name or
+          uid.
+        name: cp_mgmt_set_cp_trusted_ca_certificate
+        namespace: ''
+      - description: Enable or disable global usage on a specific target.
+        name: cp_mgmt_set_gateway_global_use
+        namespace: ''
+      - description: Edit existing Internal CA object.
+        name: cp_mgmt_set_internal_trusted_ca
+        namespace: ''
+      - description: Edit outbound-inspection-certificate
+        name: cp_mgmt_set_outbound_inspection_certificate
+        namespace: ''
+      - description: Show global usage of a specific target.
+        name: cp_mgmt_show_gateway_global_use
+        namespace: ''
+      - description: Retrieve existing Internal CA object.
+        name: cp_mgmt_show_internal_trusted_ca
+        namespace: ''
+      - description: Retrieve existing Mobile Access Profile section using section name
+          or uid.
+        name: cp_mgmt_show_mobile_access_profile_section
+        namespace: ''
+      - description: Retrieve existing Mobile Access section using section name or uid.
+        name: cp_mgmt_show_mobile_access_section
+        namespace: ''
+    release_date: '2024-06-16'

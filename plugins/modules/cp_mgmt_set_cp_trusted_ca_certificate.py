@@ -56,6 +56,7 @@ options:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
     type: list
+    elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """
 
@@ -82,7 +83,7 @@ def main():
         name=dict(type='str', required=True),
         status=dict(type='str', choices=['enabled', 'disabled']),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
-        domains_to_process=dict(type='list')
+        domains_to_process=dict(type='list', elements='str')
     )
     argument_spec.update(checkpoint_argument_spec_for_commands)
 
