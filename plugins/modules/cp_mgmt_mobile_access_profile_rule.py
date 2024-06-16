@@ -98,7 +98,6 @@ EXAMPLES = """
     mobile_profile: Default_Profile
     name: Rule 1
     position: 2
-    state: present
     user_groups:
     - my_group
     state: present

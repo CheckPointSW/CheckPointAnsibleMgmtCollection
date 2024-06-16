@@ -4,6 +4,62 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.0.0
+======
+
+Release Summary
+---------------
+
+This is release 6.0.0 of ``check_point.mgmt``, released on 2024-06-16.
+
+Major Changes
+-------------
+
+- New R82 Resource Modules
+- Support relative positioning for sections
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_add_custom_trusted_ca_certificate - Create new custom trusted CA certificate.
+- check_point.mgmt.cp_mgmt_add_outbound_inspection_certificate - Add outbound-inspection-certificate
+- check_point.mgmt.cp_mgmt_cp_trusted_ca_certificate_facts - Retrieve existing Check Point trusted CA certificate objects facts on Checkpoint devices..
+- check_point.mgmt.cp_mgmt_custom_trusted_ca_certificate_facts - Retrieve existing custom trusted CA certificate objects facts on Checkpoint devices.
+- check_point.mgmt.cp_mgmt_delete_custom_trusted_ca_certificate - Delete existing custom trusted CA certificate using name or uid.
+- check_point.mgmt.cp_mgmt_delete_outbound_inspection_certificate - Delete outbound-inspection-certificate
+- check_point.mgmt.cp_mgmt_external_trusted_ca - Manages external-trusted-ca objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_external_trusted_ca_facts - Get external-trusted-ca objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_https_rule - Manages https-rule objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_https_rule_facts - Get https-rule objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_import_outbound_inspection_certificate - Import Outbound Inspection certificate for HTTPS inspection.
+- check_point.mgmt.cp_mgmt_infinity_idp_facts - Get Infinity Identity Provider objects facts from the Infinity Portal.
+- check_point.mgmt.cp_mgmt_infinity_idp_object_facts - Retrieve users/groups/machines objects facts from the Identity Provider.
+- check_point.mgmt.cp_mgmt_mobile_access_profile_rule - Manages mobile-access-profile-rule objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_access_profile_rule_facts - Get mobile-access-profile-rule objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_access_profile_section - Manages mobile-access-profile-section objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_access_rule - Manages mobile-access-rule objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_access_rule_facts - Get mobile-access-rule objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_access_section - Manages mobile-access-section objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_profile - Manages mobile-profile objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_mobile_profile_facts - Get mobile-profile objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_multiple_key_exchanges - Manages multiple-key-exchanges objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_multiple_key_exchanges_facts - Get multiple-key-exchanges objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_network_probe - Manages network-probe objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_network_probe_facts - Get network-probe objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_opsec_trusted_ca - Manages opsec-trusted-ca objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_opsec_trusted_ca_facts - Get opsec-trusted-ca objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_outbound_inspection_certificate_facts - Get outbound-inspection-certificate objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_passcode_profile - Manages passcode-profile objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_passcode_profile_facts - Get passcode-profile objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_set_cp_trusted_ca_certificate - Edit existing Check Point trusted CA certificate using name or uid.
+- check_point.mgmt.cp_mgmt_set_gateway_global_use - Enable or disable global usage on a specific target.
+- check_point.mgmt.cp_mgmt_set_internal_trusted_ca - Edit existing Internal CA object.
+- check_point.mgmt.cp_mgmt_set_outbound_inspection_certificate - Edit outbound-inspection-certificate
+- check_point.mgmt.cp_mgmt_show_gateway_global_use - Show global usage of a specific target.
+- check_point.mgmt.cp_mgmt_show_internal_trusted_ca - Retrieve existing Internal CA object.
+- check_point.mgmt.cp_mgmt_show_mobile_access_profile_section - Retrieve existing Mobile Access Profile section using section name or uid.
+- check_point.mgmt.cp_mgmt_show_mobile_access_section - Retrieve existing Mobile Access section using section name or uid.
+
 v5.2.3
 ======
 
