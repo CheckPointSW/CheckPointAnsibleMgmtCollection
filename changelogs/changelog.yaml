@@ -523,11 +523,6 @@ releases:
           This command only available  for Multi-Domain server.
         name: cp_mgmt_set_idp_to_domain_assignment
         namespace: ""
-      - description: >
-          Create or update a certificate to be used as outbound certificate for HTTPS inspection.
-          The outbound CA certificate will be used by the Gateway to inspect SSL traffic.
-        name: cp_mgmt_set_outbound_inspection_certificate
-        namespace: ""
       - description: Edit Threat Prevention's Blades' Settings.
         name: cp_mgmt_set_threat_advanced_settings
         namespace: ""
@@ -539,9 +534,6 @@ releases:
         namespace: ""
       - description: Retrieve default Identity Provider assignment that used for Management server administrator access.
         name: cp_mgmt_show_idp_default_assignment
-        namespace: ""
-      - description: Show outbound inspection certificate.
-        name: cp_mgmt_show_outbound_inspection_certificate
         namespace: ""
       - description: >
           Shows the status of all processes in the current machine (Multi-Domain Server and all Domain Management / Log Servers).
