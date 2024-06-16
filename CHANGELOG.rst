@@ -4,6 +4,14 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v5.2.3
+======
+
+Release Summary
+---------------
+
+This is release 5.2.3 of ``check_point.mgmt``, released on 2024-03-04.
+
 v5.2.2
 ======
 
@@ -272,7 +280,6 @@ New Modules
 - check_point.mgmt.cp_mgmt_idp_administrator_group - Manages idp-administrator-group objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_idp_administrator_group_facts - Get idp-administrator-group objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_idp_to_domain_assignment_facts - Get idp-to-domain-assignment objects facts on Checkpoint over Web Services API
-- check_point.mgmt.cp_mgmt_import_outbound_inspection_certificate - Import Outbound Inspection certificate for HTTPS inspection.
 - check_point.mgmt.cp_mgmt_install_lsm_policy - Executes the lsm-install-policy on a given list of targets. Install the LSM policy that defined on the attached LSM profile on the targets devices.
 - check_point.mgmt.cp_mgmt_install_lsm_settings - Executes the lsm-install-settings on a given list of targets. Install the provisioning settings that defined on the object on the targets devices.
 - check_point.mgmt.cp_mgmt_interoperable_device - Manages interoperable-device objects on Checkpoint over Web Services API
@@ -293,12 +300,10 @@ New Modules
 - check_point.mgmt.cp_mgmt_set_global_properties - Edit Global Properties.
 - check_point.mgmt.cp_mgmt_set_idp_default_assignment - Set default Identity Provider assignment to be use for Management server administrator access.
 - check_point.mgmt.cp_mgmt_set_idp_to_domain_assignment - Set Identity Provider assignment to domain, to allow administrator login to that domain using that identity provider, if there is no Identity Provider assigned to the domain the 'idp-default-assignment' will be used. This command only available  for Multi-Domain server.
-- check_point.mgmt.cp_mgmt_set_outbound_inspection_certificate - Create or update a certificate to be used as outbound certificate for HTTPS inspection. <br>The outbound CA certificate will be used by the Gateway to inspect SSL traffic.
 - check_point.mgmt.cp_mgmt_set_threat_advanced_settings - Edit Threat Prevention's Blades' Settings.
 - check_point.mgmt.cp_mgmt_show_cloud_services - Show the connection status of the Management Server to Check Point's Infinity Portal.
 - check_point.mgmt.cp_mgmt_show_global_properties - Retrieve Global Properties.
 - check_point.mgmt.cp_mgmt_show_idp_default_assignment - Retrieve default Identity Provider assignment that used for Management server administrator access.
-- check_point.mgmt.cp_mgmt_show_outbound_inspection_certificate - Show outbound inspection certificate.
 - check_point.mgmt.cp_mgmt_show_servers_and_processes - Shows the status of all processes in the current machine (Multi-Domain Server and all Domain Management / Log Servers). <br>This command is available only on Multi-Domain Server.
 - check_point.mgmt.cp_mgmt_show_threat_advanced_settings - Show Threat Prevention's Blades' Settings.
 - check_point.mgmt.cp_mgmt_simple_cluster - Manages simple-cluster objects on Checkpoint over Web Services API
