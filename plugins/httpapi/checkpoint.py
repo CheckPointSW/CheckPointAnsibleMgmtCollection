@@ -33,6 +33,12 @@ options:
       - The Cloud Management ID
     vars:
       - name: ansible_cloud_mgmt_id
+  target:
+    type: str
+    description:
+      - target gateway
+    vars:
+      - name: ansible_checkpoint_target
 """
 
 import json
@@ -89,10 +95,14 @@ class HttpApi(HttpApiBase):
         return self.connection._session_uid
 
     def send_request(self, path, body_params):
-        data = json.dumps(body_params) if body_params else "{}"
         cp_cloud_mgmt_id = self.get_option("cloud_mgmt_id")
         if cp_cloud_mgmt_id:
             path = "/" + cp_cloud_mgmt_id + path
+        # we only replace gaia_ip/ with web_api/gaia-api/ if target is set and path contains gaia_ip/
+        if 'gaia_api/' in path and self.get_option("target"):
+            path = path.replace("gaia_api/", "web_api/gaia-api/")
+            body_params['target'] = self.get_option("target")
+        data = json.dumps(body_params) if body_params else '{}'
         try:
             self._display_request()
             response, response_data = self.connection.send(
