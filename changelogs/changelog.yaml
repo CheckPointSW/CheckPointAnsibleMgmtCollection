@@ -1108,3 +1108,17 @@ releases:
         name: cp_mgmt_show_mobile_access_section
         namespace: ''
     release_date: '2024-06-16'
+  6.1.0:
+    changes:
+      release_summary: This is release 6.1.0 of ``check_point.mgmt``, released on
+        2024-07-08.
+    fragments:
+    - 6.1.0.yml
+    modules:
+    - description: Configure advanced settings for HTTPS Inspection.
+      name: cp_mgmt_set_https_advanced_settings
+      namespace: ''
+    - description: Show advanced settings for HTTPS Inspection.
+      name: cp_mgmt_show_https_advanced_settings
+      namespace: ''
+    release_date: '2024-07-08'
