@@ -28,22 +28,24 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_set_https_advanced_settings
-short_description: Edit HTTPS Inspection's Blades' Settings.
+short_description: Configure advanced settings for HTTPS Inspection.
 description:
-  - Edit HTTPS Inspection's Blades' Settings.
+  - Configure advanced settings for HTTPS Inspection.
   - All operations are performed over Web Services API.
-version_added: "6.0.0"
+version_added: "6.1.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
   bypass_on_client_failure:
     description:
       - Whether all requests should be bypassed or blocked-in case of client errors (Client closes the connection due to authentication issues during
-        handshake)<br>true - Fail-open (bypass all requests)<br>false - Fail-close (block all requests).
+        handshake)<br><ul style="list-style-type,square"><li>true - Fail-open (bypass all requests).</li><li>false - Fail-close (block all
+        requests.</li></ul><br>The default value is true.
     type: bool
   bypass_on_failure:
     description:
       - Whether all requests should be bypassed or blocked-in case of server errors (for example validation error during GW-Server
-        authentication)<br>true - Fail-open (bypass all requests)<br>false - Fail-close (block all requests).
+        authentication)<br><ul style="list-style-type,square"><li>true - Fail-open (bypass all requests).</li><li>false - Fail-close (block all
+        requests.</li></ul><br>The default value is true.
     type: bool
   bypass_under_load:
     description:
@@ -62,33 +64,41 @@ options:
                  'user defined alert no.3']
   site_categorization_allow_mode:
     description:
-      - Whether all requests should be allowed or blocked until categorization is complete.<br>Background - in order to allow requests until
-        categorization is complete.<br>Hold- in order to block requests until categorization is complete.
+      - Whether all requests should be allowed or blocked until categorization is complete.<br><ul style="list-style-type,square"><li>Background - to
+        allow requests until categorization is complete.</li><li>Hold- to block requests until categorization is complete.</li></ul><br>The default value is
+        hold.
     type: str
     choices: ['background', 'hold']
-  deny_untrusted_server_cert:
+  server_certificate_validation_actions:
     description:
-      - Set to be true in order to drop traffic from servers with untrusted server certificate.
-    type: bool
-  deny_revoked_server_cert:
-    description:
-      - Set to be true in order to drop traffic from servers with revoked server certificate (validate CRL).
-    type: bool
-  deny_expired_server_cert:
-    description:
-      - Set to be true in order to drop traffic from servers with expired server certificate.
-    type: bool
-  track_validation_errors:
-    description:
-      - Whether to log and send a notification for the server validation errors,<br><ul style="list-style-type,square"><li>None - Does not record the
-        event.</li><li>Log - Records the event details in SmartView.</li><li>Alert - Logs the event and executes a command.</li><li>Mail - Sends an email to
-        the administrator.</li><li>SNMP Trap - Sends an SNMP alert to the SNMP GU.</li><li>User Defined Alert - Sends customized alerts.</li></ul>.
-    type: str
-    choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3']
+      - When a Security Gateway receives an untrusted certificate from a website server, define when to drop the connection and how to track it.
+    type: dict
+    suboptions:
+      block_expired:
+        description:
+          - Set to be true in order to drop traffic from servers with expired server certificate.
+        type: bool
+      block_revoked:
+        description:
+          - Set to be true in order to drop traffic from servers with revoked server certificate (validate CRL).
+        type: bool
+      block_untrusted:
+        description:
+          - Set to be true in order to drop traffic from servers with untrusted server certificate.
+        type: bool
+      track_errors:
+        description:
+          - Whether to log and send a notification for the server validation errors,<br><ul style="list-style-type,square"><li>None - Does not
+            record the event.</li><li>Log - Records the event details in SmartView.</li><li>Alert - Logs the event and executes a command.</li><li>Mail -
+            Sends an email to the administrator.</li><li>SNMP Trap - Sends an SNMP alert to the SNMP GU.</li><li>User Defined Alert - Sends customized
+            alerts.</li></ul>.
+        type: str
+        choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                 'user defined alert no.3']
   retrieve_intermediate_ca_certificates:
     description:
       - Configure the value "true" to use the "Certificate Authority Information Access" extension to retrieve certificates that are missing from the
-        certificate chain.
+        certificate chain.<br>The default value is true.
     type: bool
   blocked_certificates:
     description:
@@ -115,22 +125,20 @@ options:
         the administrator.</li><li>SNMP Trap - Sends an SNMP alert to the SNMP GU.</li><li>User Defined Alert - Sends customized alerts.</li></ul>.
     type: str
     choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3']
-  bypass_certificate_pinned_apps:
-    description:
-      - Configure the value "true" to bypass traffic from certificate-pinned applications approved by Check Point.<br>HTTPS Inspection cannot inspect
-        connections initiated by certificate-pinned applications.
-    type: bool
   bypass_update_services:
     description:
-      - Configure the value "true" to bypass traffic to well-known software update services.
+      - Configure the value "true" to bypass traffic to well-known software update services.<br>The default value is true.
     type: bool
-  httpsi_statistics_logs:
+  certificate_pinned_apps_action:
     description:
-      - Configure the value "true" to send logs for every TLS session for all rules in HTTPS Inspection policy.
-    type: bool
-  log_empty_ssl_connections:
+      - Configure the value "bypass" to bypass traffic from certificate-pinned applications approved by Check Point.<br>HTTPS Inspection cannot
+        inspect connections initiated by certificate-pinned applications.<br>Configure the value "detect" to send logs for traffic from certificate-pinned
+        applications approved by Check Point.<br>The default value is bypass.
+    type: str
+    choices: ['bypass', 'detect', 'none']
+  log_sessions:
     description:
-      - Configure the value "true" to send logs about SSL connections that are closed without data or are closed in the middle of a handshake.
+      - The value "true" configures the Security Gateway to send HTTPS Inspection session logs.<br>The default value is true.
     type: bool
   details_level:
     description:
@@ -159,20 +167,20 @@ EXAMPLES = """
 - name: set-https-advanced-settings
   cp_mgmt_set_https_advanced_settings:
     blocked_certificate_tracking: popup alert
-    bypass_certificate_pinned_apps: 'false'
     bypass_on_client_failure: 'false'
     bypass_on_failure: 'false'
     bypass_under_load:
-     track: log
+      track: log
     bypass_update_services: 'true'
-    deny_expired_server_cert: 'true'
-    deny_revoked_server_cert: 'false'
-    deny_untrusted_server_cert: 'true'
-    httpsi_statistics_logs: 'true'
-    log_empty_ssl_connections: 'true'
+    certificate_pinned_apps_action: bypass
+    log_sessions: 'true'
     retrieve_intermediate_ca_certificates: 'true'
+    server_certificate_validation_actions:
+      block_expired: 'true'
+      block_revoked: 'false'
+      block_untrusted: 'true'
+      track_errors: snmp trap alert
     site_categorization_allow_mode: background
-    track_validation_errors: snmp trap alert
 """
 
 RETURN = """
@@ -190,16 +198,19 @@ def main():
     argument_spec = dict(
         bypass_on_client_failure=dict(type='bool'),
         bypass_on_failure=dict(type='bool'),
-        bypass_under_load=dict(type='dict', options=dict(
+        bypass_under_load=dict(type='dict', no_log=False, options=dict(
             track=dict(type='str', choices=['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert',
                                             'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3'])
         )),
         site_categorization_allow_mode=dict(type='str', choices=['background', 'hold']),
-        deny_untrusted_server_cert=dict(type='bool'),
-        deny_revoked_server_cert=dict(type='bool'),
-        deny_expired_server_cert=dict(type='bool'),
-        track_validation_errors=dict(type='str', choices=['none', 'log', 'popup alert', 'mail alert',
-                                                          'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2', 'user defined alert no.3']),
+        server_certificate_validation_actions=dict(type='dict', options=dict(
+            block_expired=dict(type='bool'),
+            block_revoked=dict(type='bool'),
+            block_untrusted=dict(type='bool'),
+            track_errors=dict(type='str', choices=['none', 'log', 'popup alert', 'mail alert',
+                                                   'snmp trap alert', 'user defined alert no.1',
+                                                   'user defined alert no.2', 'user defined alert no.3'])
+        )),
         retrieve_intermediate_ca_certificates=dict(type='bool'),
         blocked_certificates=dict(type='list', elements='dict', options=dict(
             name=dict(type='str'),
@@ -209,10 +220,9 @@ def main():
         blocked_certificate_tracking=dict(type='str', choices=['none', 'log', 'popup alert',
                                                                'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
                                                                'user defined alert no.3']),
-        bypass_certificate_pinned_apps=dict(type='bool'),
         bypass_update_services=dict(type='bool'),
-        httpsi_statistics_logs=dict(type='bool'),
-        log_empty_ssl_connections=dict(type='bool'),
+        certificate_pinned_apps_action=dict(type='str', choices=['bypass', 'detect', 'none']),
+        log_sessions=dict(type='bool'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         domains_to_process=dict(type='list', elements='str'),
         ignore_warnings=dict(type='bool'),

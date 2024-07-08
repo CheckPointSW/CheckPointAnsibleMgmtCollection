@@ -4,6 +4,20 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.1.0
+======
+
+Release Summary
+---------------
+
+This is release 6.1.0 of ``check_point.mgmt``, released on 2024-07-08.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_set_https_advanced_settings - Configure advanced settings for HTTPS Inspection.
+- check_point.mgmt.cp_mgmt_show_https_advanced_settings - Show advanced settings for HTTPS Inspection.
+
 v6.0.0
 ======
 

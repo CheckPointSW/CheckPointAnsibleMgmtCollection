@@ -28,11 +28,11 @@ ANSIBLE_METADATA = {'metadata_version': '1.1',
 DOCUMENTATION = """
 ---
 module: cp_mgmt_show_https_advanced_settings
-short_description: Show HTTPS Inspection's Blades' Settings.
+short_description: Show advanced settings for HTTPS Inspection.
 description:
-  - Show HTTPS Inspection's Blades' Settings.
+  - Show advanced settings for HTTPS Inspection.
   - All operations are performed over Web Services API.
-version_added: "6.0.0"
+version_added: "6.1.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
