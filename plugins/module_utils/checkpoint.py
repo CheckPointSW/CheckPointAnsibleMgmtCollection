@@ -32,7 +32,6 @@ __metaclass__ = type
 
 import time
 from ansible.module_utils.six import iteritems
-from ansible.module_utils.urls import CertificateError
 from ansible.module_utils.connection import ConnectionError
 from ansible.module_utils.connection import Connection
 from ansible_collections.ansible.netcommon.plugins.module_utils.network.common import (
@@ -1871,8 +1870,6 @@ class CheckPointRequest(object):
                     )
         except ConnectionError as e:
             raise _fail_json("connection error occurred: {0}".format(e))
-        except CertificateError as e:
-            raise _fail_json("certificate error occurred: {0}".format(e))
         except ValueError as e:
             raise _fail_json("certificate not found: {0}".format(e))
         # This fn. will return both code and response, once all of the available modules
