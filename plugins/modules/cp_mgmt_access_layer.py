@@ -36,10 +36,6 @@ description:
   - All operations are performed over Web Services API.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
-deprecated:
-  alternative: cp_mgmt_access_layers
-  why: Newer and updated modules released with more functionality.
-  removed_at_date: '2024-11-01'
 options:
   name:
     description:
