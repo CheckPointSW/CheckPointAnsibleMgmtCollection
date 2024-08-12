@@ -125,7 +125,7 @@ def main():
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
     api_call_object = "data-type-file-group"
     api_call_object_plural_version = "data-type-file-groups"

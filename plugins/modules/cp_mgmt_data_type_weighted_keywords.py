@@ -152,8 +152,8 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
-        weighted_keywords=dict(type='list', elements='dict', options=dict(
-            keyword=dict(type='str'),
+        weighted_keywords=dict(type='list', elements='dict', no_log=False, options=dict(
+            keyword=dict(type='str', no_log=False),
             weight=dict(type='int'),
             max_weight=dict(type='int'),
             regex=dict(type='bool')

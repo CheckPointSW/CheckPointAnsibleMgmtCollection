@@ -20,12 +20,6 @@ plugin_routing:
         warning_text: >
           cp_mgmt_delete_nat_rule will be removed in a future release of this collection.
           Use newer and updated module cp_mgmt_nat_rule with more functionality instead.
-    cp_mgmt_access_layer:
-      deprecation:
-        removal_date: "2024-11-01"
-        warning_text: >
-          cp_mgmt_access_layer will be removed in a future release of this collection.
-          Use newer and updated module cp_mgmt_access_layers with more functionality instead.
     cp_mgmt_show_task:
       deprecation:
         removal_date: "2024-11-01"
@@ -38,15 +32,3 @@ plugin_routing:
         warning_text: >
           cp_mgmt_show_tasks will be removed in a future release of this collection.
           Use newer and updated module cp_mgmt_task_facts instead.
-    cp_mgmt_host:
-      deprecation:
-        removal_date: "2024-11-01"
-        warning_text: >
-          cp_mgmt_host will be removed in a future release of this collection.
-          Use newer and updated module cp_mgmt_hosts with more functionality instead.
-    cp_mgmt_threat_layer:
-      deprecation:
-        removal_date: "2024-11-01"
-        warning_text: >
-          cp_mgmt_threat_layer will be removed in a future release of this collection.
-          Use newer and updated module cp_mgmt_threat_layers with more functionality instead.

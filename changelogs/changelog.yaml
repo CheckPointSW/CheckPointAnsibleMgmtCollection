@@ -976,15 +976,70 @@ releases:
         name: cp_mgmt_add_outbound_inspection_certificate
         namespace: ''
       - description: Retrieve existing Check Point trusted CA certificate objects facts
-          on Checkpoint devices..
+          on Checkpoint devices.
         name: cp_mgmt_cp_trusted_ca_certificate_facts
         namespace: ''
       - description: Retrieve existing custom trusted CA certificate objects facts on
           Checkpoint devices.
         name: cp_mgmt_custom_trusted_ca_certificate_facts
         namespace: ''
+      - description: Manages data-type-compound-group objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_data_type_compound_group
+        namespace: ''
+      - description: Get data-type-compound-group objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_data_type_compound_group_facts
+        namespace: ''
+      - description: Manages data-type-file-attributes objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_data_type_file_attributes
+        namespace: ''
+      - description: Get data-type-file-attributes objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_data_type_file_attributes_facts
+        namespace: ''
+      - description: Get data-type-file-group objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_file_group_facts
+        namespace: ''
+      - description: Manages data-type-group objects on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_group
+        namespace: ''
+      - description: Get data-type-group objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_group_facts
+        namespace: ''
+      - description: Manages data-type-keywords objects on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_keywords
+        namespace: ''
+      - description: Get data-type-keywords objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_keywords_facts
+        namespace: ''
+      - description: Manages data-type-patterns objects on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_patterns
+        namespace: ''
+      - description: Get data-type-patterns objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_patterns_facts
+        namespace: ''
+      - description: Manages data-type-traditional-group objects on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_traditional_group
+        namespace: ''
+      - description: Get data-type-traditional-group objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_traditional_group_facts
+        namespace: ''
+      - description: Manages data-type-weighted-keywords objects on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_weighted_keywords
+        namespace: ''
+      - description: Get data-type-weighted-keywords objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_data_type_weighted_keywords_facts
+        namespace: ''
       - description: Delete existing custom trusted CA certificate using name or uid.
         name: cp_mgmt_delete_custom_trusted_ca_certificate
+        namespace: ''
+      - description: Delete Infinity Identity Provider from the Infinity Portal using object name or uid.
+        name: cp_mgmt_delete_infinity_idp
+        namespace: ''
+      - description: Delete users/groups/machines from the Identity Provider using object name or uid.
+        name: cp_mgmt_delete_infinity_idp_object
         namespace: ''
       - description: Delete outbound-inspection-certificate
         name: cp_mgmt_delete_outbound_inspection_certificate
@@ -1013,6 +1068,12 @@ releases:
       - description: Retrieve users/groups/machines objects facts from the Identity
           Provider.
         name: cp_mgmt_infinity_idp_object_facts
+        namespace: ''
+      - description: Manages limit objects on Checkpoint over Web Services API
+        name: cp_mgmt_limit
+        namespace: ''
+      - description: Get limit objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_limit_facts
         namespace: ''
       - description: Manages mobile-access-profile-rule objects on Checkpoint over Web
           Services API
@@ -1073,6 +1134,12 @@ releases:
           over Web Services API
         name: cp_mgmt_outbound_inspection_certificate_facts
         namespace: ''
+      - description: Manages override-categorization objects on Checkpoint over Web Services API
+        name: cp_mgmt_override_categorization
+        namespace: ''
+      - description: Get override-categorization objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_override_categorization_facts
+        namespace: ''
       - description: Manages passcode-profile objects on Checkpoint over Web Services
           API
         name: cp_mgmt_passcode_profile
@@ -1080,6 +1147,36 @@ releases:
       - description: Get passcode-profile objects facts on Checkpoint over Web Services
           API
         name: cp_mgmt_passcode_profile_facts
+        namespace: ''
+      - description: Manages resource-cifs objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_cifs
+        namespace: ''
+      - description: Get resource-cifs objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_resource_cifs_facts
+        namespace: ''
+      - description: Manages resource-ftp objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_ftp
+        namespace: ''
+      - description: Get resource-ftp objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_resource_ftp_facts
+        namespace: ''
+      - description: Manages resource-smtp objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_smtp
+        namespace: ''
+      - description: Get resource-smtp objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_resource_smtp_facts
+        namespace: ''
+      - description: Manages resource-uri objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_uri
+        namespace: ''
+      - description: Get resource-uri objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_resource_uri_facts
+        namespace: ''
+      - description: Edit Application Control & URL Filtering Blades' Settings.
+        name: cp_mgmt_set_app_control_advanced_settings
+        namespace: ''
+      - description: Edit Content Awareness Blades' Settings.
+        name: cp_mgmt_set_content_awareness_advanced_settings
         namespace: ''
       - description: Edit existing Check Point trusted CA certificate using name or
           uid.
@@ -1094,11 +1191,23 @@ releases:
       - description: Edit outbound-inspection-certificate
         name: cp_mgmt_set_outbound_inspection_certificate
         namespace: ''
+      - description: Show Application Control & URL Filtering Blades' Settings.
+        name: cp_mgmt_show_app_control_advanced_settings
+        namespace: ''
+      - description: Show Content Awareness Blades' Settings.
+        name: cp_mgmt_show_content_awareness_advanced_settings
+        namespace: ''
+      - description: Show supported Check Point Gateway capabilities such as versions, hardwares, platforms and blades.
+        name: cp_mgmt_show_gateway_capabilities
+        namespace: ''
       - description: Show global usage of a specific target.
         name: cp_mgmt_show_gateway_global_use
         namespace: ''
       - description: Retrieve existing Internal CA object.
         name: cp_mgmt_show_internal_trusted_ca
+        namespace: ''
+      - description: Shows the last published session.
+        name: cp_mgmt_show_last_published_session
         namespace: ''
       - description: Retrieve existing Mobile Access Profile section using section name
           or uid.
@@ -1107,18 +1216,32 @@ releases:
       - description: Retrieve existing Mobile Access section using section name or uid.
         name: cp_mgmt_show_mobile_access_section
         namespace: ''
+      - description: Check how many Security Gateway objects the Management Server license supports.
+        name: cp_mgmt_verify_management_license
+        namespace: ''
+      - description: Run the VSX provisioning tool with the specified parameters.
+        name: cp_mgmt_vsx_provisioning_tool
+        namespace: ''
     release_date: '2024-06-16'
   6.1.0:
     changes:
       release_summary: This is release 6.1.0 of ``check_point.mgmt``, released on
         2024-07-08.
     fragments:
-    - 6.1.0.yml
+      - 6.1.0.yml
     modules:
-    - description: Configure advanced settings for HTTPS Inspection.
-      name: cp_mgmt_set_https_advanced_settings
-      namespace: ''
-    - description: Show advanced settings for HTTPS Inspection.
-      name: cp_mgmt_show_https_advanced_settings
-      namespace: ''
+      - description: Configure advanced settings for HTTPS Inspection.
+        name: cp_mgmt_set_https_advanced_settings
+        namespace: ''
+      - description: Show advanced settings for HTTPS Inspection.
+        name: cp_mgmt_show_https_advanced_settings
+        namespace: ''
     release_date: '2024-07-08'
+  6.1.1:
+    changes:
+      bugfixes:
+        - module_utils/checkpoint.py - Remove usage of CertificateError causing failures in ansible-core 2.17.
+      release_summary: This is release 6.1.1 of ``check_point.mgmt``, released on 2023-08-12.
+    fragments:
+      - 6.1.1.yml
+    release_date: "2022-08-12"

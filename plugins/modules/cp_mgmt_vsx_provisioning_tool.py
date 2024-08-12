@@ -30,7 +30,7 @@ DOCUMENTATION = """
 module: cp_mgmt_vsx_provisioning_tool
 short_description: Run the VSX provisioning tool with the specified parameters.
 description:
-  - Run the VSX provisioning tool with the specified parameters. Note: An automatic session publish is part of all the operations in this API.
+  - Run the VSX provisioning tool with the specified parameters. Note - An automatic session publish is part of all the operations in this API.
   - All operations are performed over Web Services API.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"

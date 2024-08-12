@@ -134,9 +134,9 @@ def main():
     argument_spec = dict(
         name=dict(type='str', required=True),
         description=dict(type='str'),
-        keywords=dict(type='list', elements='str'),
+        keywords=dict(type='list', elements='str', no_log=False),
         data_match_threshold=dict(type='str', choices=['all-keywords', 'min-keywords']),
-        min_number_of_keywords=dict(type='int'),
+        min_number_of_keywords=dict(type='int', no_log=False),
         tags=dict(type='list', elements='str'),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
