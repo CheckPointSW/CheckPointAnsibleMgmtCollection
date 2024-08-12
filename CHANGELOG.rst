@@ -4,6 +4,19 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.1.1
+======
+
+Release Summary
+---------------
+
+This is release 6.1.1 of ``check_point.mgmt``, released on 2023-08-12.
+
+Bugfixes
+--------
+
+- module_utils/checkpoint - Remove usage of CertificateError causing failures in ansible-core 2.17.
+
 v6.1.0
 ======
 
@@ -37,9 +50,26 @@ New Modules
 
 - check_point.mgmt.cp_mgmt_add_custom_trusted_ca_certificate - Create new custom trusted CA certificate.
 - check_point.mgmt.cp_mgmt_add_outbound_inspection_certificate - Add outbound-inspection-certificate
-- check_point.mgmt.cp_mgmt_cp_trusted_ca_certificate_facts - Retrieve existing Check Point trusted CA certificate objects facts on Checkpoint devices..
+- check_point.mgmt.cp_mgmt_cp_trusted_ca_certificate_facts - Retrieve existing Check Point trusted CA certificate objects facts on Checkpoint devices.
 - check_point.mgmt.cp_mgmt_custom_trusted_ca_certificate_facts - Retrieve existing custom trusted CA certificate objects facts on Checkpoint devices.
+- check_point.mgmt.cp_mgmt_data_type_compound_group - Manages data-type-compound-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_compound_group_facts - Get data-type-compound-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_file_attributes - Manages data-type-file-attributes objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_file_attributes_facts - Get data-type-file-attributes objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_file_group_facts - Get data-type-file-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_group - Manages data-type-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_group_facts - Get data-type-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_keywords - Manages data-type-keywords objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_keywords_facts - Get data-type-keywords objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_patterns - Manages data-type-patterns objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_patterns_facts - Get data-type-patterns objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_traditional_group - Manages data-type-traditional-group objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_traditional_group_facts - Get data-type-traditional-group objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_weighted_keywords - Manages data-type-weighted-keywords objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_data_type_weighted_keywords_facts - Get data-type-weighted-keywords objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_delete_custom_trusted_ca_certificate - Delete existing custom trusted CA certificate using name or uid.
+- check_point.mgmt.cp_mgmt_delete_infinity_idp - Delete Infinity Identity Provider from the Infinity Portal using object name or uid.
+- check_point.mgmt.cp_mgmt_delete_infinity_idp_object - Delete users/groups/machines from the Identity Provider using object name or uid.
 - check_point.mgmt.cp_mgmt_delete_outbound_inspection_certificate - Delete outbound-inspection-certificate
 - check_point.mgmt.cp_mgmt_external_trusted_ca - Manages external-trusted-ca objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_external_trusted_ca_facts - Get external-trusted-ca objects facts on Checkpoint over Web Services API
@@ -48,6 +78,8 @@ New Modules
 - check_point.mgmt.cp_mgmt_import_outbound_inspection_certificate - Import Outbound Inspection certificate for HTTPS inspection.
 - check_point.mgmt.cp_mgmt_infinity_idp_facts - Get Infinity Identity Provider objects facts from the Infinity Portal.
 - check_point.mgmt.cp_mgmt_infinity_idp_object_facts - Retrieve users/groups/machines objects facts from the Identity Provider.
+- check_point.mgmt.cp_mgmt_limit - Manages limit objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_limit_facts - Get limit objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_mobile_access_profile_rule - Manages mobile-access-profile-rule objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_mobile_access_profile_rule_facts - Get mobile-access-profile-rule objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_mobile_access_profile_section - Manages mobile-access-profile-section objects on Checkpoint over Web Services API
@@ -63,16 +95,34 @@ New Modules
 - check_point.mgmt.cp_mgmt_opsec_trusted_ca - Manages opsec-trusted-ca objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_opsec_trusted_ca_facts - Get opsec-trusted-ca objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_outbound_inspection_certificate_facts - Get outbound-inspection-certificate objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_override_categorization - Manages override-categorization objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_override_categorization_facts - Get override-categorization objects facts on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_passcode_profile - Manages passcode-profile objects on Checkpoint over Web Services API
 - check_point.mgmt.cp_mgmt_passcode_profile_facts - Get passcode-profile objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_cifs - Manages resource-cifs objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_cifs_facts - Get resource-cifs objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_ftp - Manages resource-ftp objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_ftp_facts - Get resource-ftp objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_smtp - Manages resource-smtp objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_smtp_facts - Get resource-smtp objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_uri - Manages resource-uri objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_resource_uri_facts - Get resource-uri objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_set_app_control_advanced_settings - Edit Application Control & URL Filtering Blades' Settings.
+- check_point.mgmt.cp_mgmt_set_content_awareness_advanced_settings - Edit Content Awareness Blades' Settings.
 - check_point.mgmt.cp_mgmt_set_cp_trusted_ca_certificate - Edit existing Check Point trusted CA certificate using name or uid.
 - check_point.mgmt.cp_mgmt_set_gateway_global_use - Enable or disable global usage on a specific target.
 - check_point.mgmt.cp_mgmt_set_internal_trusted_ca - Edit existing Internal CA object.
 - check_point.mgmt.cp_mgmt_set_outbound_inspection_certificate - Edit outbound-inspection-certificate
+- check_point.mgmt.cp_mgmt_show_app_control_advanced_settings - Show Application Control & URL Filtering Blades' Settings.
+- check_point.mgmt.cp_mgmt_show_content_awareness_advanced_settings - Show Content Awareness Blades' Settings.
+- check_point.mgmt.cp_mgmt_show_gateway_capabilities - Show supported Check Point Gateway capabilities such as versions, hardwares, platforms and blades.
 - check_point.mgmt.cp_mgmt_show_gateway_global_use - Show global usage of a specific target.
 - check_point.mgmt.cp_mgmt_show_internal_trusted_ca - Retrieve existing Internal CA object.
+- check_point.mgmt.cp_mgmt_show_last_published_session - Shows the last published session.
 - check_point.mgmt.cp_mgmt_show_mobile_access_profile_section - Retrieve existing Mobile Access Profile section using section name or uid.
 - check_point.mgmt.cp_mgmt_show_mobile_access_section - Retrieve existing Mobile Access section using section name or uid.
+- check_point.mgmt.cp_mgmt_verify_management_license - Check how many Security Gateway objects the Management Server license supports.
+- check_point.mgmt.cp_mgmt_vsx_provisioning_tool - Run the VSX provisioning tool with the specified parameters.
 
 v5.2.3
 ======
