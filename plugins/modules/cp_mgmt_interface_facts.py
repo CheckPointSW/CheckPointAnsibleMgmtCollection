@@ -31,10 +31,11 @@ module: cp_mgmt_interface_facts
 short_description: Get interface objects facts on Checkpoint over Web Services API
 description:
   - Get interface objects facts on Checkpoint devices.
+  - Available for R82 and above machines.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
-version_added: "6.0.0"
+version_added: "6.2.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
   name:

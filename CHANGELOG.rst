@@ -4,13 +4,27 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.2.0
+======
+
+Release Summary
+---------------
+
+This is release 6.2.0 of ``check_point.mgmt``, released on 2024-08-27.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_interface - Manages interface objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_interface_facts - Get interface objects facts on Checkpoint over Web Services API
+
 v6.1.1
 ======
 
 Release Summary
 ---------------
 
-This is release 6.1.1 of ``check_point.mgmt``, released on 2023-08-12.
+This is release 6.1.1 of ``check_point.mgmt``, released on 2024-08-12.
 
 Bugfixes
 --------
