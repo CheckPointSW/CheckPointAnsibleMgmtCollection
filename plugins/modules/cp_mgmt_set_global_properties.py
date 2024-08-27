@@ -499,11 +499,19 @@ options:
                         description:
                           - Select whether the SHA256 hash algorithm will be supported with remote hosts to ensure data integrity.
                         type: bool
+                      sha384:
+                        description:
+                          - Select whether the SHA384 hash algorithm will be supported with remote hosts to ensure data integrity.
+                        type: bool
+                      sha512:
+                        description:
+                          - Select whether the SHA512 hash algorithm will be supported with remote hosts to ensure data integrity.
+                        type: bool
                   use_data_integrity:
                     description:
                       - The hash algorithm chosen here will be given the highest priority if more than one choice is offered.
                     type: str
-                    choices: ['aes-xcbc', 'sha256', 'sha1', 'md5']
+                    choices: ['aes-xcbc', 'sha256', 'sha1', 'md5', 'sha384', 'sha512']
                   support_diffie_hellman_groups:
                     description:
                       - Select the Diffie-Hellman groups that will be supported with remote hosts.
@@ -582,6 +590,14 @@ options:
                       sha256:
                         description:
                           - Select whether the SHA256 hash algorithm will be supported with remote hosts to ensure data integrity.
+                        type: bool
+                      sha384:
+                        description:
+                          - Select whether the SHA384 hash algorithm will be supported with remote hosts to ensure data integrity.
+                        type: bool
+                      sha512:
+                        description:
+                          - Select whether the SHA512 hash algorithm will be supported with remote hosts to ensure data integrity.
                         type: bool
                   use_data_integrity:
                     description:
@@ -1852,6 +1868,8 @@ def main():
                                                 md5=dict(type="bool"),
                                                 sha1=dict(type="bool"),
                                                 sha256=dict(type="bool"),
+                                                sha384=dict(type="bool"),
+                                                sha512=dict(type="bool"),
                                             ),
                                         ),
                                         use_data_integrity=dict(
@@ -1861,6 +1879,8 @@ def main():
                                                 "sha256",
                                                 "sha1",
                                                 "md5",
+                                                "sha384",
+                                                "sha512",
                                             ],
                                         ),
                                         support_diffie_hellman_groups=dict(
@@ -1911,6 +1931,8 @@ def main():
                                                 md5=dict(type="bool"),
                                                 sha1=dict(type="bool"),
                                                 sha256=dict(type="bool"),
+                                                sha384=dict(type="bool"),
+                                                sha512=dict(type="bool"),
                                             ),
                                         ),
                                         use_data_integrity=dict(

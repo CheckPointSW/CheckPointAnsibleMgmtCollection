@@ -66,7 +66,7 @@ options:
         description:
           - The hash algorithm to be used.
         type: str
-        choices: ['aes-xcbc', 'sha1', 'sha256', 'sha384', 'md5']
+        choices: ['aes-xcbc', 'sha1', 'sha256', 'sha384', 'sha512', 'md5']
       diffie_hellman_group:
         description:
           - The Diffie-Hellman group to be used.
@@ -86,7 +86,7 @@ options:
         description:
           - The hash algorithm to be used.
         type: str
-        choices: ['aes-xcbc', 'sha1', 'sha256', 'sha384', 'md5']
+        choices: ['aes-xcbc', 'sha1', 'sha256', 'sha384', 'sha512', 'md5']
       encryption_algorithm:
         description:
           - The encryption algorithm to be used.
@@ -219,7 +219,7 @@ def main():
             options=dict(
                 data_integrity=dict(
                     type="str",
-                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "md5"],
+                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "sha512", "md5"],
                 ),
                 diffie_hellman_group=dict(
                     type="str",
@@ -243,7 +243,7 @@ def main():
             options=dict(
                 data_integrity=dict(
                     type="str",
-                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "md5"],
+                    choices=["aes-xcbc", "sha1", "sha256", "sha384", "sha512", "md5"],
                 ),
                 encryption_algorithm=dict(
                     type="str",
