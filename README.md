@@ -62,6 +62,12 @@ Example playbook:
 ```
 Note - If you want to run against Ansible version 2.9 instead of the collection, just replace `check_point.mgmt.cp_mgmt_network` with `cp_mgmt_network`
 
+### Testing:
+This collection is tested with the most current Ansible releases. Ansible versions from 2.15.0 and above are supported.
+
+### License Information:
+Apache-2.0 license
+
 ###  Notes:
   1. Because this Ansible module is controlling the management server remotely via the web API, 
      the Ansible server needs to have access to the Check Point API server.
@@ -70,7 +76,7 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
   2. Ansible has a feature called "Check Mode" that enables you to test the
      changes without actually changing anything.
   3. The login and logout happens automatically.
-  4. If you want to login to a specific domain, in the playbook above in the `vars`secion change the domain name to 
+  4. If you want to login to a specific domain, in the playbook above in the `vars`section change the domain name to 
      `ansible_checkpoint_domain`
   5. There are two ways to publish changes:
     a. Set the `auto_publish_session` to `true` as displayed in the example playbook above.

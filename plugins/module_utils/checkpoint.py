@@ -1088,6 +1088,7 @@ def get_number_and_section_from_position(
                     section_name,
                     above_relative_position,
                     pos_before_relative_empty_section,
+                    prev_section
                 ) = get_number_and_section_from_relative_position(
                     payload,
                     connection,

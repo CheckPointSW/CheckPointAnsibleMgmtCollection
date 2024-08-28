@@ -4,6 +4,15 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.2.1
+======
+
+Release Summary
+---------------
+
+This is release 6.2.1 of ``check_point.mgmt``, released on 2024-08-28.
+
+
 v6.2.0
 ======
 

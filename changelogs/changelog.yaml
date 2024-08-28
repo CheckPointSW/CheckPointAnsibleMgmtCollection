@@ -1259,3 +1259,10 @@ releases:
         name: cp_mgmt_interface_facts
         namespace: ''
     release_date: '2024-08-27'
+  6.2.1:
+    changes:
+      release_summary: This is release 6.2.1 of ``check_point.mgmt``, released on
+        2024-08-28.
+    fragments:
+    - 6.2.1.yml
+    release_date: '2024-08-28'
