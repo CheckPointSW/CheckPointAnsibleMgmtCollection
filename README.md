@@ -62,12 +62,6 @@ Example playbook:
 ```
 Note - If you want to run against Ansible version 2.9 instead of the collection, just replace `check_point.mgmt.cp_mgmt_network` with `cp_mgmt_network`
 
-### Testing:
-This collection is tested with the most current Ansible releases. Ansible versions from 2.15.0 and above are supported.
-
-### License Information:
-Apache-2.0 license
-
 ###  Notes:
   1. Because this Ansible module is controlling the management server remotely via the web API, 
      the Ansible server needs to have access to the Check Point API server.
@@ -89,3 +83,18 @@ Apache-2.0 license
     b. In the task in the playbook replace the module `check_point.mgmt.cp_mgmt_*` with the module `cp_mgmt_*`
   8. Starting from version 1.0.6, when running a command which returns a task-id, and the user chooses to wait for that task to finish
      (the default is to wait), then the output of the command will be the output of the show-task command (instead of the task-id).
+
+### Testing
+This collection is tested with the most current Ansible releases. Ansible versions from 2.15.0 and above are supported.
+
+### Support
+For reporting issue or requests for enhancements please open a GitHub issue.
+
+### Release Notes
+https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/blob/master/CHANGELOG.rst
+
+### Related Information
+For further information please see - https://support.checkpoint.com/results/sk/sk114661
+
+### License Information
+Apache-2.0 license
