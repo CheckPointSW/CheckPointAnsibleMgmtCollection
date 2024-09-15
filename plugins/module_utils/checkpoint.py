@@ -564,7 +564,10 @@ def api_command(module, command):
 
         handle_publish(module, connection, version)
     else:
-        discard_and_fail(module, code, response, connection, version)
+        if command.startswith("show"):
+            module.fail_json(msg=parse_fail_message(code, response))
+        else:
+            discard_and_fail(module, code, response, connection, version)
 
     return result
 
