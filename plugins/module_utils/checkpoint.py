@@ -1415,7 +1415,8 @@ def call_is_plural(api_call_object, payload):
         return False
     if (
         payload.get("layer") is None
-        and ("access" in api_call_object or "threat" in api_call_object or "https" in api_call_object)
+        and ("access" in api_call_object or "threat" in api_call_object
+             or "https" in api_call_object or "nat" in api_call_object)
     ):
        return True
     return False
