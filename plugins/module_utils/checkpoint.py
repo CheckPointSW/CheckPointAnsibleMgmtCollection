@@ -1413,11 +1413,11 @@ def call_is_plural(api_call_object, payload):
         and ("nat" in api_call_object or "mobile-access" in api_call_object)
     ):
         return False
-    if (
-        payload.get("layer") is None
-        and ("access" in api_call_object or "threat" in api_call_object or "https" in api_call_object)
-    ):
-       return True
+    if ((payload.get("layer") is None and ("access" in api_call_object or "threat"
+                                           in api_call_object or "https" in api_call_object))
+        or
+            (payload.get("package") is not None and "nat" in api_call_object)):
+        return True
     return False
 
 
