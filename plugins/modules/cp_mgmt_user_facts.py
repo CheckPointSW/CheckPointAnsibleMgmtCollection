@@ -26,6 +26,10 @@ options:
       - Object name.
         This parameter is relevant only for getting a specific object.
     type: str
+  show_membership:
+    description:
+      - Indicates whether to calculate and show "groups" field for every object in reply.
+    type: bool
   details_level:
     description:
       - The level of detail for some of the fields in the response can vary from showing only the UID value of the object to a fully detailed
@@ -92,6 +96,7 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type='str'),
+        show_membership=dict(type='bool'),
         details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         filter=dict(type='str'),
         limit=dict(type='int'),
