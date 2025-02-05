@@ -54,6 +54,40 @@ options:
       - LSM profile.
     type: str
     required: True
+  dynamic_objects:
+    description:
+      - Dynamic Objects.
+    type: list
+    elements: dict
+    version_added: "6.3.0"
+    suboptions:
+      name:
+        description:
+          - Object name. Must be unique in the domain.
+        type: str
+      resolved_ip_addresses:
+        description:
+          - Single IP-address or a range of addresses.
+        type: list
+        elements: dict
+        suboptions:
+          ipv4_address:
+            description:
+              - IPv4 Address.
+            type: str
+          ipv4_address_range:
+            description:
+              - IPv4 Address range.
+            type: dict
+            suboptions:
+              from_ipv4_address:
+                description:
+                  - First IPv4 address of the IP address range.
+                type: str
+              to_ipv4_address:
+                description:
+                  - Last IPv4 address of the IP address range.
+                type: str
   interfaces:
     description:
       - Interfaces.
@@ -128,6 +162,37 @@ options:
         description:
           - Comments string.
         type: str
+  topology:
+    description:
+      - Topology.
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      manual_vpn_domain:
+        description:
+          - A list of IP-addresses ranges, defined the VPN community network.
+            This field is relevant only when 'manual' option of vpn-domain is checked.
+        type: list
+        elements: dict
+        suboptions:
+          comments:
+            description:
+              - Comments string.
+            type: str
+          from_ipv4_address:
+            description:
+              - First IPv4 address of the IP address range.
+            type: str
+          to_ipv4_address:
+            description:
+              - Last IPv4 address of the IP address range.
+            type: str
+      vpn_domain:
+        description:
+          - VPN Domain type. 'external-interfaces-only' is relevant only for Gaia devices.
+            'hide-behind-gateway-external-ip-address' is relevant only for SMB devices.
+        type: str
+        choices: ['not-defined', 'external-ip-addresses-only', 'hide-behind-gateway-external-ip-address', 'all-ip-addresses-behind-the-gateway', 'manual']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -145,6 +210,12 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
+  tags:
+    description:
+      - Collection of tag identifiers.
+    type: list
+    elements: str
+    version_added: "6.3.0"
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -235,6 +306,16 @@ def main():
         name_prefix=dict(type="str"),
         name_suffix=dict(type="str"),
         security_profile=dict(type="str", required=True),
+        dynamic_objects=dict(type='list', elements="dict", options=dict(
+            name=dict(type='str'),
+            resolved_ip_addresses=dict(type='list', elements="dict", options=dict(
+                ipv4_address=dict(type='str'),
+                ipv4_address_range=dict(type='dict', options=dict(
+                    from_ipv4_address=dict(type='str'),
+                    to_ipv4_address=dict(type='str')
+                ))
+            ))
+        )),
         interfaces=dict(
             type="list",
             elements="dict",
@@ -308,6 +389,19 @@ def main():
                 comments=dict(type="str"),
             ),
         ),
+        topology=dict(type='dict', options=dict(
+            manual_vpn_domain=dict(type='list', elements="dict", options=dict(
+                comments=dict(type='str'),
+                from_ipv4_address=dict(type='str'),
+                to_ipv4_address=dict(type='str')
+            )),
+            vpn_domain=dict(type='str',
+                            choices=['not-defined',
+                                     'external-ip-addresses-only',
+                                     'hide-behind-gateway-external-ip-address',
+                                     'all-ip-addresses-behind-the-gateway',
+                                     'manual'])
+        )),
         color=dict(
             type="str",
             choices=[
@@ -351,6 +445,7 @@ def main():
         ),
         comments=dict(type="str"),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        tags=dict(type='list', elements="str"),
         ignore_warnings=dict(type="bool"),
         ignore_errors=dict(type="bool"),
     )
