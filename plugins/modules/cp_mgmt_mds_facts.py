@@ -50,6 +50,13 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
+  filter:
+    description:
+      - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
+        logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
+        name, comment, tags etc.
+    type: str
+    version_added: "6.4.0"
   limit:
     description:
       - No more than that many results will be returned.
@@ -107,6 +114,7 @@ def main():
     argument_spec = dict(
         name=dict(type="str"),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        filter=dict(type='str'),
         limit=dict(type="int"),
         offset=dict(type="int"),
         order=dict(

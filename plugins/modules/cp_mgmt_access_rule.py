@@ -296,8 +296,8 @@ EXAMPLES = """
     name: Rule 1
     position: 1
     service:
-    - SMTP
-    - AOL
+      - SMTP
+      - AOL
     vpn: All_GwToGw
     state: present
 

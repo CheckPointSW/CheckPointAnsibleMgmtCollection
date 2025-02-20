@@ -50,7 +50,7 @@ EXAMPLES = """
 - name: install-lsm-policy
   cp_mgmt_install_lsm_policy:
     targets:
-    - lsm_gateway
+      - lsm_gateway
 """
 
 RETURN = """

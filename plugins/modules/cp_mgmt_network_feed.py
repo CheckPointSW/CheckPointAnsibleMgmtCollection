@@ -149,10 +149,10 @@ EXAMPLES = """
 - name: add-network-feed
   cp_mgmt_network_feed:
     custom_header:
-    - header_name: header1
-      header_value: value1
-    - header_name: header2
-      header_value: value2
+      - header_name: header1
+        header_value: value1
+      - header_name: header2
+        header_value: value2
     data_column: 1
     feed_format: Flat List
     feed_type: IP Address
@@ -169,8 +169,8 @@ EXAMPLES = """
 - name: set-network-feed
   cp_mgmt_network_feed:
     custom_header:
-    - header_name: new_header
-      header_value: new_value
+      - header_name: new_header
+        header_value: new_value
     data_column: 1
     feed_format: Flat List
     feed_type: IP Address

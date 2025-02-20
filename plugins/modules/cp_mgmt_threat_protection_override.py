@@ -88,10 +88,10 @@ EXAMPLES = """
   cp_mgmt_threat_protection_override:
     name: FTP Commands
     overrides:
-    - action: inactive
-      capture_packets: true
-      profile: New Profile 1
-      track: None
+      - action: inactive
+        capture_packets: true
+        profile: New Profile 1
+        track: None
     state: present
 """
 

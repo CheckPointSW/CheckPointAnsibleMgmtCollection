@@ -177,14 +177,14 @@ EXAMPLES = """
   cp_mgmt_package:
     access_layers:
       add:
-      - name: New Access Layer 1
-        position: 1
+        - name: New Access Layer 1
+          position: 1
     name: Standard
     state: present
     threat_layers:
       add:
-      - name: New Layer 1
-        position: 2
+        - name: New Layer 1
+          position: 2
 
 - name: delete-package
   cp_mgmt_package:

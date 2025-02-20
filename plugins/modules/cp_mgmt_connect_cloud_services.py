@@ -49,7 +49,7 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 EXAMPLES = """
 - name: connect-cloud-services
   cp_mgmt_connect_cloud_services:
-    #sgignore next_line
+    # sgignore next_line
     auth_token: aHR0cHM6Ly9kZXYtY2xvdWRpbmZyYS1ndy5rdWJlMS5pYWFzLmNoZWNrcG9pbnQuY29tL2FwcC9tYWFzL2FwaS92Mi9tYW5hZ2VtZW50
                 cy9hZmJlYWRlYS04Y2U2LTRlYTUtOTI4OS00ZTQ0N2M0ZjgyMTvY2xvdWRBY2Nlc3MvP290cD02ZWIzNThlOS1hMzkxLTQxOGQtYjlmZ
                 i0xOGIxOTQwOGJlN2Y=

@@ -93,14 +93,14 @@ EXAMPLES = """
   cp_mgmt_data_type_group:
     description: add data type group object
     file_type:
-    - file-attr-obj
+      - file-attr-obj
     name: data-group-obj
     state: present
 
 - name: set-data-type-group
   cp_mgmt_data_type_group:
     file_content:
-    - keywords_obj
+      - keywords_obj
     name: data-group-obj
     state: present
 

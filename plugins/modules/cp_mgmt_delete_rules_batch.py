@@ -73,21 +73,21 @@ EXAMPLES = """
 - name: delete-rules-batch
   cp_mgmt_delete_rules_batch:
     objects:
-    - layer: Network
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: access-rule
-    - layer: Standard
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: nat-rule
-    - layer: Default Layer
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: https-rule
+      - layer: Network
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: access-rule
+      - layer: Standard
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: nat-rule
+      - layer: Default Layer
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: https-rule
 """
 
 RETURN = """

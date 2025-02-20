@@ -231,26 +231,26 @@ EXAMPLES = """
 - name: add-lsm-cluster
   cp_mgmt_lsm_cluster:
     interfaces:
-    - ip_address_override: 192.168.8.197
-      member_network_override: 192.168.8.0
-      name: eth0
-      new_name: WAN
-    - ip_address_override: 10.8.197.1
-      member_network_override: 10.8.197.0
-      name: eth1
-      new_name: LAN1
-    - member_network_override: 10.10.10.0
-      name: eth2
+      - ip_address_override: 192.168.8.197
+        member_network_override: 192.168.8.0
+        name: eth0
+        new_name: WAN
+      - ip_address_override: 10.8.197.1
+        member_network_override: 10.8.197.0
+        name: eth1
+        new_name: LAN1
+      - member_network_override: 10.10.10.0
+        name: eth2
     main_ip_address: 192.168.8.197
     members:
-    - name: Gaia_gw1
-      sic:
-        ip_address: 192.168.8.200
-        one_time_password: aaaa
-    - name: Gaia_gw2
-      sic:
-        ip_address: 192.168.8.202
-        one_time_password: aaaa
+      - name: Gaia_gw1
+        sic:
+          ip_address: 192.168.8.200
+          one_time_password: aaaa
+      - name: Gaia_gw2
+        sic:
+          ip_address: 192.168.8.202
+          one_time_password: aaaa
     name_prefix: Gaia_
     security_profile: gaia_cluster
     state: present
@@ -258,25 +258,25 @@ EXAMPLES = """
 - name: set-lsm-cluster
   cp_mgmt_lsm_cluster:
     interfaces:
-    - ip_address_override: 192.168.8.197
-      member_network_override: 192.168.8.0
-      name: eth0
-      new_name: WAN
-    - ip_address_override: 10.8.197.1
-      member_network_override: 10.8.197.0
-      name: eth1
-      new_name: LAN1
-    - member_network_override: 10.10.10.0
-      name: eth2
+      - ip_address_override: 192.168.8.197
+        member_network_override: 192.168.8.0
+        name: eth0
+        new_name: WAN
+      - ip_address_override: 10.8.197.1
+        member_network_override: 10.8.197.0
+        name: eth1
+        new_name: LAN1
+      - member_network_override: 10.10.10.0
+        name: eth2
     members:
-    - name: Gaia_gw1
-      sic:
-        ip_address: 192.168.8.200
-        one_time_password: aaaa
-    - name: Gaia_gw2
-      sic:
-        ip_address: 192.168.8.202
-        one_time_password: aaaa
+      - name: Gaia_gw1
+        sic:
+          ip_address: 192.168.8.200
+          one_time_password: aaaa
+      - name: Gaia_gw2
+        sic:
+          ip_address: 192.168.8.202
+          one_time_password: aaaa
     name: Gaia_gaia_cluster
     state: present
 

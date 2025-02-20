@@ -67,7 +67,7 @@ EXAMPLES = """
     script: ls -l /
     script_name: 'Script Example: List files under / dir'
     targets:
-    - corporate-gateway
+      - corporate-gateway
 """
 
 RETURN = """

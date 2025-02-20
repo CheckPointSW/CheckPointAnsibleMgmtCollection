@@ -144,8 +144,8 @@ EXAMPLES = """
 - name: set-access-role
   cp_mgmt_access_role:
     users_list:
-        - source: "Internal User Groups"
-          selection: usersGroup
+      - source: "Internal User Groups"
+        selection: usersGroup
     name: New Access Role 1
     state: present
 

@@ -99,8 +99,8 @@ EXAMPLES = """
     data_match_threshold: all-keywords
     description: keywords object
     keywords:
-    - word1
-    - word2
+      - word1
+      - word2
     name: keywords_obj
     state: present
 
@@ -108,7 +108,7 @@ EXAMPLES = """
   cp_mgmt_data_type_keywords:
     data_match_threshold: min-keywords
     keywords:
-    - word3
+      - word3
     min_number_of_keywords: 3
     name: keywords_obj
     state: present

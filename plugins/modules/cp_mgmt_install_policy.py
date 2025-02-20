@@ -88,7 +88,7 @@ EXAMPLES = """
     access: true
     policy_package: standard
     targets:
-    - corporate-gateway
+      - corporate-gateway
     threat_prevention: true
 """
 

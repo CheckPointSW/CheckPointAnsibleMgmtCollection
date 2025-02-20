@@ -690,14 +690,14 @@ EXAMPLES = """
       cluster_type: vsls
       ipv4_address: 10.1.1.15
       members:
-      - ipv4_address: 10.1.1.1
-        name: VSX1
-        sic_otp: sicotp123
-        sync_ip: 192.168.1.1
-      - ipv4_address: 10.1.1.2
-        name: VSX2
-        sic_otp: sicotp123
-        sync_ip: 192.168.1.2
+        - ipv4_address: 10.1.1.1
+          name: VSX1
+          sic_otp: sicotp123
+          sync_ip: 192.168.1.1
+        - ipv4_address: 10.1.1.2
+          name: VSX2
+          sic_otp: sicotp123
+          sync_ip: 192.168.1.2
       rule_drop: enable
       rule_ping: enable
       sync_if_name: eth3

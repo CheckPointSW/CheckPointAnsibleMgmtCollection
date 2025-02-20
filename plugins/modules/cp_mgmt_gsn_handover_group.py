@@ -97,7 +97,7 @@ EXAMPLES = """
     enforce_gtp: true
     gtp_rate: 2048
     members:
-    - All_Internet
+      - All_Internet
     name: gsnhandovergroup
     state: present
 

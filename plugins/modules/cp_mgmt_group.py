@@ -89,8 +89,8 @@ EXAMPLES = """
 - name: add-group
   cp_mgmt_group:
     members:
-    - New Host 1
-    - My Test Host 3
+      - New Host 1
+      - My Test Host 3
     name: New Group 5
     state: present
 

@@ -950,57 +950,55 @@ EXAMPLES = """
     color: yellow
     firewall: true
     interfaces:
-    - anti_spoofing: true
-      interface_type: cluster
-      ip_address: 17.23.5.1
-      name: eth0
-      network_mask: 255.255.255.0
-      topology: EXTERNAL
-    - interface_type: sync
-      name: eth1
-      topology: INTERNAL
-      topology_settings:
-        interface_leads_to_dmz: false
-        ip_address_behind_this_interface: network defined by the interface ip and net
-          mask
-    - anti_spoofing: true
-      interface_type: cluster
-      ip_address: 192.168.1.1
-      name: eth2
-      network_mask: 255.255.255.0
-      topology: INTERNAL
-      topology_settings:
-        interface_leads_to_dmz: false
-        ip_address_behind_this_interface: network defined by the interface ip and net
-          mask
+      - anti_spoofing: true
+        interface_type: cluster
+        ip_address: 17.23.5.1
+        name: eth0
+        network_mask: 255.255.255.0
+        topology: EXTERNAL
+      - interface_type: sync
+        name: eth1
+        topology: INTERNAL
+        topology_settings:
+          interface_leads_to_dmz: false
+          ip_address_behind_this_interface: network defined by the interface ip and net mask
+      - anti_spoofing: true
+        interface_type: cluster
+        ip_address: 192.168.1.1
+        name: eth2
+        network_mask: 255.255.255.0
+        topology: INTERNAL
+        topology_settings:
+          interface_leads_to_dmz: false
+          ip_address_behind_this_interface: network defined by the interface ip and net mask
     ip_address: 17.23.5.1
     members:
-    - interfaces:
-      - ip_address: 17.23.5.2
-        name: eth0
-        network_mask: 255.255.255.0
-      - ip_address: 1.1.2.4
-        name: eth1
-        network_mask: 255.255.255.0
-      - ip_address: 192.168.1.2
-        name: eth2
-        network_mask: 255.255.255.0
-      ip_address: 17.23.5.2
-      name: member1
-      one_time_password: abcd
-    - interfaces:
-      - ip_address: 17.23.5.3
-        name: eth0
-        network_mask: 255.255.255.0
-      - ip_address: 1.1.2.5
-        name: eth1
-        network_mask: 255.255.255.0
-      - ip_address: 192.168.1.3
-        name: eth2
-        network_mask: 255.255.255.0
-      ip_address: 17.23.5.3
-      name: member2
-      one_time_password: abcd
+      - interfaces:
+        - ip_address: 17.23.5.2
+          name: eth0
+          network_mask: 255.255.255.0
+        - ip_address: 1.1.2.4
+          name: eth1
+          network_mask: 255.255.255.0
+        - ip_address: 192.168.1.2
+          name: eth2
+          network_mask: 255.255.255.0
+        ip_address: 17.23.5.2
+        name: member1
+        one_time_password: abcd
+      - interfaces:
+        - ip_address: 17.23.5.3
+          name: eth0
+          network_mask: 255.255.255.0
+        - ip_address: 1.1.2.5
+          name: eth1
+          network_mask: 255.255.255.0
+        - ip_address: 192.168.1.3
+          name: eth2
+          network_mask: 255.255.255.0
+        ip_address: 17.23.5.3
+        name: member2
+        one_time_password: abcd
     name: cluster1
     os_name: Gaia
     state: present

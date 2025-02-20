@@ -92,7 +92,7 @@ EXAMPLES = """
   cp_mgmt_user_group:
     email: myusergroup@email.com
     members:
-    - myuser
+      - myuser
     name: myusergroup
     state: present
 

@@ -88,18 +88,18 @@ EXAMPLES = """
   cp_mgmt_time_group:
     name: timeGroup-1
     members:
-    - member1
-    - member2
+      - member1
+      - member2
     state: present
 
 - name: set-time-group
   cp_mgmt_time_group:
     name: timeGroup-1
     members:
-    - member1
-    - member2
+      - member1
+      - member2
     tags:
-    - tag1
+      - tag1
     state: present
 
 - name: delete-time-group

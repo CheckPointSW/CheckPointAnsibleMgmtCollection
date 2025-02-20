@@ -89,10 +89,10 @@ EXAMPLES = """
 - name: add-application-site-group
   cp_mgmt_application_site_group:
     members:
-    - facebook
-    - Social Networking
-    - New Application Site 1
-    - New Application Site Category 1
+      - facebook
+      - Social Networking
+      - New Application Site 1
+      - New Application Site Category 1
     name: New Application Site Group 1
     state: present
 
@@ -100,7 +100,7 @@ EXAMPLES = """
   cp_mgmt_application_site_group:
     name: New Application Site Group 1
     members:
-    - AliveProxy
+      - AliveProxy
     state: present
 
 - name: delete-application-site-group

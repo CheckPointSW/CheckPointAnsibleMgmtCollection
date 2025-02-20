@@ -87,16 +87,16 @@ EXAMPLES = """
 - name: add-tacacs-group
   cp_mgmt_tacacs_group:
     members:
-    - t1
-    - t3
-    - group1
+      - t1
+      - t3
+      - group1
     name: group2
     state: present
 
 - name: set-tacacs-group
   cp_mgmt_tacacs_group:
     members:
-    - tacacs4
+      - tacacs4
     name: group1
     state: present
 

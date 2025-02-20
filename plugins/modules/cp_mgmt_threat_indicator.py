@@ -189,14 +189,14 @@ EXAMPLES = """
     ignore_warnings: true
     name: My_Indicator
     observables:
-    - confidence: medium
-      mail_to: someone@somewhere.com
-      name: My_Observable
-      product: AV
-      severity: low
+      - confidence: medium
+        mail_to: someone@somewhere.com
+        name: My_Observable
+        product: AV
+        severity: low
     profile_overrides:
-    - action: detect
-      profile: My_Profile
+      - action: detect
+        profile: My_Profile
     state: present
 
 - name: set-threat-indicator

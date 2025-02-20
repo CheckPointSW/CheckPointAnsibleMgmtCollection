@@ -81,8 +81,8 @@ EXAMPLES = """
     name: My New Tag1
     state: present
     tags:
-    - tag1
-    - tag2
+      - tag1
+      - tag2
 
 - name: delete-tag
   cp_mgmt_tag:

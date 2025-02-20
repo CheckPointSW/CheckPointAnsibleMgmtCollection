@@ -4,6 +4,25 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.4.0
+======
+
+Release Summary
+---------------
+
+This is release 6.4.0 of "check_point.mgmt", released on 2025-02-19.
+
+Minor Changes
+-------------
+
+- added missing parameters such as 'filter', 'domains_to_process' and 'async_response' to the relevant resources modules.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_user_template - Manages user-template objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_user_template_facts - Get user-template objects facts on Checkpoint over Web Services API
+
 v6.3.0
 ======
 

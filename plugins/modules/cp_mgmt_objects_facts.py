@@ -131,7 +131,7 @@ EXAMPLES = """
     limit: 50
     offset: 0
     order:
-    - ASC: name
+      - ASC: name
     type: group
 
 - name: show-object

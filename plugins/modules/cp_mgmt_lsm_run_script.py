@@ -58,7 +58,7 @@ EXAMPLES = """
   cp_mgmt_lsm_run_script:
     script: ls -l /
     targets:
-    - lsm_gateway
+      - lsm_gateway
 """
 
 RETURN = """
