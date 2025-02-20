@@ -103,20 +103,20 @@ EXAMPLES = """
 - name: add-resource-cifs
   cp_mgmt_resource_cifs:
     allowed_disk_and_print_shares:
-    - server_name: server1
-      share_name: share1
-    - server_name: server2
-      share_name: share2
+      - server_name: server1
+        share_name: share1
+      - server_name: server2
+        share_name: share2
     name: newCifsResource
     state: present
 
 - name: set-resource-cifs
   cp_mgmt_resource_cifs:
     allowed_disk_and_print_shares:
-    - server_name: server5
-      share_name: share5
-    - server_name: server6
-      share_name: share6
+      - server_name: server5
+        share_name: share5
+      - server_name: server6
+        share_name: share6
     name: newCifsResource3
     state: present
 

@@ -65,7 +65,7 @@ EXAMPLES = """
     inspect_archives: 'false'
     internal_error_fail_mode: block connections
     supported_services:
-    - Squid_NTLM
+      - Squid_NTLM
 """
 
 RETURN = """

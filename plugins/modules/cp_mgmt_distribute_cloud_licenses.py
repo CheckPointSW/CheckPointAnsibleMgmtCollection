@@ -49,8 +49,8 @@ EXAMPLES = """
 - name: distribute-cloud-licenses
   cp_mgmt_distribute_cloud_licenses:
     targets:
-    - GW1
-    - GW2
+      - GW1
+      - GW2
 """
 
 RETURN = """

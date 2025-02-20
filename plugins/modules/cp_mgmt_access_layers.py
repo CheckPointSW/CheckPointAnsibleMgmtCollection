@@ -199,7 +199,7 @@ EXAMPLES = """
       mobile_access: true
       shared: false
       tags:
-      - test_layer
+        - test_layer
       color: aquamarine
       comments: test description
       details_level: full
@@ -246,7 +246,7 @@ EXAMPLES = """
       mobile_access: true
       shared: true
       tags:
-      - test_layer_replaced
+        - test_layer_replaced
       color: cyan
       comments: test REPLACE description
       details_level: full

@@ -112,10 +112,10 @@ EXAMPLES = """
     state: present
     sum_of_weights_threshold: 10
     weighted_keywords:
-    - keyword: word1
-      max_weight: 4
-      regex: true
-      weight: 3
+      - keyword: word1
+        max_weight: 4
+        regex: true
+        weight: 3
 
 - name: set-data-type-weighted-keywords
   cp_mgmt_data_type_weighted_keywords:
@@ -123,14 +123,14 @@ EXAMPLES = """
     state: present
     sum_of_weights_threshold: 15
     weighted_keywords:
-    - keyword: word1
-      max_weight: 4
-      regex: true
-      weight: 3
-    - keyword: word2
-      max_weight: 5
-      regex: false
-      weight: 2
+      - keyword: word1
+        max_weight: 4
+        regex: true
+        weight: 3
+      - keyword: word2
+        max_weight: 5
+        regex: false
+        weight: 2
 
 - name: delete-data-type-weighted-keywords
   cp_mgmt_data_type_weighted_keywords:

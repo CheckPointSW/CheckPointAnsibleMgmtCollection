@@ -68,7 +68,7 @@ EXAMPLES = """
     file_name: vsx_conf
     file_path: /home/admin/
     targets:
-    - corporate-gateway
+      - corporate-gateway
 """
 
 RETURN = """

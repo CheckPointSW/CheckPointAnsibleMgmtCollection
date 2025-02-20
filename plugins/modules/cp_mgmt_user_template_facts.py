@@ -17,27 +17,25 @@
 # along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from __future__ import absolute_import, division, print_function
+from __future__ import (absolute_import, division, print_function)
 
 __metaclass__ = type
 
-ANSIBLE_METADATA = {
-    "metadata_version": "1.1",
-    "status": ["preview"],
-    "supported_by": "community",
-}
+ANSIBLE_METADATA = {'metadata_version': '1.1',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
 
 DOCUMENTATION = """
 ---
-module: cp_mgmt_data_center_object_facts
-short_description: Get data-center-object objects facts on Checkpoint over Web Services API
+module: cp_mgmt_user_template_facts
+short_description: Get user-template objects facts on Checkpoint over Web Services API
 description:
-  - Get data-center-object objects facts on Checkpoint devices.
+  - Get user-template objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
-version_added: "2.0.0"
-author: "Or Soffer (@chkp-orso)"
+version_added: "6.4.0"
+author: "Dor Berenstein (@chkp-dorbe)"
 options:
   name:
     description:
@@ -56,7 +54,6 @@ options:
         logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
         name, comment, tags etc.
     type: str
-    version_added: "6.4.0"
   limit:
     description:
       - The maximal number of returned results.
@@ -84,27 +81,23 @@ options:
           - Sorts results by the given field in descending order.
         type: str
         choices: ['name']
-  show_membership:
-    description:
-      - Indicates whether to calculate and show "groups" field for every object in reply.
-    type: bool
   domains_to_process:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
     type: list
     elements: str
-    version_added: "6.4.0"
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
 EXAMPLES = """
-- name: show-data-center-object
-  cp_mgmt_data_center_object_facts:
-    name: VM1 mgmt name
+- name: show-user-template
+  cp_mgmt_user_template_facts:
+    name: Default
 
-- name: show-data-center-objects
-  cp_mgmt_data_center_object_facts:
+- name: show-user-templates
+  cp_mgmt_user_template_facts:
+    details_level: full
 """
 
 RETURN = """
@@ -115,44 +108,32 @@ ansible_facts:
 """
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import (
-    checkpoint_argument_spec_for_facts,
-    api_call_facts,
-)
+from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import checkpoint_argument_spec_for_facts, api_call_facts
 
 
 def main():
     argument_spec = dict(
-        name=dict(type="str"),
-        details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        name=dict(type='str'),
+        details_level=dict(type='str', choices=['uid', 'standard', 'full']),
         filter=dict(type='str'),
-        limit=dict(type="int"),
-        offset=dict(type="int"),
-        order=dict(
-            type="list",
-            elements="dict",
-            options=dict(
-                ASC=dict(type="str", choices=["name"]),
-                DESC=dict(type="str", choices=["name"]),
-            ),
-        ),
-        show_membership=dict(type="bool"),
+        limit=dict(type='int'),
+        offset=dict(type='int'),
+        order=dict(type='list', elements="dict", options=dict(
+            ASC=dict(type='str', choices=['name']),
+            DESC=dict(type='str', choices=['name'])
+        )),
         domains_to_process=dict(type='list', elements="str")
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
 
-    api_call_object = "data-center-object"
-    api_call_object_plural_version = "data-center-objects"
+    api_call_object = "user-template"
+    api_call_object_plural_version = "user-templates"
 
-    result = api_call_facts(
-        module, api_call_object, api_call_object_plural_version
-    )
+    result = api_call_facts(module, api_call_object, api_call_object_plural_version)
     module.exit_json(ansible_facts=result)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

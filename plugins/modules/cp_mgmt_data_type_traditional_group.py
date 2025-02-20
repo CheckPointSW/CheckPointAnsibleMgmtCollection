@@ -88,8 +88,8 @@ EXAMPLES = """
 - name: add-data-type-traditional-group
   cp_mgmt_data_type_traditional_group:
     data_types:
-    - weighted-words-obj
-    - file-attr-obj
+      - weighted-words-obj
+      - file-attr-obj
     description: traditional group object
     name: trad-group-obj
     state: present
@@ -97,7 +97,7 @@ EXAMPLES = """
 - name: set-data-type-traditional-group
   cp_mgmt_data_type_traditional_group:
     data_types:
-    - keywords_obj
+      - keywords_obj
     name: trad-group-obj
     state: present
 

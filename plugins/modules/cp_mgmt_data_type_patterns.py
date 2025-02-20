@@ -94,8 +94,8 @@ EXAMPLES = """
     name: pattern-obj
     number_of_occurrences: 4
     patterns:
-    - a*b
-    - ^d
+      - a*b
+      - ^d
     state: present
 
 - name: set-data-type-patterns
@@ -103,7 +103,7 @@ EXAMPLES = """
     name: pattern-obj
     number_of_occurrences: 3
     patterns:
-    - a*b
+      - a*b
     state: present
 
 - name: delete-data-type-patterns

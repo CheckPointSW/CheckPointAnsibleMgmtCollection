@@ -107,7 +107,7 @@ EXAMPLES = """
 - name: add-data-type-file-attributes
   cp_mgmt_data_type_file_attributes:
     file_groups_list:
-    - Viewer
+      - Viewer
     file_name_contains: expression
     file_size: 14
     match_by_file_name: 'true'
@@ -119,7 +119,7 @@ EXAMPLES = """
 - name: set-data-type-file-attributes
   cp_mgmt_data_type_file_attributes:
     file_groups_list:
-    - Word
+      - Word
     match_by_file_size: false
     name: file-attr-obj
     state: present

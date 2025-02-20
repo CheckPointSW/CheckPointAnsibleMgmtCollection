@@ -114,7 +114,7 @@ EXAMPLES = """
     comments: comment example1 nat999
     enabled: false
     install_on:
-    - Policy Targets
+      - Policy Targets
     original_destination: All_Internet
     original_source: Any
     package: standard

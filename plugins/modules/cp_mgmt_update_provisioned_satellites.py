@@ -50,7 +50,7 @@ EXAMPLES = """
 - name: update-provisioned-satellites
   cp_mgmt_update_provisioned_satellites:
     vpn_center_gateways:
-    - co_gateway
+      - co_gateway
 """
 
 RETURN = """

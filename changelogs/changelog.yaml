@@ -1283,3 +1283,19 @@ releases:
         name: cp_mgmt_user_facts
         namespace: ''
     release_date: '2025-01-03'
+  6.4.0:
+    changes:
+      minor_changes:
+        - added missing parameters such as 'filter', 'domains_to_process' and 'async_response'
+          to the relevant resources modules.
+      release_summary: This is release 6.4.0 of "check_point.mgmt", released on 2025-02-20.
+    fragments:
+      - 6.4.0.yml
+    modules:
+      - description: Manages user-template objects on Checkpoint over Web Services API
+        name: cp_mgmt_user_template
+        namespace: ''
+      - description: Get user-template objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_user_template_facts
+        namespace: ''
+    release_date: '2025-02-20'

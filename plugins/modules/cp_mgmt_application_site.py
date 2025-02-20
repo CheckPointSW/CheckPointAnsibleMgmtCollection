@@ -111,16 +111,16 @@ EXAMPLES = """
 - name: add-application-site
   cp_mgmt_application_site:
     additional_categories:
-    - Instant Chat
-    - Supports Streaming
-    - New Application Site Category 1
+      - Instant Chat
+      - Supports Streaming
+      - New Application Site Category 1
     description: My Application Site
     name: New Application Site 1
     primary_category: Social Networking
     state: present
     url_list:
-    - www.cnet.com
-    - www.stackoverflow.com
+      - www.cnet.com
+      - www.stackoverflow.com
     urls_defined_as_regular_expression: false
 
 - name: set-application-site

@@ -87,9 +87,9 @@ EXAMPLES = """
 - name: set-vpn-community-remote-access
   cp_mgmt_set_vpn_community_remote_access:
     gateways:
-    - mygateway
+      - mygateway
     user_groups:
-    - myusergroup
+      - myusergroup
 """
 
 RETURN = """

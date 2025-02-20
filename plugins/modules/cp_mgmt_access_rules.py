@@ -281,12 +281,12 @@ EXAMPLES = """
     rules:
       - name: Rule 1
         service:
-        - SMTP
-        - AOL
+          - SMTP
+          - AOL
         state: present
       - name: Rule 2
         service:
-        - SMTP
+          - SMTP
         state: present
     layer: Network
     auto_publish_session: true

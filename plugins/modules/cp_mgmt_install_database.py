@@ -49,8 +49,8 @@ EXAMPLES = """
 - name: install-database
   cp_mgmt_install_database:
     targets:
-    - checkpointhost1
-    - checkpointhost2
+      - checkpointhost1
+      - checkpointhost2
 """
 
 RETURN = """

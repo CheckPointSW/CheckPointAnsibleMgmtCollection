@@ -97,17 +97,17 @@ EXAMPLES = """
     position: 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: set-mobile-access-rule
   cp_mgmt_mobile_access_rule:
     applications:
-    - New Application
-    - New Application 2
+      - New Application
+      - New Application 2
     name: Rule 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: delete-mobile-access-rule
   cp_mgmt_mobile_access_rule:

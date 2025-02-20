@@ -152,7 +152,7 @@ EXAMPLES = """
       categorize_https_websites: 'true'
       enforce_safe_search: 'true'
     web_browsing_services:
-    - AH
+      - AH
     website_categorization_mode: custom
 """
 

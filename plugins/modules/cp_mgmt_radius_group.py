@@ -87,15 +87,15 @@ EXAMPLES = """
 - name: add-radius-group
   cp_mgmt_radius_group:
     members:
-    - t4
-    - radgroup
+      - t4
+      - radgroup
     name: radgroup
     state: present
 
 - name: set-radius-group
   cp_mgmt_radius_group:
     members:
-    - t4
+      - t4
     name: radgroup
     state: present
 

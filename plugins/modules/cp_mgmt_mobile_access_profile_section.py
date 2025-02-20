@@ -99,7 +99,7 @@ EXAMPLES = """
   cp_mgmt_mobile_access_profile_section:
     name: New Section 1
     tags:
-     - MAP-section
+      - MAP-section
     state: present
 
 - name: delete-mobile-access-profile-section

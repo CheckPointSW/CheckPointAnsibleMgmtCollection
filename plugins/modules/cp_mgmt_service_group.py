@@ -89,10 +89,10 @@ EXAMPLES = """
 - name: add-service-group
   cp_mgmt_service_group:
     members:
-    - https
-    - bootp
-    - nisplus
-    - HP-OpCdistm
+      - https
+      - bootp
+      - nisplus
+      - HP-OpCdistm
     name: New Service Group 1
     state: present
 
@@ -100,9 +100,9 @@ EXAMPLES = """
   cp_mgmt_service_group:
     name: New Service Group 1
     members:
-    - https
-    - bootp
-    - nisplus
+      - https
+      - bootp
+      - nisplus
     state: present
 
 - name: delete-service-group

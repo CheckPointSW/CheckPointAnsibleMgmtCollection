@@ -91,7 +91,7 @@ EXAMPLES = """
     position: 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: set-mobile-access-profile-rule
   cp_mgmt_mobile_access_profile_rule:
@@ -99,7 +99,7 @@ EXAMPLES = """
     name: Rule 1
     position: 2
     user_groups:
-    - my_group
+      - my_group
     state: present
 
 - name: delete-mobile-access-profile-rule

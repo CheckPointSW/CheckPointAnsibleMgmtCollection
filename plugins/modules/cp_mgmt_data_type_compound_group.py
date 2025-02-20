@@ -95,21 +95,21 @@ EXAMPLES = """
   cp_mgmt_data_type_compound_group:
     description: Compound group object
     matched_groups:
-    - trad-group-obj
+      - trad-group-obj
     name: compound-group-obj
     state: present
     unmatched_groups:
-    - keywords_obj
+      - keywords_obj
 
 - name: set-data-type-compound-group
   cp_mgmt_data_type_compound_group:
     matched_groups:
-    - trad-group-obj
-    - trad-group-obj2
+      - trad-group-obj
+      - trad-group-obj2
     name: compound-group-obj
     state: present
     unmatched_groups:
-    - keywords_obj2
+      - keywords_obj2
 
 - name: delete-data-type-compound-group
   cp_mgmt_data_type_compound_group:

@@ -183,37 +183,37 @@ EXAMPLES = """
       time: '21:22'
     end_never: 'false'
     hours_ranges:
-    - enabled: true
-      from: 00:00
-      index: 1
-      to: 00:00
-    - enabled: false
-      from: 00:00
-      index: 2
-      to: 00:00
+      - enabled: true
+        from: 00:00
+        index: 1
+        to: 00:00
+      - enabled: false
+        from: 00:00
+        index: 2
+        to: 00:00
     name: timeObject1
     recurrence:
       days:
-      - '1'
+        - '1'
       month: Any
       pattern: Daily
       weekdays:
-      - Sun
-      - Mon
+        - Sun
+        - Mon
     start_now: 'true'
     state: present
 
 - name: set-time
   cp_mgmt_time:
     hours_ranges:
-    - from: 00:22
-      to: 00:33
+      - from: 00:22
+        to: 00:33
     name: timeObject1
     recurrence:
       month: Any
       pattern: Weekly
       weekdays:
-      - Fri
+        - Fri
     state: present
 
 - name: delete-time
