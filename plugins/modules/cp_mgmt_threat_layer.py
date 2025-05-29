@@ -34,6 +34,7 @@ short_description: Manages threat-layer objects on Check Point over Web Services
 description:
   - Manages threat-layer objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -45,6 +46,7 @@ options:
   add_default_rule:
     description:
       - Indicates whether to include a default rule in the new layer.
+      - Available from R80.10 management version.
     type: bool
   tags:
     description:

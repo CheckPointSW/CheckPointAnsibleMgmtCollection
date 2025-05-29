@@ -4,6 +4,20 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.4.1
+======
+
+Release Summary
+---------------
+
+This is release 6.4.1 of "check_point.mgmt", released on 2025-05-28.
+
+Bugfixes
+--------
+
+- Added required management version to the documentation for all collection modules.
+- module_utils/checkpoint – Prevent redundant logout call when there is no authentication header 'X-chkp-sid'.
+
 v6.4.0
 ======
 

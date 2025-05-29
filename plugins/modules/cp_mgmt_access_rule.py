@@ -34,6 +34,7 @@ short_description: Manages access-rule objects on Check Point over Web Services 
 description:
   - Manages access-rule objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -102,16 +103,19 @@ options:
   content:
     description:
       - List of processed file types that this rule applies on.
+      - Available from R80.10 management version.
     type: list
     elements: dict
   content_direction:
     description:
       - On which direction the file types processing is applied.
+      - Available from R80.10 management version.
     type: str
     choices: ['any', 'up', 'down']
   content_negate:
     description:
       - True if negate is set for data.
+      - Available from R80.10 management version.
     type: bool
   custom_fields:
     description:
@@ -178,6 +182,7 @@ options:
   track:
     description:
       - Track Settings.
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       accounting:
@@ -192,6 +197,7 @@ options:
       enable_firewall_session:
         description:
           - Determine whether to generate session log to firewall only connections.
+          - Available from R80.20 management version.
         type: bool
       per_connection:
         description:

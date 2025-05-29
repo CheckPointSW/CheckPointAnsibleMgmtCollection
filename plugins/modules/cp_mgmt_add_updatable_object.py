@@ -32,6 +32,7 @@ short_description: Import an updatable object from the repository to the managem
 description:
   - Import an updatable object from the repository to the management server. This operation takes effect immediately and doesn't require publishing.
   - All operations are performed over Web Services API.
+  - Available from R80.20 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

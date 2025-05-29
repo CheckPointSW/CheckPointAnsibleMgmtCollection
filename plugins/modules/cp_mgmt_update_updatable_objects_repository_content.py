@@ -32,6 +32,7 @@ short_description: Updates the content of the Updatable Objects repository from 
 description:
   - Updates the content of the Updatable Objects repository from the Check Point User Center.
   - All operations are performed over Web Services API.
+  - Available from R80.20 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

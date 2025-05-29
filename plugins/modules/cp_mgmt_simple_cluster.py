@@ -34,6 +34,7 @@ short_description: Manages simple-cluster objects on Checkpoint over Web Service
 description:
   - Manages simple-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -182,18 +183,22 @@ options:
           exclude_packets:
             description:
               - Don't check packets from excluded network.
+              - Available from R81.10 management version.
             type: bool
           excluded_network_name:
             description:
               - Excluded network name.
+              - Available from R81.10 management version.
             type: str
           excluded_network_uid:
             description:
               - Excluded network UID.
+              - Available from R81.10 management version.
             type: str
           spoof_tracking:
             description:
               - Spoof tracking.
+              - Available from R81.10 management version.
             type: str
             choices: ['none', 'log', 'alert']
       multicast_address:
@@ -317,18 +322,22 @@ options:
               exclude_packets:
                 description:
                   - Don't check packets from excluded network.
+                  - Available from R81.10 management version.
                 type: bool
               excluded_network_name:
                 description:
                   - Excluded network name.
+                  - Available from R81.10 management version.
                 type: str
               excluded_network_uid:
                 description:
                   - Excluded network UID.
+                  - Available from R81.10 management version.
                 type: str
               spoof_tracking:
                 description:
                   - Spoof tracking.
+                  - Available from R81.10 management version.
                 type: str
                 choices: ['none', 'log', 'alert']
           ip_address:
@@ -495,6 +504,7 @@ options:
   platform_portal_settings:
     description:
       - Platform portal settings.
+      - Available from R81 JHF management version.
     type: dict
     suboptions:
       portal_web_settings:
@@ -583,10 +593,12 @@ options:
   threat_extraction:
     description:
       - Threat Extraction blade enabled.
+      - Available from R81.10 management version.
     type: bool
   threat_prevention_mode:
     description:
       - The mode of Threat Prevention to use. When using Autonomous Threat Prevention, disabling the Threat Prevention blades is not allowed.
+      - Available from R81.10 management version.
     type: str
     choices: ['autonomous', 'custom']
   url_filtering:
@@ -596,6 +608,7 @@ options:
   usercheck_portal_settings:
     description:
       - UserCheck portal settings.
+      - Available from R81 JHF management version.
     type: dict
     suboptions:
       enabled:
@@ -678,6 +691,7 @@ options:
       authentication:
         description:
           - Authentication.
+          - Available from R81 management version.
         type: dict
         suboptions:
           authentication_clients:
@@ -688,6 +702,7 @@ options:
       link_selection:
         description:
           - Link Selection.
+          - Available from R81 management version.
         type: dict
         suboptions:
           ip_selection:
@@ -716,6 +731,7 @@ options:
       office_mode:
         description:
           - Office Mode. Notation Wide Impact - Office Mode apply IPSec VPN Software Blade clients and to the Mobile Access Software Blade clients.
+          - Available from R81 management version.
         type: dict
         suboptions:
           mode:
@@ -851,6 +867,7 @@ options:
       remote_access:
         description:
           - Remote Access.
+          - Available from R81 management version.
         type: dict
         suboptions:
           support_l2tp:
@@ -909,6 +926,7 @@ options:
   show_portals_certificate:
     description:
       - Indicates whether to show the portals certificate value in the reply.
+      - Available from R81 JHF management version.
     type: bool
   color:
     description:

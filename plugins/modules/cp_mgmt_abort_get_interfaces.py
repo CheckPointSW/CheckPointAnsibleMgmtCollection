@@ -33,6 +33,7 @@ description:
   - Attempt to abort an on-going "get-interfaces" operation.
     This API might fail if the "get-interfaces" operation is in its final stage.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

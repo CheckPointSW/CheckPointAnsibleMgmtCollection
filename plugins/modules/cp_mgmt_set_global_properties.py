@@ -34,6 +34,7 @@ short_description: Edit Global Properties.
 description:
   - Edit Global Properties.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -197,6 +198,7 @@ options:
                 is one). Changing the HTTP Next Proxy fields takes effect after the Security Gateway database is downloaded to the authenticating gateway, or
                 after the security policy is re-installed. <br>These settings apply only to firewalled gateways prior to NG. For later versions, these
                 settings should be defined in the Node Properties window.
+               - Available from R82 management version.
             type: str
           http_next_proxy_port:
             description:
@@ -204,6 +206,7 @@ options:
                 one). Changing the HTTP Next Proxy fields takes effect after the Security Gateway database is downloaded to the authenticating gateway, or
                 after the security policy is re-installed. <br>These settings apply only to firewalled gateways prior to NG. For later versions, these
                 settings should be defined in the Node Properties window.
+              - Available from R82 management version.
             type: int
           http_servers:
             description:
@@ -502,10 +505,12 @@ options:
                       sha384:
                         description:
                           - Select whether the SHA384 hash algorithm will be supported with remote hosts to ensure data integrity.
+                          - Available from R82 management version.
                         type: bool
                       sha512:
                         description:
                           - Select whether the SHA512 hash algorithm will be supported with remote hosts to ensure data integrity.
+                          - Available from R82 management version.
                         type: bool
                   use_data_integrity:
                     description:
@@ -594,10 +599,12 @@ options:
                       sha384:
                         description:
                           - Select whether the SHA384 hash algorithm will be supported with remote hosts to ensure data integrity.
+                          - Available from R82 management version.
                         type: bool
                       sha512:
                         description:
                           - Select whether the SHA512 hash algorithm will be supported with remote hosts to ensure data integrity.
+                          - Available from R82 management version.
                         type: bool
                   use_data_integrity:
                     description:

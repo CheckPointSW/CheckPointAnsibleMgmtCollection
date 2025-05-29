@@ -34,6 +34,7 @@ short_description: Delete the API key. For the key to be invalid publish is need
 description:
   - Delete the API key. For the key to be invalid publish is needed.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

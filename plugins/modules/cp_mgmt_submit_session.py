@@ -34,6 +34,7 @@ short_description: Workflow feature - Submit the session for approval.
 description:
   - Workflow feature - Submit the session for approval.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

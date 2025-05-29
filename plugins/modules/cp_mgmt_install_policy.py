@@ -34,6 +34,7 @@ short_description: install policy on Check Point over Web Services API
 description:
   - install policy on Check Point over Web Services API
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -55,11 +56,13 @@ options:
     description:
       - Set to be true in order to install the Desktop Security policy. By default, the value is true if desktop security policy is enabled on the
         input policy package, otherwise false.
+      - Available from R80.20.M1 management version.
     type: bool
   qos:
     description:
       - Set to be true in order to install the QoS policy. By default, the value is true if Quality-of-Service policy is enabled on the input policy
         package, otherwise false.
+      - Available from R80.20.M1 management version.
     type: bool
   threat_prevention:
     description:
@@ -70,14 +73,17 @@ options:
     description:
       - Relevant for the gateway clusters. If true, the policy is installed on all the cluster members. If the installation on a cluster member fails,
         don't install on that cluster.
+      - Available from R80.10 management version.
     type: bool
   prepare_only:
     description:
       - If true, prepares the policy for the installation, but doesn't install it on an installation target.
+      - Available from R80.10 management version.
     type: bool
   revision:
     description:
       - The UID of the revision of the policy to install.
+      - Available from R80.10 management version.
     type: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """

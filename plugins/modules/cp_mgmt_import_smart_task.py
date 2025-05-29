@@ -33,6 +33,7 @@ description:
   - Import SmartTask from a file. <br>This command is available only in a Security Management environment or in Multi-Domain environment when logged into
     local domain.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

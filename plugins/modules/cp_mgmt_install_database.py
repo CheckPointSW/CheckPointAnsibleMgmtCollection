@@ -34,6 +34,7 @@ short_description: Copies the user database and network objects information to s
 description:
   - Copies the user database and network objects information to specified targets.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:

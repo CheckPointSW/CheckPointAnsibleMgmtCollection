@@ -34,6 +34,7 @@ short_description: All changes done by user are discarded and removed from datab
 description:
   - All changes done by user are discarded and removed from database.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

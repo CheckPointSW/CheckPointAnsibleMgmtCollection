@@ -35,6 +35,7 @@ description:
     If the domain is changed in other parameters than the Multi Domain Servers, i.e. comments, color or tags, such changes are done in the user's private
     session and therefore should be published. In this case, the returned command output is similar to the one of 'show-global-domain'.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

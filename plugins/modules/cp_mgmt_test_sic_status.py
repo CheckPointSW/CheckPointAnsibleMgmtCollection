@@ -39,6 +39,7 @@ description:
     no connection between the gateway and the Security Management Server. If the SIC status is No Communication, an error message will appear. It may contain
     specific instructions on how to fix the situation.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

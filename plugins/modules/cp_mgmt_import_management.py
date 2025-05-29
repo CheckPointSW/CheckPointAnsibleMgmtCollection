@@ -34,6 +34,7 @@ description:
   - Import the primary Security Management Server database or the primary Multi-Domain Server database or the single Domain database and the applicable
     Check Point configuration. <br/>After the import starts, the session expires and you must login again.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -69,6 +70,7 @@ options:
     description:
       - Preserve the connection of the Management Server to Check Point's Infinity Portal.<br>Use this flag after ensuring that the original
         Management Server does not communicate with Infinity Portal.<br>Note, resuming the connection is also possible after import with set-cloud-services.
+      - Available from R81.20 management version.
     type: bool
   include_endpoint_configuration:
     description:

@@ -37,6 +37,7 @@ description:
   - Supported rules types are access-rule, nat-rule, https-rule and threat-exception.
   - This module is not idempotent.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

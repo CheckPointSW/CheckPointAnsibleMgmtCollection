@@ -32,6 +32,7 @@ short_description: Create new custom trusted CA certificate.
 description:
   - Create new custom trusted CA certificate.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

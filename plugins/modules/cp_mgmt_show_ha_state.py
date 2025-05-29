@@ -32,6 +32,7 @@ short_description: Retrieve domain high availability state.
 description:
   - Retrieve domain high availability state.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -54,6 +55,7 @@ options:
         of each rule does not contain the parameters, source, source-negate, destination, destination-negate, service and service-negate, but instead it
         contains the parameters, source-ranges, destination-ranges and service-ranges.<br /><br /> Note, Requesting to show rules as ranges is limited up to
         20 rules per request, otherwise an error is returned. If you wish to request more rules, use the offset and limit parameters to limit your request.
+      - Available from R80.20 management version.
     type: bool
   show_hits:
     description:
@@ -90,6 +92,7 @@ options:
   filter_settings:
     description:
       - Sets filter preferences.
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       search_mode:
@@ -108,11 +111,13 @@ options:
             description:
               - When true, if the search expression contains a UID or a name of a group object, results will include rules that match on at
                 least one member of the group.
+              - Available from R80.20 management version.
             type: bool
           expand_group_with_exclusion_members:
             description:
               - When true, if the search expression contains a UID or a name of a group-with-exclusion object, results will include rules that
                 match at least one member of the "include" part and is not a member of the "except" part.
+              - Available from R80.20 management version.
             type: bool
           match_on_any:
             description:
@@ -164,10 +169,12 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """

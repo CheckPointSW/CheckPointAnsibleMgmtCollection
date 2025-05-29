@@ -34,6 +34,7 @@ short_description: Manages access-layer objects on Check Point over Web Services
 description:
   - Manages access-layer objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -45,6 +46,7 @@ options:
   add_default_rule:
     description:
       - Indicates whether to include a cleanup rule in the new layer.
+      - Available from R80.10 management version.
     type: bool
   applications_and_url_filtering:
     description:
@@ -53,6 +55,7 @@ options:
   content_awareness:
     description:
       - Whether to enable Content Awareness blade on the layer.
+      - Available from R80.10 management version.
     type: bool
   detect_using_x_forward_for:
     description:
@@ -65,6 +68,7 @@ options:
   implicit_cleanup_action:
     description:
       - The default "catch-all" action for traffic that does not match any explicit or implied rules in the layer.
+      - Available from R80.20 management version.
     type: str
     choices: ['drop', 'accept']
   mobile_access:
@@ -74,6 +78,7 @@ options:
   shared:
     description:
       - Whether this layer is shared.
+      - Available from R80.10 management version.
     type: bool
   tags:
     description:

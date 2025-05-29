@@ -32,6 +32,7 @@ short_description: Manages limit objects on Checkpoint over Web Services API
 description:
   - Manages limit objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
