@@ -33,6 +33,7 @@ description:
   - Perform full sync from active server to standby peer. <br>Run this command from the active server. <br>When performing a full sync on the global
     domain, use the Multi Domain Server name of the standby global domain.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -43,6 +44,7 @@ options:
   ignore_errors:
     description:
       - Apply changes ignoring errors.
+      - Available from R81.20 management version.
     type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """

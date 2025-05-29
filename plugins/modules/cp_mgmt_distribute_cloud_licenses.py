@@ -34,6 +34,7 @@ description:
     "https://sc1.checkpoint.com/documents/IaaS/WebAdminGuides/EN/CP_CloudGuard_Central_License_Tool_Admin_Guide/Content/Topics-Central-License-Tool/Overview.h
     m?tocpath=Overview%7C_____0#Overview"><b>Central License Administration Guide</b></A>.
   - All operations are performed over Web Services API.
+  - Available from R81.20 JHF management version.
 version_added: "5.2.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

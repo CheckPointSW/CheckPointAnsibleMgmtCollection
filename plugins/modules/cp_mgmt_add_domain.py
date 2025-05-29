@@ -34,6 +34,7 @@ short_description: Create new object
 description:
   - Create new object
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:

@@ -34,7 +34,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
-  - Available only for R82 Management Machines and above
+  - Available from R80.40 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

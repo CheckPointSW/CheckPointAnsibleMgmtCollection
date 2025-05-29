@@ -31,8 +31,8 @@ module: cp_mgmt_interface
 short_description: Manages interface objects on Checkpoint over Web Services API
 description:
   - Manages interface objects on Checkpoint devices including creating, updating and removing objects.
-  - Available for R82 and above machines.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.2.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

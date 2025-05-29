@@ -34,6 +34,7 @@ short_description: Show the connection status of the Management Server to Check 
 description:
   - Show the connection status of the Management Server to Check Point's Infinity Portal.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

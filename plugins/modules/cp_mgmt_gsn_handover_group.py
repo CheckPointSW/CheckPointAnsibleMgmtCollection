@@ -32,6 +32,7 @@ short_description: Manages gsn-handover-group objects on Checkpoint over Web Ser
 description:
   - Manages gsn-handover-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -43,10 +44,12 @@ options:
   enforce_gtp:
     description:
       - Enable enforce GTP signal packet rate limit from this group.
+      - Available from R81 management version.
     type: bool
   gtp_rate:
     description:
       - Limit of the GTP rate in PDU/sec.
+      - Available from R81 management version.
     type: int
   members:
     description:

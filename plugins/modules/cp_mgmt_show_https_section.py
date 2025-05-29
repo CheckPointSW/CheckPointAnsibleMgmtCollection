@@ -34,6 +34,7 @@ short_description: Retrieve existing HTTPS Inspection section using section name
 description:
   - Retrieve existing HTTPS Inspection section using section name or uid and layer name.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

@@ -34,6 +34,7 @@ short_description: Manages lsm-cluster objects on Checkpoint over Web Services A
 description:
   - Manages lsm-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "2.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -57,6 +58,7 @@ options:
   dynamic_objects:
     description:
       - Dynamic Objects.
+      - Available from R81.20 management version.
     type: list
     elements: dict
     version_added: "6.3.0"
@@ -165,6 +167,7 @@ options:
   topology:
     description:
       - Topology.
+      - Available from R81.20 management version.
     type: dict
     version_added: "6.3.0"
     suboptions:

@@ -32,6 +32,7 @@ short_description: Retrieves a packet capture or blob data, according to the att
 description:
   - Retrieves a packet capture or blob data, according to the attributes of a log record.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

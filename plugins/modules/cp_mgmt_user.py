@@ -34,6 +34,7 @@ short_description: Manages user objects on Checkpoint over Web Services API
 description:
   - Manages user objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "6.3.0"
 author: "Dor Berenstein (@chkp-dorbe)"
 options:

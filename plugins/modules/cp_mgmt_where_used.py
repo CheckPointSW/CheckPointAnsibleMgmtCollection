@@ -32,6 +32,7 @@ short_description: Searches for usage of the target object in other objects and 
 description:
   - Searches for usage of the target object in other objects and rules.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -42,14 +43,17 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   async_response:
     description:
       - Run command in asynchronous mode and return task UID. Use show-task command to check the progress of the task.
+      - Available from R81.20 management version.
     type: bool
   details_level:
     description:
@@ -61,6 +65,7 @@ options:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
     type: list
     elements: str
   indirect:

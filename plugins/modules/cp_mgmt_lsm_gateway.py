@@ -34,6 +34,7 @@ short_description: Manages lsm-gateway objects on Checkpoint over Web Services A
 description:
   - Manages lsm-gateway objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "2.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -49,11 +50,13 @@ options:
   device_id:
     description:
       - Device ID.
+      - Available from R81.20 management version.
     type: str
     version_added: "6.3.0"
   dynamic_objects:
     description:
       - Dynamic Objects.
+      - Available from R81.20 management version.
     type: list
     elements: dict
     version_added: "6.3.0"
@@ -117,6 +120,7 @@ options:
   topology:
     description:
       - Topology.
+      - Available from R81.20 management version.
     type: dict
     version_added: "6.3.0"
     suboptions:

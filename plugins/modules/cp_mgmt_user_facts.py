@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80.40 JHF management version.
 version_added: "6.3.0"
 author: "Dor Berenstein (@chkp-dorbe)"
 options:
@@ -59,6 +60,7 @@ options:
       - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
         logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
         name, comment, tags etc.
+      - Available from R81 JHF management version.
     type: str
   limit:
     description:
@@ -90,11 +92,13 @@ options:
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R81 JHF management version.
     type: bool
   domains_to_process:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
     type: list
     elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts

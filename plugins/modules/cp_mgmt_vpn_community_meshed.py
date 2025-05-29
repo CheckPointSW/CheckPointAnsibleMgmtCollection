@@ -34,6 +34,7 @@ short_description: Manages vpn-community-meshed objects on Check Point over Web 
 description:
   - Manages vpn-community-meshed objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -45,11 +46,13 @@ options:
   encryption_method:
     description:
       - The encryption method to be used.
+      - Available from R80.10 management version.
     type: str
     choices: ['prefer ikev2 but support ikev1', 'ikev2 only', 'ikev1 for ipv4 and ikev2 for ipv6 only']
   encryption_suite:
     description:
       - The encryption suite to be used.
+      - Available from R80.10 management version.
     type: str
     choices: ['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']
   gateways:
@@ -60,6 +63,7 @@ options:
   ike_phase_1:
     description:
       - Ike Phase 1 settings. Only applicable when the encryption-suite is set to [custom].
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       data_integrity:
@@ -80,6 +84,7 @@ options:
   ike_phase_2:
     description:
       - Ike Phase 2 settings. Only applicable when the encryption-suite is set to [custom].
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       data_integrity:
@@ -95,6 +100,7 @@ options:
   shared_secrets:
     description:
       - Shared secrets for external gateways.
+      - Available from R80.10 management version.
     type: list
     elements: dict
     suboptions:
@@ -114,6 +120,7 @@ options:
   use_shared_secret:
     description:
       - Indicates whether the shared secret should be used for all external gateways.
+      - Available from R80.10 management version.
     type: bool
   color:
     description:

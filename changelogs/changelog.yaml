@@ -1299,3 +1299,15 @@ releases:
         name: cp_mgmt_user_template_facts
         namespace: ''
     release_date: '2025-02-20'
+  6.4.1:
+    changes:
+      bugfixes:
+        - Added required management version to the documentation for all collection
+          modules.
+        - "module_utils/checkpoint \u2013 Prevent redundant logout call when there is
+          no authentication header 'X-chkp-sid'."
+      release_summary: This is release 6.4.1 of ``check_point.mgmt``, released on
+        2025-05-28.
+    fragments:
+      - 6.4.1.yml
+    release_date: '2025-05-28'

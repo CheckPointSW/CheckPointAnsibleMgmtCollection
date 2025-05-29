@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80 management version.
 version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -55,6 +56,7 @@ options:
       - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
         logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
         name, comment, tags etc.
+      - Available from R81 JHF management version.
     type: str
   limit:
     description:

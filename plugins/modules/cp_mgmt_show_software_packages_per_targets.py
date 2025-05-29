@@ -32,6 +32,7 @@ short_description: Shows software packages on targets.
 description:
   - Shows software packages on targets.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:

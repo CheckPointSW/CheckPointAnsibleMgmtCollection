@@ -34,6 +34,7 @@ short_description: Manages vpn-community-star objects on Check Point over Web Se
 description:
   - Manages vpn-community-star objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -50,16 +51,19 @@ options:
   encryption_method:
     description:
       - The encryption method to be used.
+      - Available from R80.10 management version.
     type: str
     choices: ['prefer ikev2 but support ikev1', 'ikev2 only', 'ikev1 for ipv4 and ikev2 for ipv6 only']
   encryption_suite:
     description:
       - The encryption suite to be used.
+      - Available from R80.10 management version.
     type: str
     choices: ['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']
   granular_encryptions:
     description:
       - VPN granular encryption settings.
+      - Available from R81 management version.
     type: list
     elements: dict
     version_added: "5.1.0"
@@ -105,10 +109,12 @@ options:
           ike_p1_rekey_time:
             description:
               - Indicates the time interval for IKE phase 1 renegotiation.
+              - Available from R81 management version.
             type: int
           ike_p1_rekey_time_unit:
             description:
               - Indicates the time unit for [ike-p1-rekey-time-unit] parameter, rounded up to minutes scale.
+              - Available from R81 management version.
             type: str
             choices: ['days', 'hours', 'minutes', 'seconds']
       ike_phase_2:
@@ -138,15 +144,18 @@ options:
           ike_p2_rekey_time:
             description:
               - Indicates the time interval for IKE phase 2 renegotiation.
+              - Available from R81 management version.
             type: int
           ike_p2_rekey_time_unit:
             description:
               - Indicates the time unit for [ike-p2-rekey-time-unit] parameter.
+              - Available from R81 management version.
             type: str
             choices: ['days', 'hours', 'minutes', 'seconds']
   ike_phase_1:
     description:
       - Ike Phase 1 settings. Only applicable when the encryption-suite is set to [custom].
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       data_integrity:
@@ -167,17 +176,20 @@ options:
       ike_p1_rekey_time:
         description:
           - Indicates the time interval for IKE phase 1 renegotiation.
+          - Available from R81 management version.
         type: int
         version_added: "5.1.0"
       ike_p1_rekey_time_unit:
         description:
           - Indicates the time unit for [ike-p1-rekey-time-unit] parameter, rounded up to minutes scale.
+          - Available from R81 management version.
         type: str
         choices: ['days', 'hours', 'minutes', 'seconds']
         version_added: "5.1.0"
   ike_phase_2:
     description:
       - Ike Phase 2 settings. Only applicable when the encryption-suite is set to [custom].
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       data_integrity:
@@ -193,6 +205,7 @@ options:
       ike_p2_use_pfs:
         description:
           - Indicates whether Perfect Forward Secrecy (PFS) is being used for IKE phase 2.
+          - Available from R81 management version.
         type: bool
         version_added: "5.1.0"
       ike_p2_pfs_dh_grp:
@@ -204,11 +217,13 @@ options:
       ike_p2_rekey_time:
         description:
           - Indicates the time interval for IKE phase 2 renegotiation.
+          - Available from R81 management version.
         type: int
         version_added: "5.1.0"
       ike_p2_rekey_time_unit:
         description:
           - Indicates the time unit for [ike-p2-rekey-time-unit] parameter.
+          - Available from R81 management version.
         type: str
         choices: ['days', 'hours', 'minutes', 'seconds']
         version_added: "5.1.0"
@@ -219,6 +234,7 @@ options:
   override_vpn_domains:
     description:
       - The Overrides VPN Domains of the participants GWs.
+      - Available from R80.40 management version.
     type: list
     elements: dict
     version_added: "5.1.0"
@@ -239,6 +255,7 @@ options:
   shared_secrets:
     description:
       - Shared secrets for external gateways.
+      - Available from R80.10 management version.
     type: list
     elements: dict
     suboptions:
@@ -258,12 +275,14 @@ options:
   tunnel_granularity:
     description:
       - VPN tunnel sharing option to be used.
+      - Available from R81 management version.
     type: str
     choices: ['per_host', 'per_subnet', 'universal']
     version_added: "5.1.0"
   use_shared_secret:
     description:
       - Indicates whether the shared secret should be used for all external gateways.
+      - Available from R80.10 management version.
     type: bool
   color:
     description:

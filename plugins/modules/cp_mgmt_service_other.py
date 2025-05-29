@@ -34,6 +34,7 @@ short_description: Manages service-other objects on Check Point over Web Service
 description:
   - Manages service-other objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -50,6 +51,7 @@ options:
     description:
       - Contains an INSPECT expression that defines the action to take if a rule containing this service is matched.
         Example, set r_mhandler &open_ssl_handler sets a handler on the connection.
+      - Available from R80.10 management version.
     type: str
   aggressive_aging:
     description:
@@ -85,6 +87,7 @@ options:
     description:
       - Contains an INSPECT expression that defines the matching criteria. The connection is examined against the expression during the first packet.
         Example, tcp, dport = 21, direction = 0 matches incoming FTP control connections.
+      - Available from R80.10 management version.
     type: str
   match_for_any:
     description:
@@ -94,6 +97,7 @@ options:
   override_default_settings:
     description:
       - Indicates whether this service is a Data Domain service which has been overridden.
+      - Available from R80.10 management version.
     type: bool
   session_timeout:
     description:
@@ -111,6 +115,7 @@ options:
   use_default_session_timeout:
     description:
       - Use default virtual session timeout.
+      - Available from R80.10 management version.
     type: bool
   color:
     description:

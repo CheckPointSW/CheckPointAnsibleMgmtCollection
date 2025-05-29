@@ -36,6 +36,7 @@ description:
   - Reset Secure Internal Communication (SIC). To complete the reset operation need also to reset the device in the Check Point Configuration Tool (by
     running cpconfig in Clish or Expert mode). Communication will not be possible until you reset and re-initialize the device properly.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

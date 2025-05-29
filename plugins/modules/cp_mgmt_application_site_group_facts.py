@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -87,15 +88,18 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   domains_to_process:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
     type: list
     elements: str
     version_added: "6.4.0"

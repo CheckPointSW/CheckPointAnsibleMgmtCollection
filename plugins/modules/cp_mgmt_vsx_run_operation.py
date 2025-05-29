@@ -33,6 +33,7 @@ description:
   - Run the VSX operation by its name and parameters.
   - An automatic session publish is part of all the operations in this API.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

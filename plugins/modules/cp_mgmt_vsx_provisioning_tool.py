@@ -32,6 +32,7 @@ short_description: Run the VSX provisioning tool with the specified parameters.
 description:
   - Run the VSX provisioning tool with the specified parameters. Note - An automatic session publish is part of all the operations in this API.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

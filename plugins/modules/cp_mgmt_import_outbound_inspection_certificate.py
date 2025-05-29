@@ -32,6 +32,7 @@ short_description: Import Outbound Inspection certificate for HTTPS inspection.
 description:
   - Import Outbound Inspection certificate for HTTPS inspection.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -46,19 +47,23 @@ options:
   name:
     description:
       - Object name. Must be unique in the domain.
+      - Available from R82 management version.
     type: str
   tags:
     description:
       - Collection of tag identifiers.
+      - Available from R82 management version.
     type: list
     elements: str
   is_default:
     description:
       - Is the certificate is the default certificate.
+      - Available from R82 management version.
     type: bool
   color:
     description:
       - Color of the object. Should be one of existing colors.
+      - Available from R82 management version.
     type: str
     choices: ['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green', 'khaki', 'orchid', 'dark orange', 'dark sea green',
              'pink', 'turquoise', 'dark blue', 'firebrick', 'brown', 'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon',
@@ -66,6 +71,7 @@ options:
   comments:
     description:
       - Comments string.
+      - Available from R82 management version.
     type: str
   details_level:
     description:
@@ -76,10 +82,12 @@ options:
   ignore_warnings:
     description:
       - Apply changes ignoring warnings. By Setting this parameter to 'true' default outbound certificate can be replaced.
+      - Available from R82 management version.
     type: bool
   ignore_errors:
     description:
       - Apply changes ignoring errors. You won't be able to publish such a changes. If ignore-warnings flag was omitted - warnings will also be ignored.
+      - Available from R82 management version.
     type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """

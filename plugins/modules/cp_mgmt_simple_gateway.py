@@ -34,6 +34,7 @@ short_description: Manages simple-gateway objects on Check Point over Web Servic
 description:
   - Manages simple-gateway objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -69,6 +70,7 @@ options:
   content_awareness:
     description:
       - Content Awareness blade enabled.
+      - Available from R80.10 management version.
     type: bool
   firewall:
     description:
@@ -408,6 +410,7 @@ options:
   threat_extraction:
     description:
       - Threat Extraction blade enabled.
+      - Available from R80.20.M2 management version.
     type: bool
   url_filtering:
     description:

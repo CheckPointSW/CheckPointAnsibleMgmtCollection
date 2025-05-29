@@ -36,6 +36,7 @@ description:
   - Shows the status of all processes in the current machine (Multi-Domain Server and all Domain Management / Log Servers). <br>This command is available
     only on Multi-Domain Server.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

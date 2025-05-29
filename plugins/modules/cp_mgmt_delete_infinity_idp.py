@@ -32,6 +32,7 @@ short_description: Delete Infinity Identity Provider from the Infinity Portal us
 description:
   - Delete Infinity Identity Provider from the Infinity Portal using object name or uid.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -32,6 +32,7 @@ short_description: Shows all supported API versions and current API version (the
 description:
   - Shows all supported API versions and current API version (the latest one).
   - All operations are performed over Web Services API.
+  - Available from R80.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}
