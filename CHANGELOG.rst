@@ -10,7 +10,7 @@ v6.4.1
 Release Summary
 ---------------
 
-This is release 6.4.1 of "check_point.mgmt", released on 2025-05-28.
+This is release 6.4.1 of "check_point.mgmt", released on 2025-06-03.
 
 Bugfixes
 --------

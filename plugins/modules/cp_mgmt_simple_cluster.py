@@ -992,28 +992,28 @@ EXAMPLES = """
     ip_address: 17.23.5.1
     members:
       - interfaces:
-        - ip_address: 17.23.5.2
-          name: eth0
-          network_mask: 255.255.255.0
-        - ip_address: 1.1.2.4
-          name: eth1
-          network_mask: 255.255.255.0
-        - ip_address: 192.168.1.2
-          name: eth2
-          network_mask: 255.255.255.0
+          - ip_address: 17.23.5.2
+            name: eth0
+            network_mask: 255.255.255.0
+          - ip_address: 1.1.2.4
+            name: eth1
+            network_mask: 255.255.255.0
+          - ip_address: 192.168.1.2
+            name: eth2
+            network_mask: 255.255.255.0
         ip_address: 17.23.5.2
         name: member1
         one_time_password: abcd
       - interfaces:
-        - ip_address: 17.23.5.3
-          name: eth0
-          network_mask: 255.255.255.0
-        - ip_address: 1.1.2.5
-          name: eth1
-          network_mask: 255.255.255.0
-        - ip_address: 192.168.1.3
-          name: eth2
-          network_mask: 255.255.255.0
+          - ip_address: 17.23.5.3
+            name: eth0
+            network_mask: 255.255.255.0
+          - ip_address: 1.1.2.5
+            name: eth1
+            network_mask: 255.255.255.0
+          - ip_address: 192.168.1.3
+            name: eth2
+            network_mask: 255.255.255.0
         ip_address: 17.23.5.3
         name: member2
         one_time_password: abcd

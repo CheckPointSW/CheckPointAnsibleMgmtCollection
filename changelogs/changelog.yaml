@@ -1304,10 +1304,10 @@ releases:
       bugfixes:
         - Added required management version to the documentation for all collection
           modules.
-        - "module_utils/checkpoint \u2013 Prevent redundant logout call when there is
-          no authentication header 'X-chkp-sid'."
-      release_summary: This is release 6.4.1 of ``check_point.mgmt``, released on
-        2025-05-28.
+        - module_utils/checkpoint - Prevent redundant logout call when there is
+          no authentication header 'X-chkp-sid'.
+      release_summary: This is release 6.4.1 of "check_point.mgmt", released on
+        2025-06-01.
     fragments:
       - 6.4.1.yml
-    release_date: '2025-05-28'
+    release_date: '2025-06-03'
