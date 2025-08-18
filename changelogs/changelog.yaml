@@ -1311,3 +1311,113 @@ releases:
     fragments:
       - 6.4.1.yml
     release_date: '2025-06-03'
+  6.5.0:
+    changes:
+      minor_changes:
+        - added new parameter 'ips_settings' to 'cp_mgmt_simple_cluster' and 'cp_mgmt_simple_gateway'
+          modules.
+        - added new parameter 'override_vpn_domains' to 'cp_mgmt_set_vpn_community_remote_access'
+          module.
+        - added new parameter 'show_installation_targets' to 'cp_mgmt_package_facts'
+          module.
+        - added new parameters (such as 'permanent_tunnels', excluded_services, etc.)
+          to 'cp_mgmt_vpn_community_meshed' and 'cp_mgmt_vpn_community_star' modules.
+      release_summary: This is release 6.5.0 of ``check_point.mgmt``, released on
+        2025-08-18.
+    fragments:
+      - 6.5.0.yml
+    modules:
+      - description: Manages identity-provider objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_identity_provider
+        namespace: ''
+      - description: Get identity-provider objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_identity_provider_facts
+        namespace: ''
+      - description: Manages if-map-server objects on Checkpoint over Web Services API
+        name: cp_mgmt_if_map_server
+        namespace: ''
+      - description: Get if-map-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_if_map_server_facts
+        namespace: ''
+      - description: Manages ldap-group objects on Checkpoint over Web Services API
+        name: cp_mgmt_ldap_group
+        namespace: ''
+      - description: Get ldap-group objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_ldap_group_facts
+        namespace: ''
+      - description: Manages log-exporter objects on Checkpoint over Web Services API
+        name: cp_mgmt_log_exporter
+        namespace: ''
+      - description: Get log-exporter objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_log_exporter_facts
+        namespace: ''
+      - description: Manages resource-mms objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_mms
+        namespace: ''
+      - description: Get resource-mms objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_mms_facts
+        namespace: ''
+      - description: Manages resource-tcp objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_tcp
+        namespace: ''
+      - description: Get resource-tcp objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_tcp_facts
+        namespace: ''
+      - description: Manages resource-uri-for-qos objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_uri_for_qos
+        namespace: ''
+      - description: Get resource-uri-for-qos objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_uri_for_qos_facts
+        namespace: ''
+      - description: Runs Application Control & URL Filtering database update.
+        name: cp_mgmt_run_app_control_update
+        namespace: ''
+      - description: Manages securemote-dns-server objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securemote_dns_server
+        namespace: ''
+      - description: Get securemote-dns-server objects facts on Checkpoint over Web
+          Services API
+        name: cp_mgmt_securemote_dns_server_facts
+        namespace: ''
+      - description: Manages securid-server objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securid_server
+        namespace: ''
+      - description: Get securid-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securid_server_facts
+        namespace: ''
+      - description: Set both Anti-Bot and Anti-Virus update schedules.
+        name: cp_mgmt_set_anti_malware_update_schedule
+        namespace: ''
+      - description: Set the Application Control and URL Filtering update schedule.
+        name: cp_mgmt_set_app_control_update_schedule
+        namespace: ''
+      - description: Retrieve existing Anti-Bot and Anti-Virus update schedules.
+        name: cp_mgmt_show_anti_malware_update_schedule
+        namespace: ''
+      - description: Get app-control-status objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_show_app_control_status
+        namespace: ''
+      - description: Get app-control-status objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_show_app_control_update_schedule
+        namespace: ''
+      - description: Manages syslog-server objects on Checkpoint over Web Services API
+        name: cp_mgmt_syslog_server
+        namespace: ''
+      - description: Get syslog-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_syslog_server_facts
+        namespace: ''
+    release_date: '2025-05-30'
