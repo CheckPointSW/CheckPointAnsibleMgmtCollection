@@ -102,9 +102,9 @@ EXAMPLES = """
 - name: add-securemote-dns-server
   cp_mgmt_securemote_dns_server:
     domains:
-    - domain_suffix: .FirstDomain
-      maximum_prefix_label_count: 3
-    - domain_suffix: .SecondDomain
+      - domain_suffix: .FirstDomain
+        maximum_prefix_label_count: 3
+      - domain_suffix: .SecondDomain
     host: TestHost
     name: TestSecuRemoteDNSSever
     state: present
