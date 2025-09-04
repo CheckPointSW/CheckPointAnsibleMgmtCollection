@@ -1323,7 +1323,7 @@ releases:
         - added new parameters (such as 'permanent_tunnels', excluded_services, etc.)
           to 'cp_mgmt_vpn_community_meshed' and 'cp_mgmt_vpn_community_star' modules.
       release_summary: This is release 6.5.0 of ``check_point.mgmt``, released on
-        2025-08-18.
+        2025-09-04.
     fragments:
       - 6.5.0.yml
     modules:
@@ -1420,4 +1420,4 @@ releases:
           API
         name: cp_mgmt_syslog_server_facts
         namespace: ''
-    release_date: '2025-05-30'
+    release_date: '2025-09-04'
