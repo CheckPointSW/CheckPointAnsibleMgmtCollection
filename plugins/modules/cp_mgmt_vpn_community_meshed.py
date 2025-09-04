@@ -43,6 +43,23 @@ options:
       - Object name.
     type: str
     required: True
+  disable_nat:
+    description:
+      - Indicates whether to disable NAT inside the VPN Community.
+      - Available from R82 JHF management version.
+    type: bool
+    version_added: "6.5.0"
+  encrypted_traffic:
+    description:
+      - Encrypted traffic settings.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      enabled:
+        description:
+          - Indicates whether to accept all encrypted traffic.
+        type: bool
   encryption_method:
     description:
       - The encryption method to be used.
@@ -55,6 +72,14 @@ options:
       - Available from R80.10 management version.
     type: str
     choices: ['suite-b-gcm-256', 'custom', 'vpn b', 'vpn a', 'suite-b-gcm-128']
+  excluded_services:
+    description:
+      - Collection of services that are excluded from the community identified by the name or UID.<br> Connections with these services will not be
+        encrypted and will not match rules specifying the community in the VPN community.
+      - Available from R82 JHF management version.
+    type: list
+    elements: str
+    version_added: "6.5.0"
   gateways:
     description:
       - Collection of Gateway objects identified by the name or UID.
@@ -97,6 +122,109 @@ options:
           - The encryption algorithm to be used.
         type: str
         choices: ['cast', 'aes-gcm-256', 'cast-40', 'aes-256', 'des', 'aes-128', '3des', 'des-40cp', 'aes-gcm-128', 'none']
+  permanent_tunnels:
+    description:
+      - Permanent tunnels properties.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      set_permanent_tunnels:
+        description:
+          - Indicates which tunnels to set as permanent.
+        type: str
+        choices: ['on all tunnels in the community', 'on all tunnels of specific gateways', 'on specific tunnels in the community', 'off']
+      gateways:
+        description:
+          - List of gateways to set all their tunnels to permanent with specified track options. Will take effect only if set-permanent-tunnels-on
+            is set to all-tunnels-of-specific-gateways.
+        type: list
+        elements: dict
+        suboptions:
+          gateway:
+            description:
+              - Gateway to set all is tunnels to permanent with specified track options.<br> Identified by name or UID.
+            type: str
+          track_options:
+            description:
+              - Indicates whether to use the community track options or to override track options for the permanent tunnels.
+            type: str
+            choices: ['according to community track options', 'override track options']
+          override_tunnel_down_track:
+            description:
+              - Gateway tunnel down track option. Relevant only if the track-options is set to 'override track options'.
+            type: str
+            choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                     'user defined alert no.3']
+          override_tunnel_up_track:
+            description:
+              - Gateway tunnel up track option. Relevant only if the track-options is set to 'override track options'.
+            type: str
+            choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                     'user defined alert no.3']
+      tunnels:
+        description:
+          - List of tunnels to set as permanent with specified track options. Will take effect only if set-permanent-tunnels-on is set to
+            specific-tunnels-in-the-community.
+        type: list
+        elements: dict
+        suboptions:
+          first_tunnel_endpoint:
+            description:
+              - First tunnel endpoint (center gateway). Identified by name or UID.
+            type: str
+          second_tunnel_endpoint:
+            description:
+              - Second tunnel endpoint (center gateway for meshed VPN community and satellite gateway for star VPN community). Identified by name or UID.
+            type: str
+          track_options:
+            description:
+              - Indicates whether to use the community track options or to override track options for the permanent tunnels.
+            type: str
+            choices: ['according to community track options', 'override track options']
+          override_tunnel_down_track:
+            description:
+              - Gateway tunnel down track option. Relevant only if the track-options is set to 'override track options'.
+            type: str
+            choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                     'user defined alert no.3']
+          override_tunnel_up_track:
+            description:
+              - Gateway tunnel up track option. Relevant only if the track-options is set to 'override track options'.
+            type: str
+            choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                     'user defined alert no.3']
+      rim:
+        description:
+          - Route Injection Mechanism settings.
+        type: dict
+        suboptions:
+          enabled:
+            description:
+              - Indicates whether Route Injection Mechanism is enabled.
+            type: bool
+          enable_on_gateways:
+            description:
+              - Indicates whether to enable automatic Route Injection Mechanism for gateways.
+            type: bool
+          route_injection_track:
+            description:
+              - Route injection track method.
+            type: str
+            choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                     'user defined alert no.3']
+      tunnel_down_track:
+        description:
+          - VPN community permanent tunnels down track option.
+        type: str
+        choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                 'user defined alert no.3']
+      tunnel_up_track:
+        description:
+          - Permanent tunnels up track option.
+        type: str
+        choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                 'user defined alert no.3']
   shared_secrets:
     description:
       - Shared secrets for external gateways.
@@ -122,6 +250,43 @@ options:
       - Indicates whether the shared secret should be used for all external gateways.
       - Available from R80.10 management version.
     type: bool
+  wire_mode:
+    description:
+      - VPN Community Wire mode properties.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      allow_uninspected_encrypted_traffic:
+        description:
+          - Allow uninspected encrypted traffic between Wire mode interfaces of this Community members.
+        type: bool
+      allow_uninspected_encrypted_routing:
+        description:
+          - Allow members to route uninspected encrypted traffic in VPN routing configurations.
+        type: bool
+  routing_mode:
+    description:
+      - VPN Community Routing Mode.
+      - Available from R82 JHF management version.
+    type: str
+    choices: ['domain_based', 'route_based']
+    version_added: "6.5.0"
+  advanced_properties:
+    description:
+      - Advanced properties.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      support_ip_compression:
+        description:
+          - Indicates whether to support IP compression.
+        type: bool
+      use_aggressive_mode:
+        description:
+          - Indicates whether to use aggressive mode.
+        type: bool
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -202,6 +367,13 @@ from ansible_collections.check_point.mgmt.plugins.module_utils.checkpoint import
 def main():
     argument_spec = dict(
         name=dict(type="str", required=True),
+        disable_nat=dict(type="bool"),
+        encrypted_traffic=dict(
+            type="dict", options=dict(
+                enabled=dict(type="bool")
+            ),
+        ),
+
         encryption_method=dict(
             type="str",
             choices=[
@@ -220,6 +392,7 @@ def main():
                 "suite-b-gcm-128",
             ],
         ),
+        excluded_services=dict(type="list", elements="str"),
         gateways=dict(type="list", elements="str"),
         ike_phase_1=dict(
             type="dict",
@@ -269,6 +442,147 @@ def main():
                 ),
             ),
         ),
+        permanent_tunnels=dict(
+            type="dict",
+            options=dict(
+                set_permanent_tunnels=dict(
+                    type="str",
+                    choices=[
+                        "on all tunnels in the community",
+                        "on all tunnels of specific gateways",
+                        "on specific tunnels in the community",
+                        "off",
+                    ],
+                ),
+                gateways=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        gateway=dict(type="str"),
+                        track_options=dict(
+                            type="str",
+                            choices=[
+                                "according to community track options",
+                                "override track options",
+                            ],
+                        ),
+                        override_tunnel_down_track=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "log",
+                                "popup alert",
+                                "mail alert",
+                                "snmp trap alert",
+                                "user defined alert no.1",
+                                "user defined alert no.2",
+                                "user defined alert no.3",
+                            ],
+                        ),
+                        override_tunnel_up_track=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "log",
+                                "popup alert",
+                                "mail alert",
+                                "snmp trap alert",
+                                "user defined alert no.1",
+                                "user defined alert no.2",
+                                "user defined alert no.3",
+                            ],
+                        ),
+                    ),
+                ),
+                tunnels=dict(
+                    type="list",
+                    elements="dict",
+                    options=dict(
+                        first_tunnel_endpoint=dict(type="str"),
+                        second_tunnel_endpoint=dict(type="str"),
+                        track_options=dict(
+                            type="str",
+                            choices=[
+                                "according to community track options",
+                                "override track options",
+                            ],
+                        ),
+                        override_tunnel_down_track=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "log",
+                                "popup alert",
+                                "mail alert",
+                                "snmp trap alert",
+                                "user defined alert no.1",
+                                "user defined alert no.2",
+                                "user defined alert no.3",
+                            ],
+                        ),
+                        override_tunnel_up_track=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "log",
+                                "popup alert",
+                                "mail alert",
+                                "snmp trap alert",
+                                "user defined alert no.1",
+                                "user defined alert no.2",
+                                "user defined alert no.3",
+                            ],
+                        ),
+                    ),
+                ),
+                rim=dict(
+                    type="dict",
+                    options=dict(
+                        enabled=dict(type="bool"),
+                        enable_on_gateways=dict(type="bool"),
+                        route_injection_track=dict(
+                            type="str",
+                            choices=[
+                                "none",
+                                "log",
+                                "popup alert",
+                                "mail alert",
+                                "snmp trap alert",
+                                "user defined alert no.1",
+                                "user defined alert no.2",
+                                "user defined alert no.3",
+                            ],
+                        ),
+                    ),
+                ),
+                tunnel_down_track=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                tunnel_up_track=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+            ),
+        ),
         shared_secrets=dict(
             type="list",
             elements="dict",
@@ -280,6 +594,24 @@ def main():
         ),
         tags=dict(type="list", elements="str"),
         use_shared_secret=dict(type="bool"),
+        wire_mode=dict(
+            type="dict",
+            options=dict(
+                allow_uninspected_encrypted_traffic=dict(type="bool"),
+                allow_uninspected_encrypted_routing=dict(type="bool"),
+            ),
+        ),
+        routing_mode=dict(
+            type="str",
+            choices=["domain_based", "route_based"],
+        ),
+        advanced_properties=dict(
+            type="dict",
+            options=dict(
+                support_ip_compression=dict(type="bool"),
+                use_aggressive_mode=dict(type="bool"),
+            ),
+        ),
         color=dict(
             type="str",
             choices=[
@@ -328,9 +660,8 @@ def main():
     )
     argument_spec.update(checkpoint_argument_spec_for_objects)
 
-    module = AnsibleModule(
-        argument_spec=argument_spec, supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=argument_spec, supports_check_mode=True)
+
     api_call_object = "vpn-community-meshed"
 
     result = api_call(module, api_call_object)
