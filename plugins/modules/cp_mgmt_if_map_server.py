@@ -140,10 +140,10 @@ EXAMPLES = """
       authentication_method: certificate_based
     host: TestHost
     monitored_ips:
-    - first_ip: 1.1.1.1
-      last_ip: 1.1.1.2
-    - first_ip: 2.1.1.1
-      last_ip: 2.1.1.2
+      - first_ip: 1.1.1.1
+        last_ip: 1.1.1.2
+      - first_ip: 2.1.1.1
+        last_ip: 2.1.1.2
     name: TestIfMapServer
     path: path
     port: 1
@@ -154,8 +154,8 @@ EXAMPLES = """
   cp_mgmt_if_map_server:
     host: TestHost2
     monitored_ips:
-    - first_ip: 3.1.1.1
-      last_ip: 3.1.1.2
+      - first_ip: 3.1.1.1
+        last_ip: 3.1.1.2
     name: TestIfMapServer
     path: newPath
     port: 2
