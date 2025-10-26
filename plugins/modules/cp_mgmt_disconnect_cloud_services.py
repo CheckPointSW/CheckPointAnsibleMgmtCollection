@@ -34,6 +34,7 @@ short_description: Disconnect the Management Server from Check Point's Infinity 
 description:
   - Disconnect the Management Server from Check Point's Infinity Portal.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

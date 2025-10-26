@@ -34,6 +34,7 @@ short_description: Retrieve all existing cluster members in domain.
 description:
   - Retrieve all existing cluster members in domain.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

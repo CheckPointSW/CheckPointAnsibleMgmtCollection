@@ -32,6 +32,7 @@ short_description: Manages checkpoint-host objects on Checkpoint over Web Servic
 description:
   - Manages checkpoint-host objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -272,6 +273,7 @@ options:
       distribute_logs_between_all_active_servers:
         description:
           - Distribute logs between all active servers.
+          - Available from R81.20 management version.
         type: bool
       enable_log_indexing:
         description:

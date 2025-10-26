@@ -34,6 +34,7 @@ short_description: Manages network-feed objects on Checkpoint over Web Services 
 description:
   - Manages network-feed objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -149,10 +150,10 @@ EXAMPLES = """
 - name: add-network-feed
   cp_mgmt_network_feed:
     custom_header:
-    - header_name: header1
-      header_value: value1
-    - header_name: header2
-      header_value: value2
+      - header_name: header1
+        header_value: value1
+      - header_name: header2
+        header_value: value2
     data_column: 1
     feed_format: Flat List
     feed_type: IP Address
@@ -169,8 +170,8 @@ EXAMPLES = """
 - name: set-network-feed
   cp_mgmt_network_feed:
     custom_header:
-    - header_name: new_header
-      header_value: new_value
+      - header_name: new_header
+        header_value: new_value
     data_column: 1
     feed_format: Flat List
     feed_type: IP Address

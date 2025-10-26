@@ -35,6 +35,7 @@ short_description: Executes the lsm-install-settings on a given list of targets.
 description:
   - Executes the lsm-install-settings on a given list of targets. Install the provisioning settings that defined on the object on the targets devices.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -50,7 +51,7 @@ EXAMPLES = """
 - name: install-lsm-settings
   cp_mgmt_install_lsm_settings:
     targets:
-    - lsm_gateway
+      - lsm_gateway
 """
 
 RETURN = """

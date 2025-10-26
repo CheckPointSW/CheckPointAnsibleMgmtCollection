@@ -34,6 +34,7 @@ short_description: Executes the script on a given list of targets.
 description:
   - Executes the script on a given list of targets.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -67,7 +68,7 @@ EXAMPLES = """
     script: ls -l /
     script_name: 'Script Example: List files under / dir'
     targets:
-    - corporate-gateway
+      - corporate-gateway
 """
 
 RETURN = """

@@ -34,6 +34,7 @@ short_description: Manages application-site-group objects on Check Point over We
 description:
   - Manages application-site-group objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -89,10 +90,10 @@ EXAMPLES = """
 - name: add-application-site-group
   cp_mgmt_application_site_group:
     members:
-    - facebook
-    - Social Networking
-    - New Application Site 1
-    - New Application Site Category 1
+      - facebook
+      - Social Networking
+      - New Application Site 1
+      - New Application Site Category 1
     name: New Application Site Group 1
     state: present
 
@@ -100,7 +101,7 @@ EXAMPLES = """
   cp_mgmt_application_site_group:
     name: New Application Site Group 1
     members:
-    - AliveProxy
+      - AliveProxy
     state: present
 
 - name: delete-application-site-group

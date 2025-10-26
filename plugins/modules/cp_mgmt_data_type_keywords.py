@@ -32,6 +32,7 @@ short_description: Manages data-type-keywords objects on Checkpoint over Web Ser
 description:
   - Manages data-type-keywords objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -99,8 +100,8 @@ EXAMPLES = """
     data_match_threshold: all-keywords
     description: keywords object
     keywords:
-    - word1
-    - word2
+      - word1
+      - word2
     name: keywords_obj
     state: present
 
@@ -108,7 +109,7 @@ EXAMPLES = """
   cp_mgmt_data_type_keywords:
     data_match_threshold: min-keywords
     keywords:
-    - word3
+      - word3
     min_number_of_keywords: 3
     name: keywords_obj
     state: present

@@ -34,6 +34,7 @@ short_description: Manages lsm-cluster objects on Checkpoint over Web Services A
 description:
   - Manages lsm-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "2.3.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -54,6 +55,41 @@ options:
       - LSM profile.
     type: str
     required: True
+  dynamic_objects:
+    description:
+      - Dynamic Objects.
+      - Available from R81.20 management version.
+    type: list
+    elements: dict
+    version_added: "6.3.0"
+    suboptions:
+      name:
+        description:
+          - Object name. Must be unique in the domain.
+        type: str
+      resolved_ip_addresses:
+        description:
+          - Single IP-address or a range of addresses.
+        type: list
+        elements: dict
+        suboptions:
+          ipv4_address:
+            description:
+              - IPv4 Address.
+            type: str
+          ipv4_address_range:
+            description:
+              - IPv4 Address range.
+            type: dict
+            suboptions:
+              from_ipv4_address:
+                description:
+                  - First IPv4 address of the IP address range.
+                type: str
+              to_ipv4_address:
+                description:
+                  - Last IPv4 address of the IP address range.
+                type: str
   interfaces:
     description:
       - Interfaces.
@@ -128,6 +164,38 @@ options:
         description:
           - Comments string.
         type: str
+  topology:
+    description:
+      - Topology.
+      - Available from R81.20 management version.
+    type: dict
+    version_added: "6.3.0"
+    suboptions:
+      manual_vpn_domain:
+        description:
+          - A list of IP-addresses ranges, defined the VPN community network.
+            This field is relevant only when 'manual' option of vpn-domain is checked.
+        type: list
+        elements: dict
+        suboptions:
+          comments:
+            description:
+              - Comments string.
+            type: str
+          from_ipv4_address:
+            description:
+              - First IPv4 address of the IP address range.
+            type: str
+          to_ipv4_address:
+            description:
+              - Last IPv4 address of the IP address range.
+            type: str
+      vpn_domain:
+        description:
+          - VPN Domain type. 'external-interfaces-only' is relevant only for Gaia devices.
+            'hide-behind-gateway-external-ip-address' is relevant only for SMB devices.
+        type: str
+        choices: ['not-defined', 'external-ip-addresses-only', 'hide-behind-gateway-external-ip-address', 'all-ip-addresses-behind-the-gateway', 'manual']
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -145,6 +213,12 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
+  tags:
+    description:
+      - Collection of tag identifiers.
+    type: list
+    elements: str
+    version_added: "6.3.0"
   ignore_warnings:
     description:
       - Apply changes ignoring warnings.
@@ -160,26 +234,26 @@ EXAMPLES = """
 - name: add-lsm-cluster
   cp_mgmt_lsm_cluster:
     interfaces:
-    - ip_address_override: 192.168.8.197
-      member_network_override: 192.168.8.0
-      name: eth0
-      new_name: WAN
-    - ip_address_override: 10.8.197.1
-      member_network_override: 10.8.197.0
-      name: eth1
-      new_name: LAN1
-    - member_network_override: 10.10.10.0
-      name: eth2
+      - ip_address_override: 192.168.8.197
+        member_network_override: 192.168.8.0
+        name: eth0
+        new_name: WAN
+      - ip_address_override: 10.8.197.1
+        member_network_override: 10.8.197.0
+        name: eth1
+        new_name: LAN1
+      - member_network_override: 10.10.10.0
+        name: eth2
     main_ip_address: 192.168.8.197
     members:
-    - name: Gaia_gw1
-      sic:
-        ip_address: 192.168.8.200
-        one_time_password: aaaa
-    - name: Gaia_gw2
-      sic:
-        ip_address: 192.168.8.202
-        one_time_password: aaaa
+      - name: Gaia_gw1
+        sic:
+          ip_address: 192.168.8.200
+          one_time_password: aaaa
+      - name: Gaia_gw2
+        sic:
+          ip_address: 192.168.8.202
+          one_time_password: aaaa
     name_prefix: Gaia_
     security_profile: gaia_cluster
     state: present
@@ -187,25 +261,25 @@ EXAMPLES = """
 - name: set-lsm-cluster
   cp_mgmt_lsm_cluster:
     interfaces:
-    - ip_address_override: 192.168.8.197
-      member_network_override: 192.168.8.0
-      name: eth0
-      new_name: WAN
-    - ip_address_override: 10.8.197.1
-      member_network_override: 10.8.197.0
-      name: eth1
-      new_name: LAN1
-    - member_network_override: 10.10.10.0
-      name: eth2
+      - ip_address_override: 192.168.8.197
+        member_network_override: 192.168.8.0
+        name: eth0
+        new_name: WAN
+      - ip_address_override: 10.8.197.1
+        member_network_override: 10.8.197.0
+        name: eth1
+        new_name: LAN1
+      - member_network_override: 10.10.10.0
+        name: eth2
     members:
-    - name: Gaia_gw1
-      sic:
-        ip_address: 192.168.8.200
-        one_time_password: aaaa
-    - name: Gaia_gw2
-      sic:
-        ip_address: 192.168.8.202
-        one_time_password: aaaa
+      - name: Gaia_gw1
+        sic:
+          ip_address: 192.168.8.200
+          one_time_password: aaaa
+      - name: Gaia_gw2
+        sic:
+          ip_address: 192.168.8.202
+          one_time_password: aaaa
     name: Gaia_gaia_cluster
     state: present
 
@@ -235,6 +309,16 @@ def main():
         name_prefix=dict(type="str"),
         name_suffix=dict(type="str"),
         security_profile=dict(type="str", required=True),
+        dynamic_objects=dict(type='list', elements="dict", options=dict(
+            name=dict(type='str'),
+            resolved_ip_addresses=dict(type='list', elements="dict", options=dict(
+                ipv4_address=dict(type='str'),
+                ipv4_address_range=dict(type='dict', options=dict(
+                    from_ipv4_address=dict(type='str'),
+                    to_ipv4_address=dict(type='str')
+                ))
+            ))
+        )),
         interfaces=dict(
             type="list",
             elements="dict",
@@ -308,6 +392,19 @@ def main():
                 comments=dict(type="str"),
             ),
         ),
+        topology=dict(type='dict', options=dict(
+            manual_vpn_domain=dict(type='list', elements="dict", options=dict(
+                comments=dict(type='str'),
+                from_ipv4_address=dict(type='str'),
+                to_ipv4_address=dict(type='str')
+            )),
+            vpn_domain=dict(type='str',
+                            choices=['not-defined',
+                                     'external-ip-addresses-only',
+                                     'hide-behind-gateway-external-ip-address',
+                                     'all-ip-addresses-behind-the-gateway',
+                                     'manual'])
+        )),
         color=dict(
             type="str",
             choices=[
@@ -351,6 +448,7 @@ def main():
         ),
         comments=dict(type="str"),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        tags=dict(type='list', elements="str"),
         ignore_warnings=dict(type="bool"),
         ignore_errors=dict(type="bool"),
     )

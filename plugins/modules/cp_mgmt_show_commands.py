@@ -32,6 +32,7 @@ short_description: Retrieve all of the supported Management API commands with th
 description:
   - Retrieve all of the supported Management API commands with their description.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

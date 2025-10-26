@@ -409,13 +409,13 @@ releases:
       - description: Workflow feature - Approve and Publish the session.
         name: cp_mgmt_approve_session
         namespace: ""
-      - description: >
+      - description:
           Check if a target can reach or parse a network feed;
           can work with an existing feed object or with a new one
           (by providing all relevant feed parameters).
         name: cp_mgmt_check_network_feed
         namespace: ""
-      - description: >
+      - description:
           Check if a target can reach or parse a threat IOC feed; can work with an existing feed
           object or with a new one (by providing all relevant feed parameters).
         name: cp_mgmt_check_threat_ioc_feed
@@ -423,7 +423,7 @@ releases:
       - description: Retrieve all existing cluster members in domain.
         name: cp_mgmt_cluster_members_facts
         namespace: ""
-      - description: >
+      - description:
           Securely connect the Management Server to Check Point's Infinity Portal.
           This is a preliminary operation so that the management server can use
           various Check Point cloud-based security services hosted in the Infinity Portal.
@@ -453,12 +453,12 @@ releases:
       - description: Get idp-to-domain-assignment objects facts on Checkpoint over Web Services API
         name: cp_mgmt_idp_to_domain_assignment_facts
         namespace: ""
-      - description: >
+      - description:
           Executes the lsm-install-policy on a given list of targets. Install the LSM policy
           that defined on the attached LSM profile on the targets devices.
         name: cp_mgmt_install_lsm_policy
         namespace: ""
-      - description: >
+      - description:
           Executes the lsm-install-settings on a given list of targets. Install the provisioning
           settings that defined on the object on the targets devices.
         name: cp_mgmt_install_lsm_settings
@@ -505,7 +505,7 @@ releases:
       - description: Get repository-script objects facts on Checkpoint over Web Services API
         name: cp_mgmt_repository_script_facts
         namespace: ""
-      - description: >
+      - description:
           Reset Secure Internal Communication (SIC). To complete the reset operation need also
           to reset the device in the Check Point Configuration Tool (by running cpconfig in Clish or Expert mode).
           Communication will not be possible until you reset and re-initialize the device properly.
@@ -517,7 +517,7 @@ releases:
       - description: Set default Identity Provider assignment to be use for Management server administrator access.
         name: cp_mgmt_set_idp_default_assignment
         namespace: ""
-      - description: >
+      - description:
           Set Identity Provider assignment to domain, to allow administrator login to that domain using
           that identity provider, if there is no Identity Provider assigned to the domain the 'idp-default-assignment' will be used.
           This command only available  for Multi-Domain server.
@@ -535,7 +535,7 @@ releases:
       - description: Retrieve default Identity Provider assignment that used for Management server administrator access.
         name: cp_mgmt_show_idp_default_assignment
         namespace: ""
-      - description: >
+      - description:
           Shows the status of all processes in the current machine (Multi-Domain Server and all Domain Management / Log Servers).
           This command is available only on Multi-Domain Server.
         name: cp_mgmt_show_servers_and_processes
@@ -558,7 +558,7 @@ releases:
       - description: Workflow feature - Submit the session for approval.
         name: cp_mgmt_submit_session
         namespace: ""
-      - description: >
+      - description:
           Test SIC Status reflects the state of the gateway after it has received the certificate issued by the ICA.
           If the SIC status is Unknown then there is no connection between the gateway and the Security Management Server.
           If the SIC status is No Communication, an error message will appear. It may contain specific instructions on how to fix the situation.
@@ -656,7 +656,7 @@ releases:
       - description: Get dynamic-global-network-object objects facts on Checkpoint over Web Services API
         name: cp_mgmt_dynamic_global_network_object_facts
         namespace: ""
-      - description: >
+      - description:
           Export the primary Security Management Server database or the primary Multi-Domain Server database or the
           single Domain database and the applicable Check Point configuration.
         name: cp_mgmt_export_management
@@ -688,7 +688,7 @@ releases:
       - description: Get https-layer objects facts on Checkpoint over Web Services API
         name: cp_mgmt_https_layer_facts
         namespace: ""
-      - description: >
+      - description:
           Import the primary Security Management Server database or the primary Multi-Domain Server database or the single Domain
           database and the applicable Check Point configuration.
         name: cp_mgmt_import_management
@@ -1264,5 +1264,160 @@ releases:
       release_summary: This is release 6.2.1 of ``check_point.mgmt``, released on
         2024-08-28.
     fragments:
-    - 6.2.1.yml
+      - 6.2.1.yml
     release_date: '2024-08-28'
+  6.3.0:
+    changes:
+      minor_changes:
+        - check_point.mgmt.cp_mgmt_lsm_cluster - support additional parameters (dynamic-objects, tags and topology)
+        - check_point.mgmt.cp_mgmt_lsm_gateway - support additional parameters (device_id, dynamic-objects, tags and topology)
+      release_summary: This is release 6.3.0 of ``check_point.mgmt``, released on
+        2025-01-23.
+    fragments:
+      - 6.3.0.yml
+    modules:
+      - description: Manages user objects on Checkpoint over Web Services API
+        name: cp_mgmt_user
+        namespace: ''
+      - description: Get user objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_user_facts
+        namespace: ''
+    release_date: '2025-01-03'
+  6.4.0:
+    changes:
+      minor_changes:
+        - added missing parameters such as 'filter', 'domains_to_process' and 'async_response'
+          to the relevant resources modules.
+      release_summary: This is release 6.4.0 of "check_point.mgmt", released on 2025-02-20.
+    fragments:
+      - 6.4.0.yml
+    modules:
+      - description: Manages user-template objects on Checkpoint over Web Services API
+        name: cp_mgmt_user_template
+        namespace: ''
+      - description: Get user-template objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_user_template_facts
+        namespace: ''
+    release_date: '2025-02-20'
+  6.4.1:
+    changes:
+      bugfixes:
+        - Added required management version to the documentation for all collection
+          modules.
+        - module_utils/checkpoint - Prevent redundant logout call when there is
+          no authentication header 'X-chkp-sid'.
+      release_summary: This is release 6.4.1 of "check_point.mgmt", released on
+        2025-06-01.
+    fragments:
+      - 6.4.1.yml
+    release_date: '2025-06-03'
+  6.5.0:
+    changes:
+      minor_changes:
+        - added new parameter 'ips_settings' to 'cp_mgmt_simple_cluster' and 'cp_mgmt_simple_gateway'
+          modules.
+        - added new parameter 'override_vpn_domains' to 'cp_mgmt_set_vpn_community_remote_access'
+          module.
+        - added new parameter 'show_installation_targets' to 'cp_mgmt_package_facts'
+          module.
+        - added new parameters (such as 'permanent_tunnels', excluded_services, etc.)
+          to 'cp_mgmt_vpn_community_meshed' and 'cp_mgmt_vpn_community_star' modules.
+      release_summary: This is release 6.5.0 of ``check_point.mgmt``, released on
+        2025-09-04.
+    fragments:
+      - 6.5.0.yml
+    modules:
+      - description: Manages identity-provider objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_identity_provider
+        namespace: ''
+      - description: Get identity-provider objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_identity_provider_facts
+        namespace: ''
+      - description: Manages if-map-server objects on Checkpoint over Web Services API
+        name: cp_mgmt_if_map_server
+        namespace: ''
+      - description: Get if-map-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_if_map_server_facts
+        namespace: ''
+      - description: Manages ldap-group objects on Checkpoint over Web Services API
+        name: cp_mgmt_ldap_group
+        namespace: ''
+      - description: Get ldap-group objects facts on Checkpoint over Web Services API
+        name: cp_mgmt_ldap_group_facts
+        namespace: ''
+      - description: Manages log-exporter objects on Checkpoint over Web Services API
+        name: cp_mgmt_log_exporter
+        namespace: ''
+      - description: Get log-exporter objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_log_exporter_facts
+        namespace: ''
+      - description: Manages resource-mms objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_mms
+        namespace: ''
+      - description: Get resource-mms objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_mms_facts
+        namespace: ''
+      - description: Manages resource-tcp objects on Checkpoint over Web Services API
+        name: cp_mgmt_resource_tcp
+        namespace: ''
+      - description: Get resource-tcp objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_tcp_facts
+        namespace: ''
+      - description: Manages resource-uri-for-qos objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_uri_for_qos
+        namespace: ''
+      - description: Get resource-uri-for-qos objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_resource_uri_for_qos_facts
+        namespace: ''
+      - description: Runs Application Control & URL Filtering database update.
+        name: cp_mgmt_run_app_control_update
+        namespace: ''
+      - description: Manages securemote-dns-server objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securemote_dns_server
+        namespace: ''
+      - description: Get securemote-dns-server objects facts on Checkpoint over Web
+          Services API
+        name: cp_mgmt_securemote_dns_server_facts
+        namespace: ''
+      - description: Manages securid-server objects on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securid_server
+        namespace: ''
+      - description: Get securid-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_securid_server_facts
+        namespace: ''
+      - description: Set both Anti-Bot and Anti-Virus update schedules.
+        name: cp_mgmt_set_anti_malware_update_schedule
+        namespace: ''
+      - description: Set the Application Control and URL Filtering update schedule.
+        name: cp_mgmt_set_app_control_update_schedule
+        namespace: ''
+      - description: Retrieve existing Anti-Bot and Anti-Virus update schedules.
+        name: cp_mgmt_show_anti_malware_update_schedule
+        namespace: ''
+      - description: Get app-control-status objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_show_app_control_status
+        namespace: ''
+      - description: Get app-control-status objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_show_app_control_update_schedule
+        namespace: ''
+      - description: Manages syslog-server objects on Checkpoint over Web Services API
+        name: cp_mgmt_syslog_server
+        namespace: ''
+      - description: Get syslog-server objects facts on Checkpoint over Web Services
+          API
+        name: cp_mgmt_syslog_server_facts
+        namespace: ''
+    release_date: '2025-09-04'

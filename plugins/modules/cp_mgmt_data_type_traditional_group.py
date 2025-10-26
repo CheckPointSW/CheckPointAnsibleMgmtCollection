@@ -32,6 +32,7 @@ short_description: Manages data-type-traditional-group objects on Checkpoint ove
 description:
   - Manages data-type-traditional-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -88,8 +89,8 @@ EXAMPLES = """
 - name: add-data-type-traditional-group
   cp_mgmt_data_type_traditional_group:
     data_types:
-    - weighted-words-obj
-    - file-attr-obj
+      - weighted-words-obj
+      - file-attr-obj
     description: traditional group object
     name: trad-group-obj
     state: present
@@ -97,7 +98,7 @@ EXAMPLES = """
 - name: set-data-type-traditional-group
   cp_mgmt_data_type_traditional_group:
     data_types:
-    - keywords_obj
+      - keywords_obj
     name: trad-group-obj
     state: present
 

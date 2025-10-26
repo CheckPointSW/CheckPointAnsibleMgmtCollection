@@ -32,6 +32,7 @@ short_description: Check how many Security Gateway objects the Management Server
 description:
   - Check how many Security Gateway objects the Management Server license supports.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

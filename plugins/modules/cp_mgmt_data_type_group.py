@@ -32,6 +32,7 @@ short_description: Manages data-type-group objects on Checkpoint over Web Servic
 description:
   - Manages data-type-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -93,14 +94,14 @@ EXAMPLES = """
   cp_mgmt_data_type_group:
     description: add data type group object
     file_type:
-    - file-attr-obj
+      - file-attr-obj
     name: data-group-obj
     state: present
 
 - name: set-data-type-group
   cp_mgmt_data_type_group:
     file_content:
-    - keywords_obj
+      - keywords_obj
     name: data-group-obj
     state: present
 

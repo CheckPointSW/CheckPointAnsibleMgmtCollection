@@ -32,6 +32,7 @@ short_description: Manages mobile-access-profile-section objects on Checkpoint o
 description:
   - Manages mobile-access-profile-section objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -99,7 +100,7 @@ EXAMPLES = """
   cp_mgmt_mobile_access_profile_section:
     name: New Section 1
     tags:
-     - MAP-section
+      - MAP-section
     state: present
 
 - name: delete-mobile-access-profile-section

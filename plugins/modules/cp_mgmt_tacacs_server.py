@@ -32,6 +32,7 @@ short_description: Manages tacacs-server objects on Checkpoint over Web Services
 description:
   - Manages tacacs-server objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

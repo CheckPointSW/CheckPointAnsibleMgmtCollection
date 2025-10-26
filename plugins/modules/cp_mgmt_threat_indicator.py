@@ -34,6 +34,7 @@ short_description: Manages threat-indicator objects on Check Point over Web Serv
 description:
   - Manages threat-indicator objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.20.M1 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -189,14 +190,14 @@ EXAMPLES = """
     ignore_warnings: true
     name: My_Indicator
     observables:
-    - confidence: medium
-      mail_to: someone@somewhere.com
-      name: My_Observable
-      product: AV
-      severity: low
+      - confidence: medium
+        mail_to: someone@somewhere.com
+        name: My_Observable
+        product: AV
+        severity: low
     profile_overrides:
-    - action: detect
-      profile: My_Profile
+      - action: detect
+        profile: My_Profile
     state: present
 
 - name: set-threat-indicator

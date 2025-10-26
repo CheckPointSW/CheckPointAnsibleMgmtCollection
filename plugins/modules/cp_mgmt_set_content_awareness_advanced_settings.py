@@ -32,6 +32,7 @@ short_description: Edit Content Awareness Blades' Settings.
 description:
   - Edit Content Awareness Blades' Settings.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -65,7 +66,7 @@ EXAMPLES = """
     inspect_archives: 'false'
     internal_error_fail_mode: block connections
     supported_services:
-    - Squid_NTLM
+      - Squid_NTLM
 """
 
 RETURN = """

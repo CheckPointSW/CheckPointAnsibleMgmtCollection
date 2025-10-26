@@ -34,6 +34,7 @@ description:
   - Export the primary Security Management Server database or the primary Multi-Domain Server database or the single Domain database and the applicable
     Check Point configuration.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

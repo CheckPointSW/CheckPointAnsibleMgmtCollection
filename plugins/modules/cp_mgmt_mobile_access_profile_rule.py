@@ -32,6 +32,7 @@ short_description: Manages mobile-access-profile-rule objects on Checkpoint over
 description:
   - Manages mobile-access-profile-rule objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -91,7 +92,7 @@ EXAMPLES = """
     position: 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: set-mobile-access-profile-rule
   cp_mgmt_mobile_access_profile_rule:
@@ -99,7 +100,7 @@ EXAMPLES = """
     name: Rule 1
     position: 2
     user_groups:
-    - my_group
+      - my_group
     state: present
 
 - name: delete-mobile-access-profile-rule

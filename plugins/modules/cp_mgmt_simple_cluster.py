@@ -34,6 +34,7 @@ short_description: Manages simple-cluster objects on Checkpoint over Web Service
 description:
   - Manages simple-cluster objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -182,18 +183,22 @@ options:
           exclude_packets:
             description:
               - Don't check packets from excluded network.
+              - Available from R81.10 management version.
             type: bool
           excluded_network_name:
             description:
               - Excluded network name.
+              - Available from R81.10 management version.
             type: str
           excluded_network_uid:
             description:
               - Excluded network UID.
+              - Available from R81.10 management version.
             type: str
           spoof_tracking:
             description:
               - Spoof tracking.
+              - Available from R81.10 management version.
             type: str
             choices: ['none', 'log', 'alert']
       multicast_address:
@@ -280,6 +285,52 @@ options:
     description:
       - Intrusion Prevention System blade enabled.
     type: bool
+  ips_settings:
+    description:
+      - Cluster IPS settings.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      bypass_all_under_load:
+        description:
+          - Disable/enable all IPS protections until CPU and memory levels are back to normal.
+        type: bool
+      bypass_track_method:
+        description:
+          - Track options when all IPS protections are disabled until CPU/memory levels are back to normal.
+        type: str
+        choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                 'user defined alert no.3']
+      activation_mode:
+        description:
+          - Defines whether the IPS blade operates in Detect Only mode or enforces the configured IPS Policy.
+        type: str
+        choices: ['according-to-policy', 'detect-only']
+      cpu_usage_low_threshold:
+        description:
+          - CPU usage low threshold percentage (1-99).
+        type: int
+      cpu_usage_high_threshold:
+        description:
+          - CPU usage high threshold percentage (1-99).
+        type: int
+      memory_usage_low_threshold:
+        description:
+          - Memory usage low threshold percentage (1-99).
+        type: int
+      memory_usage_high_threshold:
+        description:
+          - Memory usage high threshold percentage (1-99).
+        type: int
+      send_threat_cloud_info:
+        description:
+          - Help improve Check Point Threat Prevention product by sending anonymous information.
+        type: bool
+      reject_on_cluster_fail_over:
+        description:
+          - Define the IPS connections during fail over reject packets or accept packets.
+        type: bool
   members:
     description:
       - Cluster members list. Only new cluster member can be added. Adding existing gateway is not supported.
@@ -317,18 +368,22 @@ options:
               exclude_packets:
                 description:
                   - Don't check packets from excluded network.
+                  - Available from R81.10 management version.
                 type: bool
               excluded_network_name:
                 description:
                   - Excluded network name.
+                  - Available from R81.10 management version.
                 type: str
               excluded_network_uid:
                 description:
                   - Excluded network UID.
+                  - Available from R81.10 management version.
                 type: str
               spoof_tracking:
                 description:
                   - Spoof tracking.
+                  - Available from R81.10 management version.
                 type: str
                 choices: ['none', 'log', 'alert']
           ip_address:
@@ -495,6 +550,7 @@ options:
   platform_portal_settings:
     description:
       - Platform portal settings.
+      - Available from R81 JHF management version.
     type: dict
     suboptions:
       portal_web_settings:
@@ -583,10 +639,12 @@ options:
   threat_extraction:
     description:
       - Threat Extraction blade enabled.
+      - Available from R81.10 management version.
     type: bool
   threat_prevention_mode:
     description:
       - The mode of Threat Prevention to use. When using Autonomous Threat Prevention, disabling the Threat Prevention blades is not allowed.
+      - Available from R81.10 management version.
     type: str
     choices: ['autonomous', 'custom']
   url_filtering:
@@ -596,6 +654,7 @@ options:
   usercheck_portal_settings:
     description:
       - UserCheck portal settings.
+      - Available from R81 JHF management version.
     type: dict
     suboptions:
       enabled:
@@ -678,6 +737,7 @@ options:
       authentication:
         description:
           - Authentication.
+          - Available from R81 management version.
         type: dict
         suboptions:
           authentication_clients:
@@ -688,6 +748,7 @@ options:
       link_selection:
         description:
           - Link Selection.
+          - Available from R81 management version.
         type: dict
         suboptions:
           ip_selection:
@@ -716,6 +777,7 @@ options:
       office_mode:
         description:
           - Office Mode. Notation Wide Impact - Office Mode apply IPSec VPN Software Blade clients and to the Mobile Access Software Blade clients.
+          - Available from R81 management version.
         type: dict
         suboptions:
           mode:
@@ -851,6 +913,7 @@ options:
       remote_access:
         description:
           - Remote Access.
+          - Available from R81 management version.
         type: dict
         suboptions:
           support_l2tp:
@@ -909,6 +972,7 @@ options:
   show_portals_certificate:
     description:
       - Indicates whether to show the portals certificate value in the reply.
+      - Available from R81 JHF management version.
     type: bool
   color:
     description:
@@ -950,57 +1014,55 @@ EXAMPLES = """
     color: yellow
     firewall: true
     interfaces:
-    - anti_spoofing: true
-      interface_type: cluster
-      ip_address: 17.23.5.1
-      name: eth0
-      network_mask: 255.255.255.0
-      topology: EXTERNAL
-    - interface_type: sync
-      name: eth1
-      topology: INTERNAL
-      topology_settings:
-        interface_leads_to_dmz: false
-        ip_address_behind_this_interface: network defined by the interface ip and net
-          mask
-    - anti_spoofing: true
-      interface_type: cluster
-      ip_address: 192.168.1.1
-      name: eth2
-      network_mask: 255.255.255.0
-      topology: INTERNAL
-      topology_settings:
-        interface_leads_to_dmz: false
-        ip_address_behind_this_interface: network defined by the interface ip and net
-          mask
+      - anti_spoofing: true
+        interface_type: cluster
+        ip_address: 17.23.5.1
+        name: eth0
+        network_mask: 255.255.255.0
+        topology: EXTERNAL
+      - interface_type: sync
+        name: eth1
+        topology: INTERNAL
+        topology_settings:
+          interface_leads_to_dmz: false
+          ip_address_behind_this_interface: network defined by the interface ip and net mask
+      - anti_spoofing: true
+        interface_type: cluster
+        ip_address: 192.168.1.1
+        name: eth2
+        network_mask: 255.255.255.0
+        topology: INTERNAL
+        topology_settings:
+          interface_leads_to_dmz: false
+          ip_address_behind_this_interface: network defined by the interface ip and net mask
     ip_address: 17.23.5.1
     members:
-    - interfaces:
-      - ip_address: 17.23.5.2
-        name: eth0
-        network_mask: 255.255.255.0
-      - ip_address: 1.1.2.4
-        name: eth1
-        network_mask: 255.255.255.0
-      - ip_address: 192.168.1.2
-        name: eth2
-        network_mask: 255.255.255.0
-      ip_address: 17.23.5.2
-      name: member1
-      one_time_password: abcd
-    - interfaces:
-      - ip_address: 17.23.5.3
-        name: eth0
-        network_mask: 255.255.255.0
-      - ip_address: 1.1.2.5
-        name: eth1
-        network_mask: 255.255.255.0
-      - ip_address: 192.168.1.3
-        name: eth2
-        network_mask: 255.255.255.0
-      ip_address: 17.23.5.3
-      name: member2
-      one_time_password: abcd
+      - interfaces:
+          - ip_address: 17.23.5.2
+            name: eth0
+            network_mask: 255.255.255.0
+          - ip_address: 1.1.2.4
+            name: eth1
+            network_mask: 255.255.255.0
+          - ip_address: 192.168.1.2
+            name: eth2
+            network_mask: 255.255.255.0
+        ip_address: 17.23.5.2
+        name: member1
+        one_time_password: abcd
+      - interfaces:
+          - ip_address: 17.23.5.3
+            name: eth0
+            network_mask: 255.255.255.0
+          - ip_address: 1.1.2.5
+            name: eth1
+            network_mask: 255.255.255.0
+          - ip_address: 192.168.1.3
+            name: eth2
+            network_mask: 255.255.255.0
+        ip_address: 17.23.5.3
+        name: member2
+        one_time_password: abcd
     name: cluster1
     os_name: Gaia
     state: present
@@ -1181,6 +1243,35 @@ def main():
             ),
         ),
         ips=dict(type="bool"),
+        ips_settings=dict(
+            type="dict",
+            options=dict(
+                bypass_all_under_load=dict(type="bool"),
+                bypass_track_method=dict(
+                    type="str",
+                    choices=[
+                        "none",
+                        "log",
+                        "popup alert",
+                        "mail alert",
+                        "snmp trap alert",
+                        "user defined alert no.1",
+                        "user defined alert no.2",
+                        "user defined alert no.3",
+                    ],
+                ),
+                activation_mode=dict(
+                    type="str",
+                    choices=["according-to-policy", "detect-only"],
+                ),
+                cpu_usage_low_threshold=dict(type="int"),
+                cpu_usage_high_threshold=dict(type="int"),
+                memory_usage_low_threshold=dict(type="int"),
+                memory_usage_high_threshold=dict(type="int"),
+                send_threat_cloud_info=dict(type="bool"),
+                reject_on_cluster_fail_over=dict(type="bool"),
+            ),
+        ),
         members=dict(
             type="list",
             elements="dict",

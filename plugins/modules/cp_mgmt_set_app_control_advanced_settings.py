@@ -32,6 +32,7 @@ short_description: Edit Application Control & URL Filtering Blades' Settings.
 description:
   - Edit Application Control & URL Filtering Blades' Settings.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -152,7 +153,7 @@ EXAMPLES = """
       categorize_https_websites: 'true'
       enforce_safe_search: 'true'
     web_browsing_services:
-    - AH
+      - AH
     website_categorization_mode: custom
 """
 

@@ -18,6 +18,7 @@ short_description: Manages HOSTS resource module
 description:
   - This resource module allows for addition, deletion, or modification of CP MGMT Hosts.
   - This resource module also takes care of gathering Hosts config facts
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: Ansible Security Automation Team (@justjais) <https://github.com/ansible-security>-
 options:

@@ -32,6 +32,7 @@ short_description: Manages access-point-name objects on Checkpoint over Web Serv
 description:
   - Manages access-point-name objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

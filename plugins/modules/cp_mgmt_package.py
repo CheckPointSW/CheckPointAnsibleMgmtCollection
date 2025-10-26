@@ -34,6 +34,7 @@ short_description: Manages package objects on Check Point over Web Services API
 description:
   - Manages package objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -177,14 +178,14 @@ EXAMPLES = """
   cp_mgmt_package:
     access_layers:
       add:
-      - name: New Access Layer 1
-        position: 1
+        - name: New Access Layer 1
+          position: 1
     name: Standard
     state: present
     threat_layers:
       add:
-      - name: New Layer 1
-        position: 2
+        - name: New Layer 1
+          position: 2
 
 - name: delete-package
   cp_mgmt_package:

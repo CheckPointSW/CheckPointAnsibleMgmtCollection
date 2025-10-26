@@ -32,6 +32,7 @@ short_description: Run the VSX provisioning tool with the specified parameters.
 description:
   - Run the VSX provisioning tool with the specified parameters. Note - An automatic session publish is part of all the operations in this API.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -690,14 +691,14 @@ EXAMPLES = """
       cluster_type: vsls
       ipv4_address: 10.1.1.15
       members:
-      - ipv4_address: 10.1.1.1
-        name: VSX1
-        sic_otp: sicotp123
-        sync_ip: 192.168.1.1
-      - ipv4_address: 10.1.1.2
-        name: VSX2
-        sic_otp: sicotp123
-        sync_ip: 192.168.1.2
+        - ipv4_address: 10.1.1.1
+          name: VSX1
+          sic_otp: sicotp123
+          sync_ip: 192.168.1.1
+        - ipv4_address: 10.1.1.2
+          name: VSX2
+          sic_otp: sicotp123
+          sync_ip: 192.168.1.2
       rule_drop: enable
       rule_ping: enable
       sync_if_name: eth3

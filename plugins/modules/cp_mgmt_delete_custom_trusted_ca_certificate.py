@@ -32,6 +32,7 @@ short_description: Delete existing custom trusted CA certificate using name or u
 description:
   - Delete existing custom trusted CA certificate using name or uid.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -34,6 +34,7 @@ short_description: Edit existing object using object name or uid.
 description:
   - Edit existing object using object name or uid.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -88,10 +89,10 @@ EXAMPLES = """
   cp_mgmt_threat_protection_override:
     name: FTP Commands
     overrides:
-    - action: inactive
-      capture_packets: true
-      profile: New Profile 1
-      track: None
+      - action: inactive
+        capture_packets: true
+        profile: New Profile 1
+        track: None
     state: present
 """
 

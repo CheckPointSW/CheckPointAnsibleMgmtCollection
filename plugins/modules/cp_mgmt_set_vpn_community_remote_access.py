@@ -33,6 +33,7 @@ description:
   - Edit existing Remote Access object. Using object name or uid is optional.
   - Add and Delete API commands for this object are unavailable since there is single object per domain.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -55,6 +56,22 @@ options:
       - Collection of tag identifiers.
     type: list
     elements: str
+  override_vpn_domains:
+    description:
+      - The Overrides VPN Domains of the participants GWs.
+      - Available from R82 JHF management version.
+    type: list
+    elements: dict
+    version_added: "6.5.0"
+    suboptions:
+      gateway:
+        description:
+          - Participant gateway in override VPN domain identified by the name or UID.
+        type: str
+      vpn_domain:
+        description:
+          - <html>VPN domain network<br><b>Relevant only in Domain-Based VPN Communities</b></html> identified by the name or UID.
+        type: str
   color:
     description:
       - Color of the object. Should be one of existing colors.
@@ -87,9 +104,9 @@ EXAMPLES = """
 - name: set-vpn-community-remote-access
   cp_mgmt_set_vpn_community_remote_access:
     gateways:
-    - mygateway
+      - mygateway
     user_groups:
-    - myusergroup
+      - myusergroup
 """
 
 RETURN = """
@@ -109,6 +126,7 @@ def main():
         gateways=dict(type='list', elements='str'),
         user_groups=dict(type='list', elements='str'),
         tags=dict(type='list', elements='str'),
+        override_vpn_domains=dict(type='list', elements='dict', options=dict(gateway=dict(type='str'), vpn_domain=dict(type='str'))),
         color=dict(type='str', choices=['aquamarine', 'black', 'blue', 'crete blue', 'burlywood', 'cyan', 'dark green',
                                         'khaki', 'orchid', 'dark orange', 'dark sea green', 'pink', 'turquoise', 'dark blue', 'firebrick', 'brown',
                                         'forest green', 'gold', 'dark gold', 'gray', 'dark gray', 'light green', 'lemon chiffon', 'coral', 'sea green',

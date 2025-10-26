@@ -1014,7 +1014,7 @@ def get_number_and_section_from_position(
     show_rulebase_command = get_relevant_show_rulebase_command(api_call_object)
     if "position" in payload:
         section_name = None
-        if type(payload["position"]) is not dict:
+        if not isinstance(payload["position"], dict):
             position = payload["position"]
             if position == "top":
                 position = 1

@@ -32,6 +32,7 @@ short_description: show ips status on Checkpoint over Web Services API
 description:
   - show ips status on Checkpoint over Web Services API
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

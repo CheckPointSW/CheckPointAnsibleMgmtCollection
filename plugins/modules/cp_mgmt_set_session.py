@@ -34,6 +34,7 @@ short_description: Edit user's current session.
 description:
   - Edit user's current session.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

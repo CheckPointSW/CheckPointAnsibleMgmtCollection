@@ -34,6 +34,7 @@ short_description: Executes the update-provisioned-satellites on center gateways
 description:
   - Executes the update-provisioned-satellites on center gateways of VPN communities.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -50,7 +51,7 @@ EXAMPLES = """
 - name: update-provisioned-satellites
   cp_mgmt_update_provisioned_satellites:
     vpn_center_gateways:
-    - co_gateway
+      - co_gateway
 """
 
 RETURN = """

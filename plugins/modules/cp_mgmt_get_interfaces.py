@@ -35,6 +35,7 @@ description:
   - SIC must be established in the Security Gateway or Cluster Member object.
   - Security Gateway or Cluster Members must be up and running.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

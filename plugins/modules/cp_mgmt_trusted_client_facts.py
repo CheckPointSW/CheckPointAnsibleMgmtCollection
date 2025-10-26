@@ -55,6 +55,7 @@ options:
       - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
         logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
         name, comment, tags etc.
+      - Available from R81 JHF management version.
     type: str
   limit:
     description:

@@ -34,6 +34,7 @@ short_description: Manages access-role objects on Check Point over Web Services 
 description:
   - Manages access-role objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -144,8 +145,8 @@ EXAMPLES = """
 - name: set-access-role
   cp_mgmt_access_role:
     users_list:
-        - source: "Internal User Groups"
-          selection: usersGroup
+      - source: "Internal User Groups"
+        selection: usersGroup
     name: New Access Role 1
     state: present
 

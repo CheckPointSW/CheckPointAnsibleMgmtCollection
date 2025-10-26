@@ -36,6 +36,7 @@ description:
   - Securely connect the Management Server to Check Point's Infinity Portal. <br>This is a preliminary operation so that the management server can use
     various Check Point cloud-based security services hosted in the Infinity Portal.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -49,7 +50,7 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 EXAMPLES = """
 - name: connect-cloud-services
   cp_mgmt_connect_cloud_services:
-    #sgignore next_line
+    # sgignore next_line
     auth_token: aHR0cHM6Ly9kZXYtY2xvdWRpbmZyYS1ndy5rdWJlMS5pYWFzLmNoZWNrcG9pbnQuY29tL2FwcC9tYWFzL2FwaS92Mi9tYW5hZ2VtZW50
                 cy9hZmJlYWRlYS04Y2U2LTRlYTUtOTI4OS00ZTQ0N2M0ZjgyMTvY2xvdWRBY2Nlc3MvP290cD02ZWIzNThlOS1hMzkxLTQxOGQtYjlmZ
                 i0xOGIxOTQwOGJlN2Y=
