@@ -608,6 +608,10 @@ def handle_delete(
 ):
     # else equals_code is 404 and no need to delete because he doesn't exist
     if equals_code == 200:
+        if module.check_mode:
+            result["changed"] = True
+            result["message"] = "This would delete the object"
+            return
         payload_for_delete = extract_payload_with_some_params(
             payload, delete_params
         )
@@ -621,7 +625,10 @@ def handle_delete(
             True,
         )
         result["changed"] = True
-
+    else:
+        if module.check_mode:
+            result["changed"] = False
+            result["message"] = "The object does not exist, no deletion would occur"
 
 # handle the call and set the result with 'changed' and the response
 def handle_call_and_set_result(
@@ -641,20 +648,19 @@ def api_call(module, api_call_object):
     version = get_version(module)
 
     result = {"changed": False}
-    if module.check_mode:
-        return result
 
     payload_for_equals = {"type": api_call_object, "params": payload}
     equals_code, equals_response = send_request(
         connection, version, "equals", payload_for_equals
     )
-    result["checkpoint_session_uid"] = connection.get_session_uid()
     handle_equals_failure(module, equals_code, equals_response)
 
     if module.params["state"] == "present":
         if equals_code == 200:
             # else objects are equals and there is no need for set request
             if not equals_response["equals"]:
+                if module.check_mode:
+                    return {"changed": True, "message": "This would edit the object"}
                 build_payload(
                     api_call_object, payload, remove_from_set_payload
                 )
@@ -666,7 +672,12 @@ def api_call(module, api_call_object):
                     module,
                     result,
                 )
+            else:
+                if module.check_mode:
+                    return {"changed": False, "message": "Object exists with desired configuration"}
         elif equals_code == 404:
+            if module.check_mode:
+                return {"changed": True, "message": "This would create the object"}
             build_payload(api_call_object, payload, remove_from_add_payload)
             handle_call_and_set_result(
                 connection,
@@ -687,7 +698,8 @@ def api_call(module, api_call_object):
             module,
             result,
         )
-
+    if not module.check_mode:
+        result["checkpoint_session_uid"] = connection.get_session_uid()
     return result
 
 
@@ -1332,8 +1344,6 @@ def api_call_for_rule(module, api_call_object):
     version = get_version(module)
 
     result = {"changed": False}
-    if module.check_mode:
-        return result
 
     if is_access_rule:
         copy_payload_without_some_params = extract_payload_without_some_params(
@@ -1366,6 +1376,8 @@ def api_call_for_rule(module, api_call_object):
                     equals_response["equals"] = False
             # else objects are equals and there is no need for set request
             if not equals_response["equals"]:
+                if module.check_mode:
+                    return {"changed": True, "message": "This would edit the object"}
                 # if user insert param 'position' and needed to use the 'set' command, change the param name to 'new-position'
                 if "position" in payload:
                     payload["new-position"] = payload["position"]
@@ -1380,7 +1392,12 @@ def api_call_for_rule(module, api_call_object):
                     module,
                     result,
                 )
+            else:
+                if module.check_mode:
+                    return {"changed": False, "message": "Object exists with desired configuration"}
         elif equals_code == 404:
+            if module.check_mode:
+                return {"changed": True, "message": "This would create the object"}
             if "search-entire-rulebase" in payload:
                 del payload["search-entire-rulebase"]
             handle_call_and_set_result(
@@ -1402,7 +1419,8 @@ def api_call_for_rule(module, api_call_object):
             module,
             result,
         )
-
+    if not module.check_mode:
+        result["checkpoint_session_uid"] = connection.get_session_uid()
     return result
 
 
