@@ -1421,3 +1421,12 @@ releases:
         name: cp_mgmt_syslog_server_facts
         namespace: ''
     release_date: '2025-09-04'
+  6.6.0:
+    changes:
+      minor_changes:
+        - Support check mode (--check)
+        - check_point.mgmt.cp_mgmt_access_rule_facts - support async-response with customized HF.
+      release_summary: This is release 6.6.0 of ``check_point.mgmt``, released on 2025-10-30.
+    fragments:
+      - 6.6.0.yml
+    release_date: '2025-10-30'
