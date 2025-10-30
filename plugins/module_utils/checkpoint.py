@@ -630,6 +630,7 @@ def handle_delete(
             result["changed"] = False
             result["message"] = "The object does not exist, no deletion would occur"
 
+
 # handle the call and set the result with 'changed' and the response
 def handle_call_and_set_result(
     connection, version, call, payload, module, result

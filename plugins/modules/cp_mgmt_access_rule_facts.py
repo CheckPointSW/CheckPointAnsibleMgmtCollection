@@ -135,6 +135,7 @@ options:
     description:
       - No more than that many results will be returned.
         This parameter is relevant only for getting few objects.
+      - Valid values are between 1 and 500
     type: int
   offset:
     description:
@@ -176,6 +177,25 @@ options:
       - Indicates whether to calculate and show "groups" field for every object in reply.
       - Available from R80.10 management version.
     type: bool
+  async_response:
+    description:
+      - Run command in asynchronous mode and return task UID. Use show-task command to check the progress of the task.
+      - Available with customized HF.
+    type: bool
+    default: false
+    version_added: "6.6.0"
+  wait_for_task:
+    description:
+      - Wait for the task to end. Such as publish task.
+    type: bool
+    default: True
+    version_added: "6.6.0"
+  wait_for_task_timeout:
+    description:
+      - How many minutes to wait until throwing a timeout error.
+    type: int
+    default: 30
+    version_added: "6.6.0"
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
@@ -254,6 +274,9 @@ def main():
         use_object_dictionary=dict(type="bool"),
         dereference_group_members=dict(type="bool"),
         show_membership=dict(type="bool"),
+        async_response=dict(type="bool", default=False),
+        wait_for_task=dict(type="bool", default=True),
+        wait_for_task_timeout=dict(type="int", default=30),
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 

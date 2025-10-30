@@ -4,6 +4,20 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.6.0
+======
+
+Release Summary
+---------------
+
+This is release 6.6.0 of ``check_point.mgmt``, released on 2025-10-30.
+
+Minor Changes
+-------------
+
+- Support check mode (--check)
+- check_point.mgmt.cp_mgmt_access_rule_facts - support async-response with customized HF.
+
 v6.5.0
 ======
 
