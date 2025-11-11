@@ -135,7 +135,7 @@ options:
     description:
       - No more than that many results will be returned.
         This parameter is relevant only for getting few objects.
-      - Valid values are between 1 and 500
+      - Valid values are between 1 and 500.
     type: int
   offset:
     description:

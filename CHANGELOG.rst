@@ -4,6 +4,48 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.7.0
+======
+
+Release Summary
+---------------
+
+This is release 6.7.0 of ``check_point.mgmt``, released on 2025-11-11.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_best_practice_facts - Get best-practice objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_change_password_on_next_login - Change Check Point password on next login.
+- check_point.mgmt.cp_mgmt_compliance_scan - Runs the Compliance Software Blade scan. The scan evaluates the configuration compliance with the relevant best practices.
+- check_point.mgmt.cp_mgmt_logical_server - Manages logical-server objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_logical_server_facts - Get logical-server objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_renew_scaled_sharing_server_certificate - Renew the server certificate for the scaled sharing on the specified PDP Security Gateway or Cluster.
+- check_point.mgmt.cp_mgmt_set_compliance_settings - Edit existing Compliance Settings.
+- check_point.mgmt.cp_mgmt_set_cp_password_requirements - Set Check Point password requirements.
+- check_point.mgmt.cp_mgmt_set_default_administrator_settings - Set default administrator settings.
+- check_point.mgmt.cp_mgmt_set_login_restrictions - Set login restrictions.
+- check_point.mgmt.cp_mgmt_set_smart_console_idle_timeout - Set SmartConsole idle timeout settings.
+- check_point.mgmt.cp_mgmt_set_trust - Configure a Trusted communication between the Management Server and the managed Security Gateway.
+- check_point.mgmt.cp_mgmt_show_compliance_settings - Retrieve all Compliance Settings.
+- check_point.mgmt.cp_mgmt_show_cp_password_requirements - Retrieve existing Check Point password requirements.
+- check_point.mgmt.cp_mgmt_show_default_administrator_settings - Retrieve existing default administrator settings.
+- check_point.mgmt.cp_mgmt_show_login_restrictions - Retrieve existing login restrictions.
+- check_point.mgmt.cp_mgmt_show_smart_console_idle_timeout - Retrieve existing SmartConsole idle timeout settings.
+- check_point.mgmt.cp_mgmt_subordinate_ca - Manages subordinate-ca objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_subordinate_ca_facts - Get subordinate-ca objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_test_trust - Test an existing Trusted communication between the Management Server and the managed Security Gateway.
+- check_point.mgmt.cp_mgmt_voip_domain_h323_gatekeeper - Manages voip-domain-h323-gatekeeper objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_h323_gatekeeper_facts - Get voip-domain-h323-gatekeeper objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_h323_gateway - Manages voip-domain-h323-gateway objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_h323_gateway_facts - Get voip-domain-h323-gateway objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_mgcp_call_agent - Manages voip-domain-mgcp-call-agent objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_mgcp_call_agent_facts - Get voip-domain-mgcp-call-agent objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_sccp_call_manager - Manages voip-domain-sccp-call-manager objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_sccp_call_manager_facts - Get voip-domain-sccp-call-manager objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_sip_proxy - Manages voip-domain-sip-proxy objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_voip_domain_sip_proxy_facts - Get voip-domain-sip-proxy objects facts on Checkpoint over Web Services API
+
 v6.6.0
 ======
 

@@ -9,7 +9,7 @@ namespace: check_point
 name: mgmt
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 6.6.0
+version: 6.7.0
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -30,11 +30,11 @@ description: Check Point collection for the Management Server
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
 license:
- - GPL-2.0-or-later
+ - Apache-2.0
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'
-license_file: ''
+license_file: LICENSE
 
 # A list of tags you want to associate with the collection for indexing/searching. A tag name has the same character
 # requirements as 'namespace' and 'name'
@@ -56,4 +56,9 @@ documentation: https://docs.ansible.com/ansible/latest/collections/check_point/m
 homepage: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 
 # The URL to the collection issue tracker
+# As Red Hat Ansible Certified Content, this collection is entitled to support through the collection's GitHub
+# repository using the **New issue** button in the top right corner.
 issues: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues
+
+build_ignore:
+  - changelogs/
