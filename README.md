@@ -3,10 +3,10 @@ This Ansible collection provides control over a Check Point Management server us
 Check Point's web-services APIs.
 
 The Ansible Check Point modules reference can be found here:
-https://docs.ansible.com/ansible/latest/collections/check_point/mgmt/index.html#plugins-in-check-point-mgmt
-<br>Note - look only at the `cp_mgmt_*` modules, cause the `checkpoint_*` will be deprecated.
+[Ansible Check Point modules reference](https://docs.ansible.com/ansible/latest/collections/check_point/mgmt/index.html)
+<br>Note - look only at the `cp_mgmt_*` modules, because the `checkpoint_*` will be deprecated.
 
-This is the repository of the mgmt collection which can be found here - https://galaxy.ansible.com/check_point/mgmt
+This is the repository of the mgmt collection which can be found here: [Galaxy: check_point.mgmt](https://galaxy.ansible.com/check_point/mgmt)
 
 Installation instructions
 -------------------------
@@ -15,7 +15,7 @@ Run `ansible-galaxy collection install check_point.mgmt`
 Requirements
 ------------
 * Ansible 2.9+ is required.
-* The Check Point server should be using the versions detailed in this SK: https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk114661
+* The Check Point server should be using the versions detailed in this SK: [Check Point Support SK114661](https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk114661)
 * The Check Point server should be open for API communication from the Ansible server.
   Open SmartConsole and check "Manage & Settings > Blades > Management API > Advanced settings".
 
@@ -88,13 +88,14 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
 This collection is tested with the most current Ansible releases. Ansible versions from 2.15.0 and above are supported.
 
 ### Support
-For reporting issue or requests for enhancements please open a GitHub issue.
+As Red Hat Ansible Certified Content, this collection is entitled to support regarding issues or requests for enhancements
+through the collection's GitHub repository using the **New issue** button in the top right corner: [GitHub Issues](https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues)
 
 ### Release Notes
-https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/blob/master/CHANGELOG.rst
+[Release Notes (CHANGELOG.rst)](https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/blob/master/CHANGELOG.rst)
 
 ### Related Information
-For further information please see - https://support.checkpoint.com/results/sk/sk114661
+For further information please see - [Check Point Support SK114661](https://support.checkpoint.com/results/sk/sk114661)
 
 ### License Information
 Apache-2.0 license
