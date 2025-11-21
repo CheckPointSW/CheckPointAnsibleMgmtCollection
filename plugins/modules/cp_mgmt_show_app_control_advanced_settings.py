@@ -32,6 +32,7 @@ short_description: Show Application Control & URL Filtering Blades' Settings.
 description:
   - Show Application Control & URL Filtering Blades' Settings.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

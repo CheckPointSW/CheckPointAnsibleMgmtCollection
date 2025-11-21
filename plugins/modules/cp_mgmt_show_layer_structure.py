@@ -33,6 +33,7 @@ description:
   - Shows the entire layer structure. The layer structure is divided into sections and each section has its own entities.
   - Supported layer types include Access Control, NAT, Custom Threat Prevention, Threat Exception and HTTPS Inspection.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

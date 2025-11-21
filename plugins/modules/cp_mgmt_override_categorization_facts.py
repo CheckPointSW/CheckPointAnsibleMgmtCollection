@@ -33,6 +33,7 @@ description:
   - Get override-categorization objects facts on Checkpoint devices.
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

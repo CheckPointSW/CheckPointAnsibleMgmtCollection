@@ -32,6 +32,7 @@ short_description: Retrieve AzureAD Objects from Azure AD Server.
 description:
   - Retrieve AzureAD Objects from Azure AD Server.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

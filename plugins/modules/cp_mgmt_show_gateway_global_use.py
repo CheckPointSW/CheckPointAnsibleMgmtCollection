@@ -33,6 +33,7 @@ description:
   - Show global usage of a specific target.
   - This command is available only after logging in to the System Data domain
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -35,6 +35,7 @@ description:
   - Imports a Data Center Object from a Data Center Server.<br> Data Center Object represents an object in the cloud environment, e.g. a virtual machine,
     cluster, network and more.<br> Use the show-data-center-content command to see the Data Center Objects that can be imported from a Data Center Server.
   - All operations are performed over Web Services API.
+  - Available from R80.10 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

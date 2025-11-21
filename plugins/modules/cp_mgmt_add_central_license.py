@@ -32,6 +32,7 @@ short_description: Add central license.
 description:
   - Add central license.
   - All operations are performed over Web Services API.
+  - Available from R81.20 JHF management version.
 version_added: "5.2.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

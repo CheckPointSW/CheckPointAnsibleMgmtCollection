@@ -32,6 +32,7 @@ short_description: Show Policy settings.
 description:
   - Show Policy settings.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

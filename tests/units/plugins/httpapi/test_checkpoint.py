@@ -95,7 +95,7 @@ class TestCheckpointHttpApi(unittest.TestCase):
         response_mock = mock.Mock()
         response_mock.getcode.return_value = status
         response_text = (
-            json.dumps(response) if type(response) is dict else response
+            json.dumps(response) if isinstance(response, dict) else response
         )
         response_data = BytesIO(
             response_text.encode() if response_text else "".encode()

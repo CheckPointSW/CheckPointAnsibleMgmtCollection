@@ -32,6 +32,7 @@ short_description: Manages mobile-access-rule objects on Checkpoint over Web Ser
 description:
   - Manages mobile-access-rule objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -97,17 +98,17 @@ EXAMPLES = """
     position: 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: set-mobile-access-rule
   cp_mgmt_mobile_access_rule:
     applications:
-    - New Application
-    - New Application 2
+      - New Application
+      - New Application 2
     name: Rule 1
     state: present
     user_groups:
-    - my_group
+      - my_group
 
 - name: delete-mobile-access-rule
   cp_mgmt_mobile_access_rule:

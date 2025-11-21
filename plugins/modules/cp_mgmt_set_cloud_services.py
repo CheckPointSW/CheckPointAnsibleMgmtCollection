@@ -32,6 +32,7 @@ short_description: Set the connection settings between the Management Server and
 description:
   - Set the connection settings between the Management Server and Check Point's Infinity Portal.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

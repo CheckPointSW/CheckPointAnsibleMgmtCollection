@@ -34,6 +34,7 @@ short_description: Get actual platform (Hardware, Version, OS) from gateway, clu
 description:
   - Get actual platform (Hardware, Version, OS) from gateway, cluster or Check Point host.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

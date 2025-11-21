@@ -34,6 +34,7 @@ short_description: Manages identity-tag objects on Checkpoint over Web Services 
 description:
   - Manages identity-tag objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "2.1.0"
 author: "Or Soffer (@chkp-orso)"
 options:

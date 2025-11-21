@@ -32,6 +32,7 @@ short_description: Manages time-group objects on Checkpoint over Web Services AP
 description:
   - Manages time-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -88,18 +89,18 @@ EXAMPLES = """
   cp_mgmt_time_group:
     name: timeGroup-1
     members:
-    - member1
-    - member2
+      - member1
+      - member2
     state: present
 
 - name: set-time-group
   cp_mgmt_time_group:
     name: timeGroup-1
     members:
-    - member1
-    - member2
+      - member1
+      - member2
     tags:
-    - tag1
+      - tag1
     state: present
 
 - name: delete-time-group

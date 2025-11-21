@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -49,6 +50,7 @@ options:
       - When true, the service group's matched content is displayed as ranges of port numbers rather than service objects.<br />Objects that are not
         represented using port numbers are presented as objects.<br />The 'members' parameter is omitted from the response and instead the 'ranges' parameter
         is displayed.
+      - Available from R80.20 management version.
     type: bool
   details_level:
     description:
@@ -56,6 +58,14 @@ options:
         representation of the object.
     type: str
     choices: ['uid', 'standard', 'full']
+  filter:
+    description:
+      - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
+        logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
+        name, comment, tags etc.
+      - Available from R81 JHF management version.
+    type: str
+    version_added: "6.4.0"
   limit:
     description:
       - No more than that many results will be returned.
@@ -86,11 +96,21 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
+  domains_to_process:
+    description:
+      - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
+        with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
+    type: list
+    elements: str
+    version_added: "6.4.0"
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """
 
@@ -125,6 +145,7 @@ def main():
         name=dict(type="str"),
         show_as_ranges=dict(type="bool"),
         details_level=dict(type="str", choices=["uid", "standard", "full"]),
+        filter=dict(type='str'),
         limit=dict(type="int"),
         offset=dict(type="int"),
         order=dict(
@@ -137,6 +158,7 @@ def main():
         ),
         dereference_group_members=dict(type="bool"),
         show_membership=dict(type="bool"),
+        domains_to_process=dict(type='list', elements="str")
     )
     argument_spec.update(checkpoint_argument_spec_for_facts)
 

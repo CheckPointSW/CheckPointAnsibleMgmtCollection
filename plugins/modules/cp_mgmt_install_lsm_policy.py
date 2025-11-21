@@ -35,6 +35,7 @@ short_description: Executes the lsm-install-policy on a given list of targets. I
 description:
   - Executes the lsm-install-policy on a given list of targets. Install the LSM policy that defined on the attached LSM profile on the targets devices.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -50,7 +51,7 @@ EXAMPLES = """
 - name: install-lsm-policy
   cp_mgmt_install_lsm_policy:
     targets:
-    - lsm_gateway
+      - lsm_gateway
 """
 
 RETURN = """

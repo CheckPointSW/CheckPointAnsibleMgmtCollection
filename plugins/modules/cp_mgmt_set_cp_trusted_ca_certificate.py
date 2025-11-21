@@ -32,6 +32,7 @@ short_description: Edit existing Check Point trusted CA certificate using name o
 description:
   - Edit existing Check Point trusted CA certificate using name or uid. </br>By default all CP trusted CA certificates are enabled.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -32,6 +32,7 @@ short_description: Retrieve existing object using object uid.
 description:
   - Retrieve existing object using object uid.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -33,6 +33,7 @@ description:
   - Switch domain server high availability state. </br>After switching domain server to standby state, the session expires and you need to login again.
     <br/>You can run this command from a user or global domain on Multi Domain Server and from the user domain on Security Management Server.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -44,6 +45,7 @@ options:
   ignore_errors:
     description:
       - Apply changes ignoring errors.
+      - Available from R81.20 management version.
     type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 """

@@ -32,6 +32,7 @@ short_description: Retrieve existing Mobile Access section using section name or
 description:
   - Retrieve existing Mobile Access section using section name or uid.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

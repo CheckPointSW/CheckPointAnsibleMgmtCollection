@@ -32,6 +32,7 @@ short_description: Manages data-type-weighted-keywords objects on Checkpoint ove
 description:
   - Manages data-type-weighted-keywords objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -112,10 +113,10 @@ EXAMPLES = """
     state: present
     sum_of_weights_threshold: 10
     weighted_keywords:
-    - keyword: word1
-      max_weight: 4
-      regex: true
-      weight: 3
+      - keyword: word1
+        max_weight: 4
+        regex: true
+        weight: 3
 
 - name: set-data-type-weighted-keywords
   cp_mgmt_data_type_weighted_keywords:
@@ -123,14 +124,14 @@ EXAMPLES = """
     state: present
     sum_of_weights_threshold: 15
     weighted_keywords:
-    - keyword: word1
-      max_weight: 4
-      regex: true
-      weight: 3
-    - keyword: word2
-      max_weight: 5
-      regex: false
-      weight: 2
+      - keyword: word1
+        max_weight: 4
+        regex: true
+        weight: 3
+      - keyword: word2
+        max_weight: 5
+        regex: false
+        weight: 2
 
 - name: delete-data-type-weighted-keywords
   cp_mgmt_data_type_weighted_keywords:

@@ -34,6 +34,7 @@ short_description: Manages exception-group objects on Check Point over Web Servi
 description:
   - Manages exception-group objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -45,10 +46,12 @@ options:
   applied_profile:
     description:
       - The threat profile to apply this group to in the case of apply-on threat-rules-with-specific-profile.
+      - Available from R80.10 management version.
     type: str
   applied_threat_rules:
     description:
       - The threat rules to apply this group on in the case of apply-on manually-select-threat-rules.
+      - Available from R80.10 management version.
     type: dict
     suboptions:
       add:
@@ -76,6 +79,7 @@ options:
   apply_on:
     description:
       - An exception group can be set to apply on all threat rules, all threat rules which have a specific profile, or those rules manually chosen by the user.
+      - Available from R80.10 management version.
     type: str
     choices: ['all-threat-rules', 'all-threat-rules-with-specific-profile', 'manually-select-threat-rules']
   tags:

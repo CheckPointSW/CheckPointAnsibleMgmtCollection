@@ -33,6 +33,7 @@ description:
   - Unlock object using uid or {name and type}.
   - Can unlock object only if the current session owns the lock and there are no changes on the object.
   - All operations are performed over Web Services API.
+  - Available from R81 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

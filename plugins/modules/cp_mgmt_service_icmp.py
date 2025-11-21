@@ -34,6 +34,7 @@ short_description: Manages service-icmp objects on Check Point over Web Services
 description:
   - Manages service-icmp objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.10 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

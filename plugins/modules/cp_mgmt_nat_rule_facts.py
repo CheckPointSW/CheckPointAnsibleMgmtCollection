@@ -36,6 +36,7 @@ description:
   - All operations are performed over Web Services API.
   - This module handles both operations, get a specific object and get several objects,
     For getting a specific object use the parameter 'name'.
+  - Available from R80 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -47,6 +48,7 @@ options:
     description:
       - Rule name.
         This parameter is relevant only for getting a specific object. Minimum version required is 1.7.1.
+      - Available from R81 management version.
     type: str
   package:
     description:
@@ -62,6 +64,7 @@ options:
     description:
       - Search expression to filter the rulebase. The provided text should be exactly the same as it would be given in Smart Console. The logical
         operators in the expression ('AND', 'OR') should be provided in capital letters. If an operator is not used, the default OR operator applies.
+      - Available from R80.10 management version.
     type: str
   filter_settings:
     description:
@@ -84,11 +87,13 @@ options:
             description:
               - When true, if the search expression contains a UID or a name of a group object, results will include rules that match on at
                 least one member of the group.
+              - Available from R80.20 management version.
             type: bool
           expand_group_with_exclusion_members:
             description:
               - When true, if the search expression contains a UID or a name of a group-with-exclusion object, results will include rules that
                 match at least one member of the "include" part and is not a member of the "except" part.
+              - Available from R80.20 management version.
             type: bool
           match_on_any:
             description:
@@ -136,10 +141,12 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
 extends_documentation_fragment: check_point.mgmt.checkpoint_facts
 """

@@ -33,6 +33,7 @@ description:
   - Delete the repository software package from the central repository.
   - On Multi-Domain Server this command is available only after logging in to the Global domain.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:

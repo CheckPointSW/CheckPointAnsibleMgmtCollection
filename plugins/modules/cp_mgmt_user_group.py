@@ -32,6 +32,7 @@ short_description: Manages user-group objects on Checkpoint over Web Services AP
 description:
   - Manages user-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -92,7 +93,7 @@ EXAMPLES = """
   cp_mgmt_user_group:
     email: myusergroup@email.com
     members:
-    - myuser
+      - myuser
     name: myusergroup
     state: present
 

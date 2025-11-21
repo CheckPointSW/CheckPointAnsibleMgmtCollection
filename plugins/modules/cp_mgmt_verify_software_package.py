@@ -34,6 +34,7 @@ short_description: Verifies the software package on target machines.
 description:
   - Verifies the software package on target machines.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

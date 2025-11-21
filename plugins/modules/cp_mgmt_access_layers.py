@@ -18,6 +18,7 @@ short_description: Manages ACCESS LAYERS resource module
 description:
   - This resource module allows for addition, deletion, or modification of CP Access Layers.
   - This resource module also takes care of gathering Access layer config facts
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: Ansible Security Automation Team (@justjais) <https://github.com/ansible-security>
 options:
@@ -199,7 +200,7 @@ EXAMPLES = """
       mobile_access: true
       shared: false
       tags:
-      - test_layer
+        - test_layer
       color: aquamarine
       comments: test description
       details_level: full
@@ -246,7 +247,7 @@ EXAMPLES = """
       mobile_access: true
       shared: true
       tags:
-      - test_layer_replaced
+        - test_layer_replaced
       color: cyan
       comments: test REPLACE description
       details_level: full

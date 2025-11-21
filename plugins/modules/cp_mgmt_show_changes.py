@@ -32,6 +32,7 @@ short_description: Show changes between two sessions.
 description:
   - Show changes between two sessions.
   - All operations are performed over Web Services API.
+  - Available from R80.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

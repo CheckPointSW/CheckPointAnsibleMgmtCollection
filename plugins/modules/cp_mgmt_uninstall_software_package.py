@@ -34,6 +34,7 @@ short_description: Uninstalls the software package from target machines.
 description:
   - Uninstalls the software package from target machines.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

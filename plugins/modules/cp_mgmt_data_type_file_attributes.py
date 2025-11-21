@@ -32,6 +32,7 @@ short_description: Manages data-type-file-attributes objects on Checkpoint over 
 description:
   - Manages data-type-file-attributes objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -107,7 +108,7 @@ EXAMPLES = """
 - name: add-data-type-file-attributes
   cp_mgmt_data_type_file_attributes:
     file_groups_list:
-    - Viewer
+      - Viewer
     file_name_contains: expression
     file_size: 14
     match_by_file_name: 'true'
@@ -119,7 +120,7 @@ EXAMPLES = """
 - name: set-data-type-file-attributes
   cp_mgmt_data_type_file_attributes:
     file_groups_list:
-    - Word
+      - Word
     match_by_file_size: false
     name: file-attr-obj
     state: present

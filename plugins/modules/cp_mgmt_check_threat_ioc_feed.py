@@ -36,6 +36,7 @@ description:
   - Check if a target can reach or parse a threat IOC feed; can work with an existing feed object or with a new one (by providing all relevant feed
     parameters).
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

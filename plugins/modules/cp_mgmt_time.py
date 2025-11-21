@@ -34,6 +34,7 @@ short_description: Manages time objects on Check Point over Web Services API
 description:
   - Manages time objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -183,37 +184,37 @@ EXAMPLES = """
       time: '21:22'
     end_never: 'false'
     hours_ranges:
-    - enabled: true
-      from: 00:00
-      index: 1
-      to: 00:00
-    - enabled: false
-      from: 00:00
-      index: 2
-      to: 00:00
+      - enabled: true
+        from: 00:00
+        index: 1
+        to: 00:00
+      - enabled: false
+        from: 00:00
+        index: 2
+        to: 00:00
     name: timeObject1
     recurrence:
       days:
-      - '1'
+        - '1'
       month: Any
       pattern: Daily
       weekdays:
-      - Sun
-      - Mon
+        - Sun
+        - Mon
     start_now: 'true'
     state: present
 
 - name: set-time
   cp_mgmt_time:
     hours_ranges:
-    - from: 00:22
-      to: 00:33
+      - from: 00:22
+        to: 00:33
     name: timeObject1
     recurrence:
       month: Any
       pattern: Weekly
       weekdays:
-      - Fri
+        - Fri
     state: present
 
 - name: delete-time

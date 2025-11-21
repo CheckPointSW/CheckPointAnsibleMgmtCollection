@@ -32,7 +32,7 @@ short_description: Manages https-rule objects on Checkpoint over Web Services AP
 description:
   - Manages https-rule objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
-  - Available only for R82 Management Machines and above
+  - Available from R80.40 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -110,6 +110,7 @@ options:
   tags:
     description:
       - Collection of tag identifiers.
+      - Available from R81.20 JHF management version.
     type: list
     elements: str
   track:

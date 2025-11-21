@@ -34,6 +34,7 @@ short_description: Set default Identity Provider assignment to be use for Manage
 description:
   - Set default Identity Provider assignment to be use for Management server administrator access.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

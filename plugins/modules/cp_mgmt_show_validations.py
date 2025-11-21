@@ -32,6 +32,7 @@ short_description: Show all validation incidents limited to 500.
 description:
   - Show all validation incidents limited to 500.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

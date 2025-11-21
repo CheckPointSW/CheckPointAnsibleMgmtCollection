@@ -32,6 +32,7 @@ short_description: Show supported Check Point Gateway capabilities such as versi
 description:
   - Show supported Check Point Gateway capabilities such as versions, hardwares, platforms and blades.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

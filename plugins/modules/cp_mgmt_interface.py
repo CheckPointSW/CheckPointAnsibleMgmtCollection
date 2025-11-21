@@ -31,8 +31,8 @@ module: cp_mgmt_interface
 short_description: Manages interface objects on Checkpoint over Web Services API
 description:
   - Manages interface objects on Checkpoint devices including creating, updating and removing objects.
-  - Available for R82 and above machines.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.2.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -290,16 +290,16 @@ EXAMPLES = """
       exclude_packets: false
       spoof_tracking: log
     cluster_members:
-    - ipv4_address: 2.2.2.1
-      ipv4_mask_length: 24
-      ipv4_network_mask: 255.255.255.0
-      member_name: member1
-      name: eth4
-    - ipv4_address: 2.2.2.2
-      ipv4_mask_length: 24
-      ipv4_network_mask: 255.255.255.0
-      member_name: member2
-      name: eth4
+      - ipv4_address: 2.2.2.1
+        ipv4_mask_length: 24
+        ipv4_network_mask: 255.255.255.0
+        member_name: member1
+        name: eth4
+      - ipv4_address: 2.2.2.2
+        ipv4_mask_length: 24
+        ipv4_network_mask: 255.255.255.0
+        member_name: member2
+        name: eth4
     cluster_network_type: cluster
     gateway_uid: 20ec49e8-8cd8-4ad4-b204-0de8ae4e0e17
     ignore_warnings: false
@@ -318,14 +318,14 @@ EXAMPLES = """
 - name: set-interface
   cp_mgmt_interface:
     cluster_members:
-    - ipv4_address: 4.4.4.1
-      ipv4_mask_length: 22
-      member_name: memberReal1
-      uid: db4f8a63-5a94-46d8-b9e0-a63870bded3d
-    - ipv4_address: 4.4.4.2
-      ipv4_mask_length: 22
-      member_name: memberReal2
-      uid: baca571e-8ada-4be9-8966-145388f8e238
+      - ipv4_address: 4.4.4.1
+        ipv4_mask_length: 22
+        member_name: memberReal1
+        uid: db4f8a63-5a94-46d8-b9e0-a63870bded3d
+      - ipv4_address: 4.4.4.2
+        ipv4_mask_length: 22
+        member_name: memberReal2
+        uid: baca571e-8ada-4be9-8966-145388f8e238
     cluster_network_type: cluster + sync
     ipv4_address: 4.4.4.111
     ipv4_mask_length: 22

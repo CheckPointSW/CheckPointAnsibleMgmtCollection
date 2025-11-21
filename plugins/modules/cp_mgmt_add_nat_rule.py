@@ -34,6 +34,7 @@ short_description: Create new object.
 description:
   - Create new object.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 deprecated:
@@ -114,7 +115,7 @@ EXAMPLES = """
     comments: comment example1 nat999
     enabled: false
     install_on:
-    - Policy Targets
+      - Policy Targets
     original_destination: All_Internet
     original_source: Any
     package: standard

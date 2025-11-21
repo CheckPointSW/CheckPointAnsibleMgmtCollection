@@ -36,6 +36,7 @@ description:
   - Set Identity Provider assignment to domain, to allow administrator login to that domain using that identity provider, if there is no Identity Provider
     assigned to the domain the 'idp-default-assignment' will be used. This command only available  for Multi-Domain server.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

@@ -34,6 +34,7 @@ short_description: Manages https-section objects on Checkpoint over Web Services
 description:
   - Manages https-section objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:

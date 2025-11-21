@@ -33,12 +33,14 @@ description:
   - Manages nat-rule objects on Checkpoint devices including creating, updating and removing objects.
   -  Minimum version required is 1.7.1 and JHF with PMTR-88097.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
   package:
     description:
       - Name of the package.
+      - Available from R80.10 management version.
     type: str
   position:
     description:
@@ -79,6 +81,7 @@ options:
   name:
     description:
       - Rule name.
+      - Available from R81 management version.
     type: str
     required: True
   enabled:
@@ -147,7 +150,7 @@ EXAMPLES = """
     comments: comment example1 nat999
     enabled: false
     install_on:
-    - Policy Targets
+      - Policy Targets
     original_destination: All_Internet
     original_source: Any
     package: standard

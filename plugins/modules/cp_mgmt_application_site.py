@@ -34,6 +34,7 @@ short_description: Manages application-site objects on Check Point over Web Serv
 description:
   - Manages application-site objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -111,16 +112,16 @@ EXAMPLES = """
 - name: add-application-site
   cp_mgmt_application_site:
     additional_categories:
-    - Instant Chat
-    - Supports Streaming
-    - New Application Site Category 1
+      - Instant Chat
+      - Supports Streaming
+      - New Application Site Category 1
     description: My Application Site
     name: New Application Site 1
     primary_category: Social Networking
     state: present
     url_list:
-    - www.cnet.com
-    - www.stackoverflow.com
+      - www.cnet.com
+      - www.stackoverflow.com
     urls_defined_as_regular_expression: false
 
 - name: set-application-site

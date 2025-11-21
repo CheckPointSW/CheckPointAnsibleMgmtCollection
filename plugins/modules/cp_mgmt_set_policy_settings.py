@@ -32,6 +32,7 @@ short_description: Edit Policy settings, the changes will be applied after publi
 description:
   - Edit Policy settings, the changes will be applied after publish.
   - All operations are performed over Web Services API.
+  - Available from R81.10 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

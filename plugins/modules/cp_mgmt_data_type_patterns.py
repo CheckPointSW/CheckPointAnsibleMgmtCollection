@@ -32,6 +32,7 @@ short_description: Manages data-type-patterns objects on Checkpoint over Web Ser
 description:
   - Manages data-type-patterns objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -94,8 +95,8 @@ EXAMPLES = """
     name: pattern-obj
     number_of_occurrences: 4
     patterns:
-    - a*b
-    - ^d
+      - a*b
+      - ^d
     state: present
 
 - name: set-data-type-patterns
@@ -103,7 +104,7 @@ EXAMPLES = """
     name: pattern-obj
     number_of_occurrences: 3
     patterns:
-    - a*b
+      - a*b
     state: present
 
 - name: delete-data-type-patterns

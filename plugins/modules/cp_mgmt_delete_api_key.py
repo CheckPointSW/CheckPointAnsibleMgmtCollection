@@ -34,6 +34,7 @@ short_description: Delete the API key. For the key to be invalid publish is need
 description:
   - Delete the API key. For the key to be invalid publish is needed.
   - All operations are performed over Web Services API.
+  - Available from R80.40 management version.
 version_added: "2.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -55,7 +56,7 @@ extends_documentation_fragment: check_point.mgmt.checkpoint_commands
 EXAMPLES = """
 - name: delete-api-key
   cp_mgmt_delete_api_key:
-    #sgignore next_line
+    # sgignore next_line
     api_key: eea3be76f4a8eb740ee872bcedc692748ff256a2d21c9ffd2754facbde046d00
 """
 

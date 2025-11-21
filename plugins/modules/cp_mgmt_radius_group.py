@@ -32,6 +32,7 @@ short_description: Manages radius-group objects on Checkpoint over Web Services 
 description:
   - Manages radius-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81.20 management version.
 version_added: "5.0.0"
 author: "Shiran Golzar (@chkp-shirango)"
 options:
@@ -87,15 +88,15 @@ EXAMPLES = """
 - name: add-radius-group
   cp_mgmt_radius_group:
     members:
-    - t4
-    - radgroup
+      - t4
+      - radgroup
     name: radgroup
     state: present
 
 - name: set-radius-group
   cp_mgmt_radius_group:
     members:
-    - t4
+      - t4
     name: radgroup
     state: present
 

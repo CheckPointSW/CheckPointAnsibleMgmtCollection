@@ -37,6 +37,7 @@ description:
   - Supported rules types are access-rule, nat-rule, https-rule and threat-exception.
   - This module is not idempotent.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -73,21 +74,21 @@ EXAMPLES = """
 - name: delete-rules-batch
   cp_mgmt_delete_rules_batch:
     objects:
-    - layer: Network
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: access-rule
-    - layer: Standard
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: nat-rule
-    - layer: Default Layer
-      list:
-      - rule_number: 1
-      - rule_number: 2
-      type: https-rule
+      - layer: Network
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: access-rule
+      - layer: Standard
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: nat-rule
+      - layer: Default Layer
+        list:
+          - rule_number: 1
+          - rule_number: 2
+        type: https-rule
 """
 
 RETURN = """

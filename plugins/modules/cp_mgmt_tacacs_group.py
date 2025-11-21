@@ -32,6 +32,7 @@ short_description: Manages tacacs-group objects on Checkpoint over Web Services 
 description:
   - Manages tacacs-group objects on Checkpoint devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R81 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -87,16 +88,16 @@ EXAMPLES = """
 - name: add-tacacs-group
   cp_mgmt_tacacs_group:
     members:
-    - t1
-    - t3
-    - group1
+      - t1
+      - t3
+      - group1
     name: group2
     state: present
 
 - name: set-tacacs-group
   cp_mgmt_tacacs_group:
     members:
-    - tacacs4
+      - tacacs4
     name: group1
     state: present
 

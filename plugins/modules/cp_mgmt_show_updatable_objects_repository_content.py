@@ -32,6 +32,7 @@ short_description: Shows the content of the available updatable objects from the
 description:
   - Shows the content of the available updatable objects from the Check Point User Center.
   - All operations are performed over Web Services API.
+  - Available from R80.20 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -90,6 +91,7 @@ options:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
     type: list
     elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands

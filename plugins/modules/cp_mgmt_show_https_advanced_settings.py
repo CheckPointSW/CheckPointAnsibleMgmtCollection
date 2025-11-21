@@ -32,6 +32,7 @@ short_description: Show advanced settings for HTTPS Inspection.
 description:
   - Show advanced settings for HTTPS Inspection.
   - All operations are performed over Web Services API.
+  - Available from R82 management version.
 version_added: "6.1.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options: {}

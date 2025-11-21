@@ -33,6 +33,7 @@ description:
   - Lock object using name and type. Can lock object only if the object is not locked by another session.
   - The object can be unlocked by the unlock, publish or discard commands.
   - All operations are performed over Web Services API.
+  - Available from R81 JHF management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:

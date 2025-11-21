@@ -34,6 +34,7 @@ short_description: Manages group objects on Check Point over Web Services API
 description:
   - Manages group objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -89,8 +90,8 @@ EXAMPLES = """
 - name: add-group
   cp_mgmt_group:
     members:
-    - New Host 1
-    - My Test Host 3
+      - New Host 1
+      - My Test Host 3
     name: New Group 5
     state: present
 

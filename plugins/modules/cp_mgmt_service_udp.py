@@ -34,6 +34,7 @@ short_description: Manages service-udp objects on Check Point over Web Services 
 description:
   - Manages service-udp objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -76,6 +77,7 @@ options:
     description:
       - A value of true enables matching by the selected protocol's signature - the signature identifies the protocol as genuine. Select this option
         to limit the port to the specified protocol. If the selected protocol does not support matching by signature, this field cannot be set to true.
+      - Available from R80.10 management version.
     type: bool
   match_for_any:
     description:
@@ -85,6 +87,7 @@ options:
   override_default_settings:
     description:
       - Indicates whether this service is a Data Domain service which has been overridden.
+      - Available from R80.10 management version.
     type: bool
   port:
     description:
@@ -96,6 +99,7 @@ options:
       - Select the protocol type associated with the service, and by implication, the management server (if any) that enforces Content Security and
         Authentication for the service. Selecting a Protocol Type invokes the specific protocol handlers for each protocol type, thus enabling higher level of
         security by parsing the protocol, and higher level of connectivity by tracking dynamic actions (such as opening of ports).
+      - Available from R80.10 management version.
     type: str
   session_timeout:
     description:
@@ -118,6 +122,7 @@ options:
   use_default_session_timeout:
     description:
       - Use default virtual session timeout.
+      - Available from R80.10 management version.
     type: bool
   color:
     description:

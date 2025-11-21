@@ -40,6 +40,7 @@ description:
     https-rule and threat-exception.
   - This module is not idempotent.
   - All operations are performed over Web Services API.
+  - Available from R81.10 JHF management version.
 version_added: "3.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -80,27 +81,26 @@ EXAMPLES = """
 - name: add-rules-batch
   cp_mgmt_add_rules_batch:
     objects:
-    - first_position: top
-      layer: Network
-      list:
-      - action: accept
-        name: access rule 1
-      - action: accept
-        name: access rule 2
-      type: access-rule
-    - first_position: top
-      layer: Standard
-      list:
-      - name: nat rule 1
-      - name: nat rule 2
-      type: nat-rule
-    - first_position: top
-      layer: Default Layer
-      list:
-      - name: https rule 1
-      - name: https rule 2
-      type: https-rule
-
+      - first_position: top
+        layer: Network
+        list:
+          - action: accept
+            name: access rule 1
+          - action: accept
+            name: access rule 2
+        type: access-rule
+      - first_position: top
+        layer: Standard
+        list:
+          - name: nat rule 1
+          - name: nat rule 2
+        type: nat-rule
+      - first_position: top
+        layer: Default Layer
+        list:
+          - name: https rule 1
+          - name: https rule 2
+        type: https-rule
 """
 
 RETURN = """

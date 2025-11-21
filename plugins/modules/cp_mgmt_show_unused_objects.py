@@ -32,6 +32,7 @@ short_description: Retrieve all unused objects.
 description:
   - Retrieve all unused objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "5.0.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
@@ -40,6 +41,7 @@ options:
       - Search expression to filter objects by. The provided text should be exactly the same as it would be given in SmartConsole Object Explorer. The
         logical operators in the expression ('AND', 'OR') should be provided in capital letters. The search involves both a IP search and a textual search in
         name, comment, tags etc.
+      - Available from R81 JHF management version.
     type: str
   limit:
     description:
@@ -71,10 +73,12 @@ options:
   dereference_group_members:
     description:
       - Indicates whether to dereference "members" field by details level for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   show_membership:
     description:
       - Indicates whether to calculate and show "groups" field for every object in reply.
+      - Available from R80.10 management version.
     type: bool
   details_level:
     description:
@@ -86,6 +90,7 @@ options:
     description:
       - Indicates which domains to process the commands on. It cannot be used with the details-level full, must be run from the System Domain only and
         with ignore-warnings true. Valid values are, CURRENT_DOMAIN, ALL_DOMAINS_ON_THIS_SERVER.
+      - Available from R81 management version.
     type: list
     elements: str
 extends_documentation_fragment: check_point.mgmt.checkpoint_commands

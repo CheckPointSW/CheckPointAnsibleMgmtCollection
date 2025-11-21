@@ -34,6 +34,7 @@ short_description: Manages simple-gateway objects on Check Point over Web Servic
 description:
   - Manages simple-gateway objects on Check Point devices including creating, updating and removing objects.
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
@@ -69,6 +70,7 @@ options:
   content_awareness:
     description:
       - Content Awareness blade enabled.
+      - Available from R80.10 management version.
     type: bool
   firewall:
     description:
@@ -240,6 +242,48 @@ options:
     description:
       - Intrusion Prevention System blade enabled.
     type: bool
+  ips_settings:
+    description:
+      - Gateway IPS settings.
+      - Available from R82 JHF management version.
+    type: dict
+    version_added: "6.5.0"
+    suboptions:
+      bypass_all_under_load:
+        description:
+          - Disable/enable all IPS protections until CPU and memory levels are back to normal.
+        type: bool
+      bypass_track_method:
+        description:
+          - Track options when all IPS protections are disabled until CPU/memory levels are back to normal.
+        type: str
+        choices: ['none', 'log', 'popup alert', 'mail alert', 'snmp trap alert', 'user defined alert no.1', 'user defined alert no.2',
+                 'user defined alert no.3']
+      activation_mode:
+        description:
+          - Defines whether the IPS blade operates in Detect Only mode or enforces the configured IPS Policy.
+        type: str
+        choices: ['according-to-policy', 'detect-only']
+      cpu_usage_low_threshold:
+        description:
+          - CPU usage low threshold percentage (1-99).
+        type: int
+      cpu_usage_high_threshold:
+        description:
+          - CPU usage high threshold percentage (1-99).
+        type: int
+      memory_usage_low_threshold:
+        description:
+          - Memory usage low threshold percentage (1-99).
+        type: int
+      memory_usage_high_threshold:
+        description:
+          - Memory usage high threshold percentage (1-99).
+        type: int
+      send_threat_cloud_info:
+        description:
+          - Help improve Check Point Threat Prevention product by sending anonymous information.
+        type: bool
   logs_settings:
     description:
       - N/A
@@ -408,6 +452,7 @@ options:
   threat_extraction:
     description:
       - Threat Extraction blade enabled.
+      - Available from R80.20.M2 management version.
     type: bool
   url_filtering:
     description:
@@ -630,6 +675,33 @@ def main():
             ),
         ),
         ips=dict(type="bool"),
+        ips_settings=dict(
+            type="dict",
+            options=dict(
+                bypass_all_under_load=dict(type="bool"),
+                bypass_track_method=dict(type="str",
+                                         choices=[
+                                             "none",
+                                             "log",
+                                             "popup alert",
+                                             "mail alert",
+                                             "snmp trap alert",
+                                             "user defined alert no.1",
+                                             "user defined alert no.2",
+                                             "user defined alert no.3",
+                                         ],
+                                         ),
+                activation_mode=dict(
+                    type="str",
+                    choices=["according-to-policy", "detect-only"],
+                ),
+                cpu_usage_low_threshold=dict(type="int"),
+                cpu_usage_high_threshold=dict(type="int"),
+                memory_usage_low_threshold=dict(type="int"),
+                memory_usage_high_threshold=dict(type="int"),
+                send_threat_cloud_info=dict(type="bool"),
+            ),
+        ),
         logs_settings=dict(
             type="dict",
             options=dict(

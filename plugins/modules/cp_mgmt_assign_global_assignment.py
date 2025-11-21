@@ -34,6 +34,7 @@ short_description: assign global assignment on Check Point over Web Services API
 description:
   - assign global assignment on Check Point over Web Services API
   - All operations are performed over Web Services API.
+  - Available from R80 management version.
 version_added: "1.0.0"
 author: "Or Soffer (@chkp-orso)"
 options:
