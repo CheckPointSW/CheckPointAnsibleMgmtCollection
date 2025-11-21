@@ -402,7 +402,9 @@ def main():
                                                          'ethernet', 'loopback', '6 in 4 tunnel', 'pppoe', 'vpn tunnel', 'vlan']),
         security_zone_settings=dict(type='dict', options=dict(
             auto_calculated=dict(type='bool'),
-            specific_zone=dict(type='str')
+            auto_calculated_zone=dict(type='str'),
+            specific_zone=dict(type='str'),
+            specific_security_zone_enabled=dict(type='bool')
         )),
         tags=dict(type='list', elements='str'),
         topology=dict(type='str', choices=['automatic', 'external', 'internal']),
