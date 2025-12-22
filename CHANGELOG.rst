@@ -4,6 +4,19 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v6.8.0
+======
+
+Release Summary
+---------------
+
+This is release 6.8.0 of ``check_point.mgmt``, released on 2025-12-22.
+
+Minor Changes
+-------------
+
+- added new parameter 'specific_security_zone_enabled' to 'cp_mgmt_interface' module.
+
 v6.7.0
 ======
 

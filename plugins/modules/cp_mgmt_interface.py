@@ -219,6 +219,7 @@ options:
         description:
           - Indicates whether to enable specific security zone.
         type: bool
+        version_added: "6.8.0"
   tags:
     description:
       - Collection of tag identifiers.
