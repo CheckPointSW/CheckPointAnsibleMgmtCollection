@@ -34,7 +34,7 @@ description:
     with all its rules in, or a rule itself, for the case of rules which are under the global section. In case a rule has an Access Layer applied on it, the
     entire content of the inline layer will be included in the reply as well.
   - All operations are performed over Web Services API.
-  - Available in JHF of R81.20, R82, R82.10 management versions.
+  - Available from R82.20 Management version.
 version_added: "6.9.0"
 author: "Eden Brillant (@chkp-edenbr)"
 options:
