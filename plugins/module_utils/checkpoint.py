@@ -267,12 +267,14 @@ def is_checkpoint_param(parameter):
         return False
     return True
 
+
 def is_no_changes_command(command):
     no_changes_command_prefixes = ["show", "export-access-rulebase"]
     for prefix in no_changes_command_prefixes:
         if command.startswith(prefix):
             return True
     return False
+
 
 def contains_show_identifier_param(payload):
     identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature", "url", "best-practice-id"]
