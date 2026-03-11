@@ -268,6 +268,14 @@ def is_checkpoint_param(parameter):
     return True
 
 
+def is_no_changes_command(command):
+    no_changes_command_prefixes = ["show", "export-access-rulebase"]
+    for prefix in no_changes_command_prefixes:
+        if command.startswith(prefix):
+            return True
+    return False
+
+
 def contains_show_identifier_param(payload):
     identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature", "url", "best-practice-id"]
     for param in identifier_params:
@@ -542,7 +550,7 @@ def api_command(module, command):
     code, response = send_request(connection, version, command, payload)
     result = {"changed": True}
 
-    if command.startswith("show"):
+    if is_no_changes_command(command):
         result['changed'] = False
 
     if code == 200:
@@ -564,7 +572,7 @@ def api_command(module, command):
 
         handle_publish(module, connection, version)
     else:
-        if command.startswith("show"):
+        if is_no_changes_command(command):
             module.fail_json(msg=parse_fail_message(code, response))
         else:
             discard_and_fail(module, code, response, connection, version)
