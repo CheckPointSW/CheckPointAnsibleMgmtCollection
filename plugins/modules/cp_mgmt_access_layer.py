@@ -48,6 +48,13 @@ options:
       - Indicates whether to include a cleanup rule in the new layer.
       - Available from R80.10 management version.
     type: bool
+  additional_permission_profiles:
+    description:
+      - Collection of permission profiles identified by the name or UID.
+      - Available from R82.20 management version.
+    type: list
+    elements: str
+    version_added: "7.0.0"
   applications_and_url_filtering:
     description:
       - Whether to enable Applications & URL Filtering blade on the layer.
@@ -122,7 +129,7 @@ EXAMPLES = """
 - name: set-access-layer
   cp_mgmt_access_layer:
     applications_and_url_filtering: false
-    data_awareness: true
+    content_awareness: true
     name: New Layer 1
     state: present
 
@@ -150,6 +157,7 @@ def main():
     argument_spec = dict(
         name=dict(type="str", required=True),
         add_default_rule=dict(type="bool"),
+        additional_permission_profiles=dict(type="list", elements="str"),
         applications_and_url_filtering=dict(type="bool"),
         content_awareness=dict(type="bool"),
         detect_using_x_forward_for=dict(type="bool"),

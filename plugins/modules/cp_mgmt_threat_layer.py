@@ -48,6 +48,13 @@ options:
       - Indicates whether to include a default rule in the new layer.
       - Available from R80.10 management version.
     type: bool
+  permissions_profiles:
+    description:
+      - Collection of permission profile identifiers. Each can be a name or UUID.
+      - Available from R82.20 management version.
+    type: list
+    elements: str
+    version_added: "7.0.0"
   tags:
     description:
       - Collection of tag identifiers.
@@ -111,6 +118,7 @@ def main():
     argument_spec = dict(
         name=dict(type="str", required=True),
         add_default_rule=dict(type="bool"),
+        permissions_profiles=dict(type="list", elements="str"),
         tags=dict(type="list", elements="str"),
         color=dict(
             type="str",

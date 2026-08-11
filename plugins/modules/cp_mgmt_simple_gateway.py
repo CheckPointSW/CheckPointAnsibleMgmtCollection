@@ -110,6 +110,459 @@ options:
         description:
           - N/A
         type: int
+  identity_awareness:
+    description:
+      - Identity awareness blade enabled.
+    type: bool
+    version_added: "7.0.0"
+  identity_awareness_settings:
+    description:
+      - Gateway Identity Awareness settings.
+    type: dict
+    version_added: "7.0.0"
+    suboptions:
+      browser_based_authentication:
+        description:
+          - Enable Browser Based Authentication source.
+        type: bool
+      browser_based_authentication_settings:
+        description:
+          - Browser Based Authentication settings.
+        type: dict
+        suboptions:
+          authentication_settings:
+            description:
+              - Authentication Settings for Browser Based Authentication.
+            type: dict
+            suboptions:
+              authentication_method:
+                description:
+                  - Authentication method.
+                type: str
+                choices: ['username and password', 'defined on user record', 'identity provider', 'radius']
+              identity_provider:
+                description:
+                  - Identity provider object identified by the name or UID. Must be set when "authentication-method" was selected to be "identity provider".
+                type: list
+                elements: str
+              radius:
+                description:
+                  - Radius server object identified by the name or UID. Must be set when "authentication-method" was selected to be "radius".
+                type: str
+              users_directories:
+                description:
+                  - Users directories.
+                type: dict
+                suboptions:
+                  external_user_profile:
+                    description:
+                      - External user profile.
+                    type: bool
+                  internal_users:
+                    description:
+                      - Internal users.
+                    type: bool
+                  users_from_external_directories:
+                    description:
+                      - Users from external directories.
+                    type: str
+                    choices: ['all gateways directories', 'specific', 'none']
+                  specific:
+                    description:
+                      - LDAP AU objects identified by the name or UID. Must be set when "users-from-external-directories" was selected to be "specific".
+                    type: list
+                    elements: str
+          browser_based_authentication_portal_settings:
+            description:
+              - Browser Based Authentication portal settings.
+            type: dict
+            suboptions:
+              portal_web_settings:
+                description:
+                  - Configuration of the portal web settings.
+                type: dict
+                suboptions:
+                  aliases:
+                    description:
+                      - List of URL aliases that are redirected to the main portal URL.
+                    type: list
+                    elements: str
+                  ip_address:
+                    description:
+                      - Optional, IP address for the web portal to use, if your DNS server fails to resolve the main portal URL.
+                        Note, If your DNS server resolves the main portal URL, this IP address is ignored.
+                    type: str
+                  main_url:
+                    description:
+                      - The main URL for the web portal.
+                    type: str
+              certificate_settings:
+                description:
+                  - Configuration of the portal certificate settings.
+                type: dict
+                suboptions:
+                  base64_certificate:
+                    description:
+                      - The certificate file encoded in Base64 with padding.
+                        This file must be in the *.p12 format.
+                    type: str
+                  base64_password:
+                    description:
+                      - Password (encoded in Base64 with padding) for the certificate file.
+                    type: str
+              accessibility:
+                description:
+                  - Configuration of the portal access settings.
+                type: dict
+                suboptions:
+                  allow_access_from:
+                    description:
+                      - Allowed access to the web portal (based on interfaces, or security policy).
+                    type: str
+                    choices: ['rule_base', 'internal_interfaces', 'all_interfaces']
+                  internal_access_settings:
+                    description:
+                      - Configuration of the additional portal access settings for internal interfaces only.
+                    type: dict
+                    suboptions:
+                      undefined:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'Undefined'.
+                        type: bool
+                      dmz:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'DMZ'.
+                        type: bool
+                      vpn:
+                        description:
+                          - Controls portal access settings for interfaces that are part of a VPN Encryption Domain.
+                        type: bool
+      identity_agent:
+        description:
+          - Enable Identity Agent source.
+        type: bool
+      identity_agent_settings:
+        description:
+          - Identity Agent settings.
+        type: dict
+        suboptions:
+          agents_interval_keepalive:
+            description:
+              - Agents send keepalive period (minutes).
+            type: int
+          user_reauthenticate_interval:
+            description:
+              - Agent reauthenticate time interval (minutes).
+            type: int
+          authentication_settings:
+            description:
+              - Authentication Settings for Identity Agent.
+            type: dict
+            suboptions:
+              authentication_method:
+                description:
+                  - Authentication method.
+                type: str
+                choices: ['username and password', 'defined on user record', 'radius']
+              radius:
+                description:
+                  - Radius server object identified by the name or UID. Must be set when "authentication-method" was selected to be "radius".
+                type: str
+              users_directories:
+                description:
+                  - Users directories.
+                type: dict
+                suboptions:
+                  external_user_profile:
+                    description:
+                      - External user profile.
+                    type: bool
+                  internal_users:
+                    description:
+                      - Internal users.
+                    type: bool
+                  users_from_external_directories:
+                    description:
+                      - Users from external directories.
+                    type: str
+                    choices: ['all gateways directories', 'specific', 'none']
+                  specific:
+                    description:
+                      - LDAP AU objects identified by the name or UID. Must be set when "users-from-external-directories" was selected to be "specific".
+                    type: list
+                    elements: str
+          identity_agent_portal_settings:
+            description:
+              - Identity Agent accessibility settings.
+            type: dict
+            suboptions:
+              accessibility:
+                description:
+                  - Configuration of the portal access settings.
+                type: dict
+                suboptions:
+                  allow_access_from:
+                    description:
+                      - Allowed access to the web portal (based on interfaces, or security policy).
+                    type: str
+                    choices: ['rule_base', 'internal_interfaces', 'all_interfaces']
+                  internal_access_settings:
+                    description:
+                      - Configuration of the additional portal access settings for internal interfaces only.
+                    type: dict
+                    suboptions:
+                      undefined:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'Undefined'.
+                        type: bool
+                      dmz:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'DMZ'.
+                        type: bool
+                      vpn:
+                        description:
+                          - Controls portal access settings for interfaces that are part of a VPN Encryption Domain.
+                        type: bool
+      identity_based_enforcement:
+        description:
+          - ON, Configures this object as a PEP-only object - identity-based enforcement (PEP) is enabled.<br>OFF, Configures this object as a
+            PDP-only object - identity-based enforcement is disabled.
+        type: str
+        choices: ['on', 'off']
+      identity_collector:
+        description:
+          - Enable Identity Collector source.
+        type: bool
+      identity_collector_settings:
+        description:
+          - Identity Collector settings.
+        type: dict
+        suboptions:
+          authentication_settings:
+            description:
+              - Authentication Settings for Identity Collector.
+            type: dict
+            suboptions:
+              users_directories:
+                description:
+                  - Users directories.
+                type: dict
+                suboptions:
+                  external_user_profile:
+                    description:
+                      - External user profile.
+                    type: bool
+                  internal_users:
+                    description:
+                      - Internal users.
+                    type: bool
+                  users_from_external_directories:
+                    description:
+                      - Users from external directories.
+                    type: str
+                    choices: ['all gateways directories', 'specific', 'none']
+                  specific:
+                    description:
+                      - LDAP AU objects identified by the name or UID. Must be set when "users-from-external-directories" was selected to be "specific".
+                    type: list
+                    elements: str
+          authorized_clients:
+            description:
+              - Authorized Clients.
+            type: list
+            elements: dict
+            suboptions:
+              client:
+                description:
+                  - Host / Network Group Name or UID.
+                type: str
+              client_secret:
+                description:
+                  - Client Secret.
+                type: str
+          client_access_permissions:
+            description:
+              - Identity Collector accessibility settings.
+            type: dict
+            suboptions:
+              accessibility:
+                description:
+                  - Configuration of the portal access settings.
+                type: dict
+                suboptions:
+                  allow_access_from:
+                    description:
+                      - Allowed access to the web portal (based on interfaces, or security policy).
+                    type: str
+                    choices: ['rule_base', 'internal_interfaces', 'all_interfaces']
+                  internal_access_settings:
+                    description:
+                      - Configuration of the additional portal access settings for internal interfaces only.
+                    type: dict
+                    suboptions:
+                      undefined:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'Undefined'.
+                        type: bool
+                      dmz:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'DMZ'.
+                        type: bool
+                      vpn:
+                        description:
+                          - Controls portal access settings for interfaces that are part of a VPN Encryption Domain.
+                        type: bool
+      identity_sharing_settings:
+        description:
+          - Identity sharing settings.
+        type: dict
+        suboptions:
+          share_with_other_gateways:
+            description:
+              - Enable identity sharing with other gateways.
+            type: bool
+          receive_from_infinity_identity:
+            description:
+              - Enable receiving identities from Infinity Identity.
+            type: bool
+          receive_from_other_gateways:
+            description:
+              - Enable receiving identity from other gateways.
+            type: bool
+          receive_from:
+            description:
+              - Gateway(s) to receive identity from.
+            type: list
+            elements: str
+          cache_mode:
+            description:
+              - True, In case of connectivity loss from the Policy-Decision-Point (PDP), extend Identity cache up-to
+                "cache-mode-duration".<br>False, Identity Cache Mode is disabled, in case of connectivity loss from the Policy-Decision-Point, existing
+                Identities will be lost immediately.
+            type: dict
+            suboptions:
+              override_profile:
+                description:
+                  - Override profile of global configuration.
+                type: bool
+              value:
+                description:
+                  - Override value.<br><font color="red">Required only for</font> 'override-profile' is True.
+                type: bool
+          cache_mode_duration:
+            description:
+              - Time limit for keeping Identities in the cache.
+            type: dict
+            suboptions:
+              override_profile:
+                description:
+                  - Override profile of global configuration.
+                type: bool
+              value:
+                description:
+                  - Override value.<br><font color="red">Required only for</font> 'override-profile' is True.
+                    Valid values are in the range 1-2880.
+                type: int
+          scaled_sharing:
+            description:
+              - Enable Scaled Sharing.
+            type: bool
+      identity_web_api:
+        description:
+          - Enable Identity Web API source.
+        type: bool
+      identity_web_api_settings:
+        description:
+          - Identity Web API settings.
+        type: dict
+        suboptions:
+          authentication_settings:
+            description:
+              - Authentication Settings for Identity Web Api.
+            type: dict
+            suboptions:
+              users_directories:
+                description:
+                  - Users directories.
+                type: dict
+                suboptions:
+                  external_user_profile:
+                    description:
+                      - External user profile.
+                    type: bool
+                  internal_users:
+                    description:
+                      - Internal users.
+                    type: bool
+                  users_from_external_directories:
+                    description:
+                      - Users from external directories.
+                    type: str
+                    choices: ['all gateways directories', 'specific', 'none']
+                  specific:
+                    description:
+                      - LDAP AU objects identified by the name or UID. Must be set when "users-from-external-directories" was selected to be "specific".
+                    type: list
+                    elements: str
+          authorized_clients:
+            description:
+              - Authorized Clients.
+            type: list
+            elements: dict
+            suboptions:
+              client:
+                description:
+                  - Host / Network Group Name or UID.
+                type: str
+              client_secret:
+                description:
+                  - Client Secret.
+                type: str
+          client_access_permissions:
+            description:
+              - Identity Web Api accessibility settings.
+            type: dict
+            suboptions:
+              accessibility:
+                description:
+                  - Configuration of the portal access settings.
+                type: dict
+                suboptions:
+                  allow_access_from:
+                    description:
+                      - Allowed access to the web portal (based on interfaces, or security policy).
+                    type: str
+                    choices: ['rule_base', 'internal_interfaces', 'all_interfaces']
+                  internal_access_settings:
+                    description:
+                      - Configuration of the additional portal access settings for internal interfaces only.
+                    type: dict
+                    suboptions:
+                      undefined:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'Undefined'.
+                        type: bool
+                      dmz:
+                        description:
+                          - Controls portal access settings for internal interfaces, whose topology is set to 'DMZ'.
+                        type: bool
+                      vpn:
+                        description:
+                          - Controls portal access settings for interfaces that are part of a VPN Encryption Domain.
+                        type: bool
+      proxy_settings:
+        description:
+          - Identity-Awareness Proxy settings.
+        type: dict
+        suboptions:
+          detect_using_x_forward_for:
+            description:
+              - Whether to use X-Forward-For HTTP header, which is added by the proxy server to keep track of the original source IP.
+            type: bool
+      remote_access:
+        description:
+          - Enable Remote Access Identity source.
+        type: bool
   interfaces:
     description:
       - Network interfaces. When a gateway is updated with a new interfaces, the existing interfaces are removed.
@@ -352,6 +805,11 @@ options:
         description:
           - N/A
         type: bool
+      distribute_logs_between_all_active_servers:
+        description:
+          - Distribute logs between all active servers.
+        type: bool
+        version_added: "7.0.0"
       forward_logs_to_log_server:
         description:
           - N/A
@@ -582,6 +1040,137 @@ def main():
                 memory_pool_size=dict(type="int"),
             ),
         ),
+        identity_awareness=dict(type="bool"),
+        identity_awareness_settings=dict(type="dict", options=dict(
+            browser_based_authentication=dict(type="bool"),
+            browser_based_authentication_settings=dict(type="dict", options=dict(
+                authentication_settings=dict(type="dict", options=dict(
+                    authentication_method=dict(type="str", choices=["username and password", "defined on user record", "identity provider", "radius"]),
+                    identity_provider=dict(type="list", elements="str"),
+                    radius=dict(type="str"),
+                    users_directories=dict(type="dict", options=dict(
+                        external_user_profile=dict(type="bool"),
+                        internal_users=dict(type="bool"),
+                        users_from_external_directories=dict(type="str", choices=["all gateways directories", "specific", "none"]),
+                        specific=dict(type="list", elements="str")
+                    ))
+                )),
+                browser_based_authentication_portal_settings=dict(type="dict", options=dict(
+                    portal_web_settings=dict(type="dict", options=dict(
+                        aliases=dict(type="list", elements="str"),
+                        ip_address=dict(type="str"),
+                        main_url=dict(type="str")
+                    )),
+                    certificate_settings=dict(type="dict", options=dict(
+                        base64_certificate=dict(type="str"),
+                        base64_password=dict(type="str", no_log=True)
+                    )),
+                    accessibility=dict(type="dict", options=dict(
+                        allow_access_from=dict(type="str", choices=["rule_base", "internal_interfaces", "all_interfaces"]),
+                        internal_access_settings=dict(type="dict", options=dict(
+                            undefined=dict(type="bool"),
+                            dmz=dict(type="bool"),
+                            vpn=dict(type="bool")
+                        ))
+                    ))
+                ))
+            )),
+            identity_agent=dict(type="bool"),
+            identity_agent_settings=dict(type="dict", options=dict(
+                agents_interval_keepalive=dict(type="int"),
+                user_reauthenticate_interval=dict(type="int"),
+                authentication_settings=dict(type="dict", options=dict(
+                    authentication_method=dict(type="str", choices=["username and password", "defined on user record", "radius"]),
+                    radius=dict(type="str"),
+                    users_directories=dict(type="dict", options=dict(
+                        external_user_profile=dict(type="bool"),
+                        internal_users=dict(type="bool"),
+                        users_from_external_directories=dict(type="str", choices=["all gateways directories", "specific", "none"]),
+                        specific=dict(type="list", elements="str")
+                    ))
+                )),
+                identity_agent_portal_settings=dict(type="dict", options=dict(
+                    accessibility=dict(type="dict", options=dict(
+                        allow_access_from=dict(type="str", choices=["rule_base", "internal_interfaces", "all_interfaces"]),
+                        internal_access_settings=dict(type="dict", options=dict(
+                            undefined=dict(type="bool"),
+                            dmz=dict(type="bool"),
+                            vpn=dict(type="bool")
+                        ))
+                    ))
+                ))
+            )),
+            identity_based_enforcement=dict(type="str", choices=["on", "off"]),
+            identity_collector=dict(type="bool"),
+            identity_collector_settings=dict(type="dict", options=dict(
+                authentication_settings=dict(type="dict", options=dict(
+                    users_directories=dict(type="dict", options=dict(
+                        external_user_profile=dict(type="bool"),
+                        internal_users=dict(type="bool"),
+                        users_from_external_directories=dict(type="str", choices=["all gateways directories", "specific", "none"]),
+                        specific=dict(type="list", elements="str")
+                    ))
+                )),
+                authorized_clients=dict(type="list", elements="dict", options=dict(
+                    client=dict(type="str"),
+                    client_secret=dict(type="str", no_log=True)
+                )),
+                client_access_permissions=dict(type="dict", options=dict(
+                    accessibility=dict(type="dict", options=dict(
+                        allow_access_from=dict(type="str", choices=["rule_base", "internal_interfaces", "all_interfaces"]),
+                        internal_access_settings=dict(type="dict", options=dict(
+                            undefined=dict(type="bool"),
+                            dmz=dict(type="bool"),
+                            vpn=dict(type="bool")
+                        ))
+                    ))
+                ))
+            )),
+            identity_sharing_settings=dict(type="dict", options=dict(
+                share_with_other_gateways=dict(type="bool"),
+                receive_from_infinity_identity=dict(type="bool"),
+                receive_from_other_gateways=dict(type="bool"),
+                receive_from=dict(type="list", elements="str"),
+                cache_mode=dict(type="dict", options=dict(
+                    override_profile=dict(type="bool"),
+                    value=dict(type="bool")
+                )),
+                cache_mode_duration=dict(type="dict", options=dict(
+                    override_profile=dict(type="bool"),
+                    value=dict(type="int")
+                )),
+                scaled_sharing=dict(type="bool")
+            )),
+            identity_web_api=dict(type="bool"),
+            identity_web_api_settings=dict(type="dict", options=dict(
+                authentication_settings=dict(type="dict", options=dict(
+                    users_directories=dict(type="dict", options=dict(
+                        external_user_profile=dict(type="bool"),
+                        internal_users=dict(type="bool"),
+                        users_from_external_directories=dict(type="str", choices=["all gateways directories", "specific", "none"]),
+                        specific=dict(type="list", elements="str")
+                    ))
+                )),
+                authorized_clients=dict(type="list", elements="dict", options=dict(
+                    client=dict(type="str"),
+                    client_secret=dict(type="str", no_log=True)
+                )),
+                client_access_permissions=dict(type="dict", options=dict(
+                    accessibility=dict(type="dict", options=dict(
+                        allow_access_from=dict(type="str", choices=["rule_base", "internal_interfaces", "all_interfaces"]),
+                        internal_access_settings=dict(type="dict", options=dict(
+                            undefined=dict(type="bool"),
+                            dmz=dict(type="bool"),
+                            vpn=dict(type="bool")
+                        ))
+                    ))
+                ))
+            )),
+            proxy_settings=dict(type="dict", options=dict(
+                detect_using_x_forward_for=dict(type="bool")
+            )),
+            remote_access=dict(type="bool")
+        )),
         interfaces=dict(
             type="list",
             elements="dict",
@@ -741,6 +1330,7 @@ def main():
                 delete_when_free_disk_space_below=dict(type="bool"),
                 delete_when_free_disk_space_below_threshold=dict(type="int"),
                 detect_new_citrix_ica_application_names=dict(type="bool"),
+                distribute_logs_between_all_active_servers=dict(type="bool"),
                 forward_logs_to_log_server=dict(type="bool"),
                 forward_logs_to_log_server_name=dict(type="str"),
                 forward_logs_to_log_server_schedule_name=dict(type="str"),

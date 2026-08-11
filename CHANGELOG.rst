@@ -4,6 +4,68 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v7.0.0
+======
+
+Release Summary
+---------------
+
+This is release 7.0.0 of ``check_point.mgmt``, released on 2026-08-11.
+
+Major Changes
+-------------
+
+- New R82.20 modules
+
+Minor Changes
+-------------
+
+- added new parameter 'additional_permission_profiles' to 'cp_mgmt_access_layer' module.
+- added new parameter 'distribute_logs_between_all_active_servers' to the 'logs_settings' parameter of 'cp_mgmt_simple_gateway' module.
+- added new parameter 'permissions_profiles' to 'cp_mgmt_threat_layer' module.
+- added new parameters 'identity_awareness' and 'identity_awareness_settings' to 'cp_mgmt_simple_gateway' module.
+
+New Modules
+-----------
+
+- check_point.mgmt.cp_mgmt_cloud_license_gateway_facts - Get cloud-license-gateway objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_cloud_license_pool_facts - Get cloud-license-pool objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_def_setting - Manages def-setting objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_def_setting_facts - Get def-setting objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_dlp_next_data_type - Manages dlp-next-data-type objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_dlp_next_data_type_facts - Get dlp-next-data-type objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_firewall_best_practice - Manages firewall-best-practice objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_firewall_best_practice_facts - Get firewall-best-practice objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_guideline - Manages guideline objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_guideline_cell_approvals - Manages guideline-cell-approvals objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_guideline_facts - Get guideline objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_prepare_software_package - Prepares the software package on target machines.
+- check_point.mgmt.cp_mgmt_regulation - Manages regulation objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_regulation_facts - Get regulation objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_requirement - Manages requirement objects on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_requirement_facts - Get requirement objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_set_best_practice - Edit an existing Best Practice using object name, uid or best practice id. Activate or deactivate the best practice and its relevant objects.
+- check_point.mgmt.cp_mgmt_set_cloud_license_gateway - Edit existing gateway license using name or uid.
+- check_point.mgmt.cp_mgmt_set_cloud_license_pool - Edit existing pool using name.
+- check_point.mgmt.cp_mgmt_set_cloud_license_scope - Set cloud license operational mode.
+- check_point.mgmt.cp_mgmt_set_threat_emulation_file_type - Edit a Threat Emulation file type support settings.
+- check_point.mgmt.cp_mgmt_set_threat_emulation_file_types - Edit support settings for multiple Threat Emulation file types in a single request.
+- check_point.mgmt.cp_mgmt_set_threat_extraction_file_type - Edit a Threat Extraction file type support settings.
+- check_point.mgmt.cp_mgmt_set_threat_extraction_file_types - Edit support settings for multiple Threat Extraction file types in a single request.
+- check_point.mgmt.cp_mgmt_set_threat_protection_category - Edit existing object using object name or uid.
+- check_point.mgmt.cp_mgmt_set_threat_protection_sub_category - Edit existing object using object name or uid.
+- check_point.mgmt.cp_mgmt_show_ad_content - Retrieves Active Directory users, groups, and machines for an Account Unit.
+- check_point.mgmt.cp_mgmt_show_cloud_license_scope - Show current cloud license mode.
+- check_point.mgmt.cp_mgmt_show_dlp_next_data_types_repository_content - Retrieve all DLP Next Data Type Objects from Infinity portal.
+- check_point.mgmt.cp_mgmt_show_guideline_cells - Showing guideline-cells metrics according to the given filters.
+- check_point.mgmt.cp_mgmt_test_ai_agent_security_api_key - Test the validity of an AI Agent Security API key.
+- check_point.mgmt.cp_mgmt_threat_emulation_file_type_facts - Get threat-emulation-file-type objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_threat_emulation_image_facts - Get threat-emulation-image objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_threat_extraction_file_type_facts - Get threat-extraction-file-type objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_threat_protection_category_facts - Get threat-protection-category objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_threat_protection_sub_category_facts - Get threat-protection-sub-category objects facts on Checkpoint over Web Services API
+- check_point.mgmt.cp_mgmt_update_cloud_license - Updates the existing license with the new license string.
+
 v6.9.0
 ======
 

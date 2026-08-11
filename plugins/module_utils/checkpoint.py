@@ -76,7 +76,15 @@ delete_params = [
     "ignore-errors",
     "ignore-warnings",
     "gateway-uid",
-    "url"
+    "url",
+    "guideline",
+    "approvals",
+    "from",
+    "from-type",
+    "to",
+    "to-type",
+    "policy-package",
+    "delete-scope"
 ]
 
 remove_from_set_payload = {
@@ -277,7 +285,8 @@ def is_no_changes_command(command):
 
 
 def contains_show_identifier_param(payload):
-    identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature", "url", "best-practice-id"]
+    identifier_params = ["name", "uid", "assigned-domain", "task-id", "signature", "url", "best-practice-id",
+                         "gateway", "pool", "file-type-id", "file-type"]
     for param in identifier_params:
         if payload.get(param) is not None:
             return True
