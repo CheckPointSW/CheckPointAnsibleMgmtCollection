@@ -14,7 +14,8 @@ Run `ansible-galaxy collection install check_point.mgmt`
 
 Requirements
 ------------
-* Ansible 2.9+ is required.
+* ansible-core 2.16.0 or above is required.
+* Python 3.10 or above is required on the Ansible control node.
 * The Check Point server should be using the versions detailed in this SK: [Check Point Support SK114661](https://supportcenter.checkpoint.com/supportcenter/portal?eventSubmit_doGoviewsolutiondetails=&solutionid=sk114661)
 * The Check Point server should be open for API communication from the Ansible server.
   Open SmartConsole and check "Manage & Settings > Blades > Management API > Advanced settings".
@@ -85,7 +86,7 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
      (the default is to wait), then the output of the command will be the output of the show-task command (instead of the task-id).
 
 ### Testing
-This collection is tested with the most current Ansible releases. Ansible versions from 2.15.0 and above are supported.
+This collection is tested with the most current Ansible releases. Ansible versions from 2.16.0 and above are supported.
 
 ### Support
 As Red Hat Ansible Certified Content, this collection is entitled to support regarding issues or requests for enhancements

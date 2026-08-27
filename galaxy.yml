@@ -61,4 +61,4 @@ homepage: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 issues: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues
 
 build_ignore:
-  - changelogs/
+ - changelogs/

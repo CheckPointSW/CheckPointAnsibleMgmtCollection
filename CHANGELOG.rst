@@ -24,6 +24,7 @@ Minor Changes
 - added new parameter 'distribute_logs_between_all_active_servers' to the 'logs_settings' parameter of 'cp_mgmt_simple_gateway' module.
 - added new parameter 'permissions_profiles' to 'cp_mgmt_threat_layer' module.
 - added new parameters 'identity_awareness' and 'identity_awareness_settings' to 'cp_mgmt_simple_gateway' module.
+- meta/runtime.yml - update minimum Ansible version required to 2.16.0.
 
 New Modules
 -----------

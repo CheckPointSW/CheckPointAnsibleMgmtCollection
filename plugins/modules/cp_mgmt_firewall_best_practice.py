@@ -251,18 +251,18 @@ EXAMPLES = """
     name: Clean-up rule defined in Access Policy
     rule:
       action:
-      - drop
+        - drop
       destination:
-      - Any
+        - Any
       hit_count:
-      - low
+        - low
       name_condition:
         condition_type: contains
         value: cleanup
       source:
-      - Any
+        - Any
       track:
-      - log
+        - log
     state: present
 
 - name: set-firewall-best-practice

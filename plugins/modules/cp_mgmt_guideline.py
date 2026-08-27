@@ -158,11 +158,11 @@ EXAMPLES = """
 - name: add-guideline
   cp_mgmt_guideline:
     access_layers:
-    - Network
+      - Network
     guideline_groups:
-    - name: DMZ
-    - name: Users networks
-    - name: Labs
+      - name: DMZ
+      - name: Users networks
+      - name: Labs
     name: Corporate policy
     state: present
 

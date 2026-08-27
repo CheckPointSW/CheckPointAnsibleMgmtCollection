@@ -86,7 +86,7 @@ EXAMPLES = """
     name: Check_Point_R80_40_JHF_MCD_DEMO_019_MAIN_Bundle_T1_VISIBLE_FULL.tgz
     package_location: automatic
     targets:
-    - corporate-gateway
+      - corporate-gateway
 """
 
 RETURN = """

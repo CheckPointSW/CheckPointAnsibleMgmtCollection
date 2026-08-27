@@ -76,8 +76,8 @@ EXAMPLES = """
 - name: set-cloud-license-pool
   cp_mgmt_set_cloud_license_pool:
     assigned_gateways:
-    - gateway: GW_A
-    - gateway: GW_B
+      - gateway: GW_A
+      - gateway: GW_B
     pool: VE-NGTX
 """
 

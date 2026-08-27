@@ -81,12 +81,12 @@ EXAMPLES = """
 - name: set-threat-extraction-file-types
   cp_mgmt_set_threat_extraction_file_types:
     file_types:
-    - enabled: false
-      file_type: pdf
-    - enabled: true
-      file_type: docx
-    - enabled: true
-      file_type_id: 5b8e4a0e-9876-4cba-8aa9-0b1c2d3e4f56
+      - enabled: false
+        file_type: pdf
+      - enabled: true
+        file_type: docx
+      - enabled: true
+        file_type_id: 5b8e4a0e-9876-4cba-8aa9-0b1c2d3e4f56
 """
 
 RETURN = """

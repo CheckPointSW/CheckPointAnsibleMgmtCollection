@@ -126,12 +126,12 @@ EXAMPLES = """
 - name: add-def-setting
   cp_mgmt_def_setting:
     assignments:
-    - description: Default for Quantum gateways
-      model: quantum
-      value: 'true'
-    - description: Default for Spark gateways
-      model: spark
-      value: 'false'
+      - description: Default for Quantum gateways
+        model: quantum
+        value: 'true'
+      - description: Default for Spark gateways
+        model: spark
+        value: 'false'
     data_type: boolean
     name: My Boolean Def Setting
     state: present

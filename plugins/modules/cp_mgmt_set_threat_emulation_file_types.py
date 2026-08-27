@@ -81,12 +81,12 @@ EXAMPLES = """
 - name: set-threat-emulation-file-types
   cp_mgmt_set_threat_emulation_file_types:
     file_types:
-    - enabled: false
-      file_type: pdf
-    - enabled: true
-      file_type: docx
-    - enabled: true
-      file_type_id: 6c7f5a1f-1234-4abc-89aa-0b1c2d3e4f56
+      - enabled: false
+        file_type: pdf
+      - enabled: true
+        file_type: docx
+      - enabled: true
+        file_type_id: 6c7f5a1f-1234-4abc-89aa-0b1c2d3e4f56
 """
 
 RETURN = """
