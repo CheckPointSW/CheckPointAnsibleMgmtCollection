@@ -9,7 +9,7 @@ namespace: check_point
 name: mgmt
 
 # The version of the collection. Must be compatible with semantic versioning
-version: 7.0.0
+version: 7.0.1
 
 # The path to the Markdown (.md) readme file. This path is relative to the root of the collection
 readme: README.md
@@ -56,8 +56,9 @@ documentation: https://docs.ansible.com/ansible/latest/collections/check_point/m
 homepage: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection
 
 # The URL to the collection issue tracker
-# As Red Hat Ansible Certified Content, this collection is entitled to support through the collection's GitHub
-# repository using the **New issue** button in the top right corner.
+# As Red Hat Ansible Certified Content, Red Hat customers are entitled to open support cases using the **Create issue**
+# button on the top right corner of the collection page on Ansible Automation Hub. Issues and requests for enhancements
+# can also be raised through the collection's GitHub repository using the **New issue** button in the top right corner.
 issues: https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues
 
 build_ignore:

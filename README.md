@@ -89,8 +89,12 @@ Note - If you want to run against Ansible version 2.9 instead of the collection,
 This collection is tested with the most current Ansible releases. Ansible versions from 2.16.0 and above are supported.
 
 ### Support
-As Red Hat Ansible Certified Content, this collection is entitled to support regarding issues or requests for enhancements
-through the collection's GitHub repository using the **New issue** button in the top right corner: [GitHub Issues](https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues)
+This collection is maintained by Check Point Software Technologies. As Red Hat Ansible Certified Content, Red Hat customers
+are entitled to open support cases using the **Create issue** button on the top right corner of the collection page on
+Ansible Automation Hub.
+
+Issues and requests for enhancements can also be raised through the collection's GitHub repository using the
+**New issue** button in the top right corner: [GitHub Issues](https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/issues)
 
 ### Release Notes
 [Release Notes (CHANGELOG.rst)](https://github.com/CheckPointSW/CheckPointAnsibleMgmtCollection/blob/master/CHANGELOG.rst)

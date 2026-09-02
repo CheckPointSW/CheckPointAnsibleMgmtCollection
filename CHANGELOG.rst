@@ -4,6 +4,19 @@ Check_Point.Mgmt Release Notes
 
 .. contents:: Topics
 
+v7.0.1
+======
+
+Release Summary
+---------------
+
+This is release 7.0.1 of ``check_point.mgmt``, released on 2026-09-02.
+
+Minor Changes
+-------------
+
+- README - update the Support section to inform Red Hat customers that they can open support cases using the 'Create issue' button on the collection page on Ansible Automation Hub, alongside the existing GitHub Issues link.
+
 v7.0.0
 ======
 
